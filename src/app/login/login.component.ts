@@ -15,13 +15,19 @@ export class LoginComponent {
   email: string = '';
   password: string = '';
   errorMessage = '';
-  constructor(private router: Router, private AuthService: AuthService) {}
+  constructor(
+    private router: Router,
+    private AuthService: AuthService
+  ) // private window: Window
+  {}
   onSubmit(loginForm: any): void {
     if (loginForm.valid) {
       this.AuthService.login(this.email, this.password).subscribe(
         (response) => {
           // Handle successful login response
           console.log('Login successful:', response);
+          const token = 'response';
+          // this.window.localStorage.setItem('token', token);
           this.router.navigate(['/products']);
         },
         (error) => {
