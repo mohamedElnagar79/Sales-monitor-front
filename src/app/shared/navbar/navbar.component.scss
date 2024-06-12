@@ -1,0 +1,41 @@
+/* src/styles.scss */
+
+// Define color variables
+$dark-blue: #2c3e50;
+$light-blue: #3498db;
+$light-gray: #ecf0f1;
+$white: #ffffff;
+
+// Custom navbar styles
+.navbar-custom {
+  background-color: $dark-blue;
+
+  .navbar-brand {
+    color: $light-gray;
+    &:hover {
+      color: $white;
+    }
+  }
+
+  .navbar-nav {
+    .nav-item {
+      margin-right: 1rem;
+    }
+    .nav-link {
+      color: $light-gray;
+
+      &.active,
+      &:hover {
+        background-color: $light-blue;
+        color: $white;
+      }
+    }
+  }
+
+  .navbar-toggler {
+    border-color: $light-gray;
+    .navbar-toggler-icon {
+      background-image: url("data:image/svg+xml;charset=utf8,%3Csvg viewBox='0 0 30 30' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath stroke='rgba(236, 240, 241, 0.5)' stroke-width='2' stroke-linecap='round' stroke-miterlimit='10' d='M4 7h22M4 15h22M4 23h22'/%3E%3C/svg%3E");
+    }
+  }
+}

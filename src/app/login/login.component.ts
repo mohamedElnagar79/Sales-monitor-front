@@ -1,0 +1,37 @@
+import { Component } from '@angular/core';
+import { Router } from '@angular/router';
+import { AuthService } from './auth.service';
+import { FormsModule } from '@angular/forms';
+import { CommonModule } from '@angular/common'; // Import CommonModule
+
+@Component({
+  selector: 'app-login',
+  standalone: true,
+  imports: [FormsModule, CommonModule],
+  templateUrl: './login.component.html',
+  styleUrl: './login.component.scss',
+})
+export class LoginComponent {
+  email: string = '';
+  password: string = '';
+  errorMessage = '';
+  constructor(private router: Router, private AuthService: AuthService) {}
+  onSubmit(loginForm: any): void {
+    if (loginForm.valid) {
+      this.AuthService.login(this.email, this.password).subscribe(
+        (response) => {
+          // Handle successful login response
+          console.log('Login successful:', response);
+          this.router.navigate(['/products']);
+        },
+        (error) => {
+          // Handle login error
+          this.errorMessage = error.error.message;
+          console.log('errrrrr', this.errorMessage);
+        }
+      );
+    } else {
+      console.log('errrrrrrrrrrrrrrr');
+    }
+  }
+}
