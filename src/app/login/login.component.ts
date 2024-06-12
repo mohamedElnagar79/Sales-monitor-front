@@ -17,17 +17,15 @@ export class LoginComponent {
   errorMessage = '';
   constructor(
     private router: Router,
-    private AuthService: AuthService
-  ) // private window: Window
-  {}
+    private AuthService: AuthService // private window: Window
+  ) {}
   onSubmit(loginForm: any): void {
     if (loginForm.valid) {
       this.AuthService.login(this.email, this.password).subscribe(
-        (response) => {
+        (response: any) => {
           // Handle successful login response
-          console.log('Login successful:', response);
-          const token = 'response';
-          // this.window.localStorage.setItem('token', token);
+          const token = response.data.token;
+          localStorage.setItem('token', token);
           this.router.navigate(['/products']);
         },
         (error) => {
