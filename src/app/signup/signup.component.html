@@ -1,7 +1,7 @@
 <div class="signup-container">
   <div class="signup-box">
     <h2>Sign Up</h2>
-    <form>
+    <form #signupForm="ngForm" (ngSubmit)="onSubmit(signupForm)">
       <div class="form-group">
         <label for="name">Name</label>
         <input
@@ -10,6 +10,10 @@
           class="form-control"
           placeholder="Enter your name"
           required
+          name="name"
+          standalone="true"
+          [(ngModel)]="name"
+          #nameRef="ngModel"
         />
       </div>
       <div class="form-group">
@@ -20,6 +24,10 @@
           class="form-control"
           placeholder="Enter your email"
           required
+          name="email"
+          standalone="true"
+          [(ngModel)]="email"
+          #emailRef="ngModel"
         />
       </div>
       <div class="form-group">
@@ -30,9 +38,16 @@
           class="form-control"
           placeholder="Enter your password"
           required
+          name="password"
+          standalone="true"
+          [(ngModel)]="password"
+          #passwordRef="ngModel"
         />
       </div>
       <button type="submit" class="btn btn-primary">Sign Up</button>
+      <div class="errorMessage" *ngIf="errorMessage">
+        {{ errorMessage }}
+      </div>
       <p class="mt-3">
         Already have an account? <a href="/login">Login here</a>
       </p>

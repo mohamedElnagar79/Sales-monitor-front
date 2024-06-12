@@ -5,7 +5,7 @@ $dark-blue: #2c3e50;
 $light-blue: #3498db;
 $light-gray: #ecf0f1;
 $white: #ffffff;
-
+$red: red;
 // Login page styles
 .login-container,
 .signup-container {
@@ -14,7 +14,11 @@ $white: #ffffff;
   align-items: center;
   height: 100vh;
   background-color: $light-gray;
-
+  .errorMessage {
+    text-align: center;
+    color: $red;
+    margin-top: 0.5rem;
+  }
   .login-box,
   .signup-box {
     background-color: $white;
