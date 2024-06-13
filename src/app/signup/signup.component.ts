@@ -15,18 +15,18 @@ export class SignupComponent {
   name: string = '';
   email: string = '';
   password: string = '';
-  user: User = {};
+
   errorMessage: string = '';
   constructor(private SignupService: SignupService) {}
   onSubmit(signupForm: any): void {
-    this.user = {
+    let user: User = {
       name: this.name,
       email: this.email,
       password: this.password,
     };
     if (signupForm.valid) {
-      console.log('user   here  ', this.user);
-      this.SignupService.createUser(this.user).subscribe(
+      console.log('user   here  ', user);
+      this.SignupService.createUser(user).subscribe(
         (response) => {
           // Handle successful login response
           console.log('Login successful:', response);

@@ -1,4 +1,4 @@
-<div class="container mt-5" *ngIf="products.length > 0">
+<div class="container mt-5">
   <h2>Product List</h2>
   <table class="table table-striped">
     <thead>
@@ -6,16 +6,38 @@
         <th>ID</th>
         <th>Name</th>
         <th>Price</th>
+        <th>sold price</th>
         <th>Stock</th>
+        <th>last update</th>
+        <th>update</th>
+        <th>delete</th>
       </tr>
     </thead>
     <tbody>
-      <tr *ngFor="let product of products">
-        <!-- <td>{{ product.id }}</td>
+      <tr
+        *ngFor="
+          let product of products
+            | paginate : { itemsPerPage: 10, currentPage: p }
+        "
+      >
+        <td>{{ product.id }}</td>
         <td>{{ product.name }}</td>
         <td>{{ product.price }}</td>
-        <td>{{ product.stock }}</td> -->
+        <td>{{ product.soldPrice }}</td>
+        <td>{{ product.stock }}</td>
+        <td>{{ product.updatedAt }}</td>
+        <td>
+          <button class="btn btn-primary btn-sm me-2" (click)="editProduct()">
+            Edit
+          </button>
+        </td>
+        <td>
+          <button class="btn btn-danger btn-sm" (click)="deleteProduct()">
+            Delete
+          </button>
+        </td>
       </tr>
     </tbody>
   </table>
+  <pagination-controls (pageChange)="p = $event"></pagination-controls>
 </div>
