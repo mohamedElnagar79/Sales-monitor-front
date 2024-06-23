@@ -65,9 +65,9 @@
       <button class="btn btn-cancel mt-3" (click)="toggleForm()">cancel</button>
     </form>
   </div>
-  <div *ngIf="updateForm" class="update-product-form">
+  <div *ngIf="updateForm == 'opened'" class="update-product-form">
     <h3>update Product</h3>
-    <form (ngSubmit)="updateProduct()">
+    <form (ngSubmit)="updateOneProduct(updatedProduct)">
       <div class="form-group">
         <label for="name">Name</label>
         <input
@@ -125,11 +125,12 @@
         />
       </div>
       <button type="submit" class="btn btn-submit mt-3">update Product</button>
-      <button class="btn btn-cancel mt-3" (click)="toggleUpdateForm({})">
+      <button class="btn btn-cancel mt-3" (click)="closeUpdateForm()">
         cancel
       </button>
     </form>
   </div>
+  <h2>my products</h2>
   <table class="table">
     <thead>
       <tr>
@@ -163,7 +164,7 @@
         <td>
           <button
             class="btn btn-primary btn-sm me-2"
-            (click)="toggleUpdateForm({product})"
+            (click)="openUpdateForm({product})"
           >
             Edit
           </button>

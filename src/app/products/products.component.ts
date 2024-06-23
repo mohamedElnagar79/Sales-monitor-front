@@ -17,14 +17,14 @@ export class ProductsComponent {
   p: number = 1;
   count: number = 1;
   showForm: boolean = false;
-  updateForm: boolean = false;
+  updateForm: string = 'closed';
   nameErr: boolean = false;
   newProduct: Product = {
     id: 0,
     name: '',
     price: 0,
     soldPrice: 0,
-    stock: 0,
+    stock: 1,
     updatedAt: `${new Date()}`,
     createdAt: `${new Date()}`,
     description: ' ',
@@ -34,7 +34,7 @@ export class ProductsComponent {
     name: '',
     price: 0,
     soldPrice: 0,
-    stock: 0,
+    stock: 1,
     updatedAt: `${new Date()}`,
     createdAt: `${new Date()}`,
     description: ' ',
@@ -48,11 +48,16 @@ export class ProductsComponent {
   toggleForm(): void {
     this.showForm = !this.showForm;
   }
-  toggleUpdateForm(product: any): void {
-    this.updateForm = !this.updateForm;
+  closeUpdateForm(): void {
+    this.updateForm = 'closed';
+  }
+  openUpdateForm(product: any): void {
+    this.updateForm = 'opened';
+    this.updatedProduct.id = product.product?.id;
     this.updatedProduct.name = product.product?.name;
     this.updatedProduct.price = product.product?.price;
     this.updatedProduct.soldPrice = product.product?.soldPrice;
+    this.updatedProduct.stock = product.product?.stock;
     this.updatedProduct.description = product.product?.description;
     window.scroll({
       top: 0,
@@ -79,7 +84,6 @@ export class ProductsComponent {
     this.ProductsService.addProduct(this.newProduct).subscribe(
       (product: Product) => {
         this.products.push(product);
-        console.log('========', this.products);
         this.getproducts(1);
         this.newProduct = {
           id: 0,
@@ -101,12 +105,20 @@ export class ProductsComponent {
       }
     );
   }
-  updateProduct(): void {
-    console.log('hi');
-  }
-
-  editProduct(): void {
-    console.log('Edit product:');
+  updateOneProduct(updatedProduct: Product): void {
+    this.ProductsService.updateproduct(updatedProduct).subscribe(
+      (product: Product) => {
+        console.log('current page === ', this.p);
+        this.getproducts(this.p);
+        this.updateForm = 'closed';
+      },
+      (error) => {
+        console.error('Error adding product:', error.error.error.path);
+        // if (error.error.error.path == 'name') {
+        // }
+        alert(error.error.message);
+      }
+    );
   }
 
   deleteProduct(): void {
