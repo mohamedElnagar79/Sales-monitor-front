@@ -17,8 +17,19 @@ export class ProductsComponent {
   p: number = 1;
   count: number = 1;
   showForm: boolean = false;
+  updateForm: boolean = false;
   nameErr: boolean = false;
   newProduct: Product = {
+    id: 0,
+    name: '',
+    price: 0,
+    soldPrice: 0,
+    stock: 0,
+    updatedAt: `${new Date()}`,
+    createdAt: `${new Date()}`,
+    description: ' ',
+  };
+  updatedProduct: Product = {
     id: 0,
     name: '',
     price: 0,
@@ -36,6 +47,18 @@ export class ProductsComponent {
   }
   toggleForm(): void {
     this.showForm = !this.showForm;
+  }
+  toggleUpdateForm(product: any): void {
+    this.updateForm = !this.updateForm;
+    this.updatedProduct.name = product.product?.name;
+    this.updatedProduct.price = product.product?.price;
+    this.updatedProduct.soldPrice = product.product?.soldPrice;
+    this.updatedProduct.description = product.product?.description;
+    window.scroll({
+      top: 0,
+      left: 0,
+      behavior: 'smooth',
+    });
   }
 
   getproducts(pageNumber: number): void {
@@ -77,6 +100,9 @@ export class ProductsComponent {
         alert(error.error.message);
       }
     );
+  }
+  updateProduct(): void {
+    console.log('hi');
   }
 
   editProduct(): void {

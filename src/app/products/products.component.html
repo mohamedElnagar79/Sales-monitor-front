@@ -65,6 +65,71 @@
       <button class="btn btn-cancel mt-3" (click)="toggleForm()">cancel</button>
     </form>
   </div>
+  <div *ngIf="updateForm" class="update-product-form">
+    <h3>update Product</h3>
+    <form (ngSubmit)="updateProduct()">
+      <div class="form-group">
+        <label for="name">Name</label>
+        <input
+          type="text"
+          class="form-control"
+          id="name"
+          [(ngModel)]="updatedProduct.name"
+          name="name"
+          required
+        />
+      </div>
+      <div class="form-group">
+        <label for="price">Price</label>
+        <input
+          type="number"
+          class="form-control"
+          id="price"
+          [(ngModel)]="updatedProduct.price"
+          name="price"
+          required
+        />
+      </div>
+      <div class="form-group">
+        <label for="soldPrice">Sold Price</label>
+        <input
+          type="number"
+          class="form-control"
+          id="soldPrice"
+          [(ngModel)]="updatedProduct.soldPrice"
+          name="soldPrice"
+          required
+        />
+      </div>
+
+      <div class="form-group">
+        <label for="stock">Stock</label>
+        <input
+          type="number"
+          class="form-control"
+          id="stock"
+          [(ngModel)]="updatedProduct.stock"
+          name="stock"
+          required
+        />
+      </div>
+      <div class="form-group">
+        <label for="description">description</label>
+        <input
+          type="string"
+          class="form-control"
+          id="description"
+          [(ngModel)]="updatedProduct.description"
+          name="description"
+          required
+        />
+      </div>
+      <button type="submit" class="btn btn-submit mt-3">update Product</button>
+      <button class="btn btn-cancel mt-3" (click)="toggleUpdateForm({})">
+        cancel
+      </button>
+    </form>
+  </div>
   <table class="table">
     <thead>
       <tr>
@@ -96,7 +161,10 @@
         <td>{{ product.description }}</td>
         <td>{{ product.updatedAt }}</td>
         <td>
-          <button class="btn btn-primary btn-sm me-2" (click)="editProduct()">
+          <button
+            class="btn btn-primary btn-sm me-2"
+            (click)="toggleUpdateForm({product})"
+          >
             Edit
           </button>
         </td>
