@@ -1,30 +1,99 @@
 <div class="container mt-5">
-  <h2>Product List</h2>
-  <table class="table table-striped">
+  <button class="btn btn-toggle-form mb-3" (click)="toggleForm()">
+    Add New Product
+  </button>
+  <div *ngIf="showForm" class="add-product-form">
+    <h3>Add New Product</h3>
+    <form (ngSubmit)="addProduct()">
+      <div class="form-group">
+        <label for="name">Name</label>
+        <input
+          type="text"
+          class="form-control"
+          id="name"
+          [(ngModel)]="newProduct.name"
+          name="name"
+          required
+        />
+      </div>
+      <div class="form-group">
+        <label for="price">Price</label>
+        <input
+          type="number"
+          class="form-control"
+          id="price"
+          [(ngModel)]="newProduct.price"
+          name="price"
+          required
+        />
+      </div>
+      <div class="form-group">
+        <label for="soldPrice">Sold Price</label>
+        <input
+          type="number"
+          class="form-control"
+          id="soldPrice"
+          [(ngModel)]="newProduct.soldPrice"
+          name="soldPrice"
+          required
+        />
+      </div>
+
+      <div class="form-group">
+        <label for="stock">Stock</label>
+        <input
+          type="number"
+          class="form-control"
+          id="stock"
+          [(ngModel)]="newProduct.stock"
+          name="stock"
+          required
+        />
+      </div>
+      <div class="form-group">
+        <label for="description">description</label>
+        <input
+          type="string"
+          class="form-control"
+          id="description"
+          [(ngModel)]="newProduct.description"
+          name="description"
+          required
+        />
+      </div>
+      <button type="submit" class="btn btn-submit mt-3">Add Product</button>
+      <button class="btn btn-cancel mt-3" (click)="toggleForm()">cancel</button>
+    </form>
+  </div>
+  <table class="table">
     <thead>
       <tr>
-        <th>ID</th>
+        <th>No.</th>
         <th>Name</th>
         <th>Price</th>
-        <th>sold price</th>
+        <th>Sold Price</th>
         <th>Stock</th>
-        <th>last update</th>
-        <th>update</th>
-        <th>delete</th>
+        <th>description</th>
+        <th>Last Update</th>
+        <th>Update</th>
+        <th>Delete</th>
       </tr>
     </thead>
     <tbody>
       <tr
         *ngFor="
           let product of products
-            | paginate : { itemsPerPage: 10, currentPage: p }
+            | paginate
+              : { itemsPerPage: 10, currentPage: p, totalItems: count };
+          let i = index
         "
       >
-        <td>{{ product.id }}</td>
+        <td>{{ i + 1 }}</td>
         <td>{{ product.name }}</td>
         <td>{{ product.price }}</td>
         <td>{{ product.soldPrice }}</td>
         <td>{{ product.stock }}</td>
+        <td>{{ product.description }}</td>
         <td>{{ product.updatedAt }}</td>
         <td>
           <button class="btn btn-primary btn-sm me-2" (click)="editProduct()">
@@ -39,5 +108,7 @@
       </tr>
     </tbody>
   </table>
-  <pagination-controls (pageChange)="p = $event"></pagination-controls>
+  <pagination-controls
+    (pageChange)="p = $event; getproducts(p)"
+  ></pagination-controls>
 </div>

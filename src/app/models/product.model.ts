@@ -6,4 +6,5 @@ export interface Product {
   createdAt: string;
   updatedAt: string;
   id: number;
+  description: string;
 }
