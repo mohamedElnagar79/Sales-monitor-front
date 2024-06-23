@@ -121,7 +121,17 @@ export class ProductsComponent {
     );
   }
 
-  deleteProduct(): void {
-    console.log('Delete product with ID:');
+  deleteProduct(id: number): void {
+    this.ProductsService.deleteOneProduct(id).subscribe(
+      (product: Product) => {
+        this.getproducts(this.p);
+      },
+      (error) => {
+        // console.error('Error deleting product:', error.error.error.path);
+        // if (error.error.error.path == 'name') {
+        // }
+        alert(error.error.message);
+      }
+    );
   }
 }

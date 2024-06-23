@@ -54,4 +54,17 @@ export class ProductsService {
       throw new Error('Authorization token not found');
     }
   }
+  deleteOneProduct(id: number): Observable<any> {
+    const token = localStorage.getItem('token');
+    if (token) {
+      const headers = new HttpHeaders({
+        Authorization: `Bearer ${token}`,
+      });
+      return this.http.delete<any>(this.apiUrl + `delete-product/${id}`, {
+        headers,
+      });
+    } else {
+      throw new Error('Authorization token not found');
+    }
+  }
 }
