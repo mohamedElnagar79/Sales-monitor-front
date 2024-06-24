@@ -17,7 +17,8 @@ import { faPen, faTrash, faPlus } from '@fortawesome/free-solid-svg-icons';
 })
 export class ProductsComponent {
   @ViewChild('closeModal') closeModalRef!: ElementRef;
-
+  @ViewChild('deleteModal') deleteModalRef!: ElementRef;
+  activeId: number = 0;
   faPen = faPen;
   faTrash = faTrash;
   faPlus = faPlus;
@@ -130,11 +131,15 @@ export class ProductsComponent {
       }
     );
   }
-
-  deleteProduct(id: number): void {
-    this.ProductsService.deleteOneProduct(id).subscribe(
+  ActivateProductToDelete(id: number): void {
+    this.activeId = id;
+    console.log('active ', this.activeId);
+  }
+  deleteProduct(): void {
+    this.ProductsService.deleteOneProduct(this.activeId).subscribe(
       (product: Product) => {
         this.getproducts(this.p);
+        this.deleteModalRef.nativeElement.click();
       },
       (error) => {
         // console.error('Error deleting product:', error.error.error.path);

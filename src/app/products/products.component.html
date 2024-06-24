@@ -51,7 +51,9 @@
             </button>
             <button
               class="btn btn-danger btn-sm"
-              (click)="deleteProduct(product.id)"
+              data-bs-toggle="modal"
+              data-bs-target="#deleteModal"
+              (click)="ActivateProductToDelete(product.id)"
             >
               <fa-icon [icon]="faTrash"></fa-icon>
             </button>
@@ -240,6 +242,50 @@
               </button>
             </div>
           </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Button trigger modal -->
+  <!-- delete Modal -->
+  <div
+    class="modal fade"
+    id="deleteModal"
+    tabindex="-1"
+    aria-labelledby="deleteModallable"
+    aria-hidden="true"
+  >
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="exampleModalLabel">
+            delete product
+          </h1>
+          <button
+            type="button"
+            class="btn-close"
+            data-bs-dismiss="modal"
+            aria-label="Close"
+          ></button>
+        </div>
+        <div class="modal-body">are you sure to delete this product?</div>
+        <div class="modal-footer">
+          <button
+            type="button"
+            class="btn btn-secondary"
+            data-bs-dismiss="modal"
+            #deleteModal
+          >
+            Close
+          </button>
+          <button
+            type="button"
+            class="btn btn-danger"
+            (click)="deleteProduct()"
+          >
+            delete
+          </button>
         </div>
       </div>
     </div>
