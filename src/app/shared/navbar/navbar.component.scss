@@ -9,9 +9,12 @@ $white: #ffffff;
 // Custom navbar styles
 .navbar-custom {
   background-color: $dark-blue;
+  text-align: center;
 
   .navbar-brand {
     color: $light-gray;
+    margin: 0 auto;
+
     &:hover {
       color: $white;
     }
