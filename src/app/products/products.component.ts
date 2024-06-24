@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ElementRef, ViewChild } from '@angular/core';
 import { ProductsService } from './products.service';
 import { Product } from '../models/product.model';
 import { CommonModule } from '@angular/common';
@@ -16,6 +16,8 @@ import { faPen, faTrash, faPlus } from '@fortawesome/free-solid-svg-icons';
   styleUrls: ['./products.component.scss'],
 })
 export class ProductsComponent {
+  @ViewChild('closeModal') closeModalRef!: ElementRef;
+
   faPen = faPen;
   faTrash = faTrash;
   faPlus = faPlus;
@@ -59,18 +61,18 @@ export class ProductsComponent {
     this.updateForm = 'closed';
   }
   openUpdateForm(product: any): void {
-    this.updateForm = 'opened';
-    this.updatedProduct.id = product.product?.id;
-    this.updatedProduct.name = product.product?.name;
-    this.updatedProduct.price = product.product?.price;
-    this.updatedProduct.soldPrice = product.product?.soldPrice;
-    this.updatedProduct.stock = product.product?.stock;
-    this.updatedProduct.description = product.product?.description;
-    window.scroll({
-      top: 0,
-      left: 0,
-      behavior: 'smooth',
-    });
+    console.log('hello');
+    this.updatedProduct.id = product?.id;
+    this.updatedProduct.name = product?.name;
+    this.updatedProduct.price = product?.price;
+    this.updatedProduct.soldPrice = product?.soldPrice;
+    this.updatedProduct.stock = product?.stock;
+    this.updatedProduct.description = product?.description;
+    // window.scroll({
+    //   top: 0,
+    //   left: 0,
+    //   behavior: 'smooth',
+    // });
   }
 
   getproducts(pageNumber: number): void {
@@ -118,6 +120,7 @@ export class ProductsComponent {
         console.log('current page === ', this.p);
         this.getproducts(this.p);
         this.updateForm = 'closed';
+        this.closeModalRef.nativeElement.click();
       },
       (error) => {
         console.error('Error adding product:', error.error.error.path);

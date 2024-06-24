@@ -1,137 +1,14 @@
 <div class="container mt-5">
   <div class="products-head">
     <h2>my products</h2>
-    <button class="btn btn-toggle-form mb-3" (click)="toggleForm()">
+    <button
+      class="btn btn-toggle-form mb-3"
+      data-bs-toggle="modal"
+      data-bs-target="#addProductModal"
+    >
+      <!-- (click)="toggleForm()" -->
       <fa-icon [icon]="faPlus" class="me-1"></fa-icon> add new product
     </button>
-  </div>
-  <div *ngIf="showForm" class="add-product-form">
-    <h3>Add New Product</h3>
-    <form (ngSubmit)="addProduct()">
-      <div class="form-group">
-        <label for="name">Name</label>
-        <input
-          type="text"
-          class="form-control"
-          id="name"
-          [(ngModel)]="newProduct.name"
-          name="name"
-          required
-        />
-      </div>
-      <div class="form-group">
-        <label for="price">Price</label>
-        <input
-          type="number"
-          class="form-control"
-          id="price"
-          [(ngModel)]="newProduct.price"
-          name="price"
-          required
-        />
-      </div>
-      <div class="form-group">
-        <label for="soldPrice">Sold Price</label>
-        <input
-          type="number"
-          class="form-control"
-          id="soldPrice"
-          [(ngModel)]="newProduct.soldPrice"
-          name="soldPrice"
-          required
-        />
-      </div>
-
-      <div class="form-group">
-        <label for="stock">Stock</label>
-        <input
-          type="number"
-          class="form-control"
-          id="stock"
-          [(ngModel)]="newProduct.stock"
-          name="stock"
-          required
-        />
-      </div>
-      <div class="form-group">
-        <label for="description">description</label>
-        <input
-          type="string"
-          class="form-control"
-          id="description"
-          [(ngModel)]="newProduct.description"
-          name="description"
-          required
-        />
-      </div>
-      <button type="submit" class="btn btn-submit mt-3">Add Product</button>
-      <button class="btn btn-cancel mt-3" (click)="toggleForm()">cancel</button>
-    </form>
-  </div>
-  <div *ngIf="updateForm == 'opened'" class="update-product-form">
-    <h3>update Product</h3>
-    <form (ngSubmit)="updateOneProduct(updatedProduct)">
-      <div class="form-group">
-        <label for="name">Name</label>
-        <input
-          type="text"
-          class="form-control"
-          id="name"
-          [(ngModel)]="updatedProduct.name"
-          name="name"
-          required
-        />
-      </div>
-      <div class="form-group">
-        <label for="price">Price</label>
-        <input
-          type="number"
-          class="form-control"
-          id="price"
-          [(ngModel)]="updatedProduct.price"
-          name="price"
-          required
-        />
-      </div>
-      <div class="form-group">
-        <label for="soldPrice">Sold Price</label>
-        <input
-          type="number"
-          class="form-control"
-          id="soldPrice"
-          [(ngModel)]="updatedProduct.soldPrice"
-          name="soldPrice"
-          required
-        />
-      </div>
-
-      <div class="form-group">
-        <label for="stock">Stock</label>
-        <input
-          type="number"
-          class="form-control"
-          id="stock"
-          [(ngModel)]="updatedProduct.stock"
-          name="stock"
-          required
-        />
-      </div>
-      <div class="form-group">
-        <label for="description">description</label>
-        <input
-          type="string"
-          class="form-control"
-          id="description"
-          [(ngModel)]="updatedProduct.description"
-          name="description"
-          required
-        />
-      </div>
-      <button type="submit" class="btn btn-submit mt-3">update Product</button>
-      <button class="btn btn-cancel mt-3" (click)="closeUpdateForm()">
-        cancel
-      </button>
-    </form>
   </div>
   <div class="table-responsive">
     <table class="table fixed-height">
@@ -166,7 +43,9 @@
           <td>
             <button
               class="btn btn-primary btn-sm me-3"
-              (click)="openUpdateForm({product})"
+              data-bs-toggle="modal"
+              data-bs-target="#updatedProductModal"
+              (click)="openUpdateForm(product)"
             >
               <fa-icon [icon]="faPen"></fa-icon>
             </button>
@@ -184,4 +63,186 @@
   <pagination-controls
     (pageChange)="p = $event; getproducts(p)"
   ></pagination-controls>
+
+  <!-- Button trigger modal -->
+  <!--update product Modal -->
+  <div
+    class="modal fade"
+    id="updatedProductModal"
+    tabindex="-1"
+    aria-labelledby="updatedProductModallable"
+    aria-hidden="true"
+  >
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="update-product-form">
+          <h3>update Product</h3>
+          <form (ngSubmit)="updateOneProduct(updatedProduct)">
+            <div class="form-group">
+              <label for="name">Name</label>
+              <input
+                type="text"
+                class="form-control"
+                id="name"
+                [(ngModel)]="updatedProduct.name"
+                name="name"
+                required
+              />
+            </div>
+            <div class="form-group">
+              <label for="price">Price</label>
+              <input
+                type="number"
+                class="form-control"
+                id="price"
+                [(ngModel)]="updatedProduct.price"
+                name="price"
+                required
+              />
+            </div>
+            <div class="form-group">
+              <label for="soldPrice">Sold Price</label>
+              <input
+                type="number"
+                class="form-control"
+                id="soldPrice"
+                [(ngModel)]="updatedProduct.soldPrice"
+                name="soldPrice"
+                required
+              />
+            </div>
+
+            <div class="form-group">
+              <label for="stock">Stock</label>
+              <input
+                type="number"
+                class="form-control"
+                id="stock"
+                [(ngModel)]="updatedProduct.stock"
+                name="stock"
+                required
+              />
+            </div>
+            <div class="form-group">
+              <label for="description">description</label>
+              <textarea
+                class="form-control"
+                id="description"
+                [(ngModel)]="updatedProduct.description"
+                name="description"
+                required
+                rows="3"
+                cols="50"
+              >
+              </textarea>
+            </div>
+            <div class="form-group">
+              <button
+                type="submit"
+                class="btn btn-submit mt-3 form-control my-3"
+              >
+                update Product
+              </button>
+              <button
+                type="button"
+                class="btn btn-secondary form-control"
+                data-bs-dismiss="modal"
+                #closeModal
+              >
+                Close
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!--add product Modal -->
+  <div
+    class="modal fade"
+    id="addProductModal"
+    tabindex="-1"
+    aria-labelledby="exampleModalLabel"
+    aria-hidden="true"
+  >
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="add-product-form">
+          <h3>Add New Product</h3>
+          <form (ngSubmit)="addProduct()">
+            <div class="form-group">
+              <label for="name">Name</label>
+              <input
+                type="text"
+                class="form-control"
+                id="name"
+                [(ngModel)]="newProduct.name"
+                name="name"
+                required
+              />
+            </div>
+            <div class="form-group">
+              <label for="price">Price</label>
+              <input
+                type="number"
+                class="form-control"
+                id="price"
+                [(ngModel)]="newProduct.price"
+                name="price"
+                required
+              />
+            </div>
+            <div class="form-group">
+              <label for="soldPrice">Sold Price</label>
+              <input
+                type="number"
+                class="form-control"
+                id="soldPrice"
+                [(ngModel)]="newProduct.soldPrice"
+                name="soldPrice"
+                required
+              />
+            </div>
+
+            <div class="form-group">
+              <label for="stock">Stock</label>
+              <input
+                type="number"
+                class="form-control"
+                id="stock"
+                [(ngModel)]="newProduct.stock"
+                name="stock"
+                required
+              />
+            </div>
+            <div class="form-group">
+              <label for="description">description</label>
+              <textarea
+                class="form-control"
+                id="description"
+                [(ngModel)]="newProduct.description"
+                name="description"
+                required
+                rows="3"
+                cols="50"
+              ></textarea>
+            </div>
+            <div class="form-group">
+              <button type="submit" class="btn btn-submit my-3 form-control">
+                Add Product
+              </button>
+              <button
+                type="button"
+                class="btn btn-secondary form-control"
+                data-bs-dismiss="modal"
+              >
+                Close
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>

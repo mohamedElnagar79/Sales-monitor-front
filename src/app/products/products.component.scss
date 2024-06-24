@@ -47,9 +47,10 @@ h2 {
 
 .add-product-form,
 .update-product-form {
-  border: 1px solid #ddd;
   padding: 20px;
-  margin-bottom: 20px;
+  width: 95%;
+  margin: 0 auto;
+  // margin-bottom: 20px;
   border-radius: 5px;
 }
 
