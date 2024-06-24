@@ -3,16 +3,23 @@ import { ProductsService } from './products.service';
 import { Product } from '../models/product.model';
 import { CommonModule } from '@angular/common';
 import { NgxPaginationModule } from 'ngx-pagination';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { FormsModule } from '@angular/forms';
+
+import { faPen, faTrash, faPlus } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-products',
   standalone: true,
-  imports: [CommonModule, NgxPaginationModule, FormsModule],
+  imports: [CommonModule, NgxPaginationModule, FormsModule, FontAwesomeModule],
   templateUrl: './products.component.html',
   styleUrls: ['./products.component.scss'],
 })
 export class ProductsComponent {
+  faPen = faPen;
+  faTrash = faTrash;
+  faPlus = faPlus;
+
   products: Product[] = [];
   p: number = 1;
   count: number = 1;

@@ -1,7 +1,10 @@
 <div class="container mt-5">
-  <button class="btn btn-toggle-form mb-3" (click)="toggleForm()">
-    Add New Product
-  </button>
+  <div class="products-head">
+    <h2>my products</h2>
+    <button class="btn btn-toggle-form mb-3" (click)="toggleForm()">
+      <fa-icon [icon]="faPlus" class="me-1"></fa-icon> add new product
+    </button>
+  </div>
   <div *ngIf="showForm" class="add-product-form">
     <h3>Add New Product</h3>
     <form (ngSubmit)="addProduct()">
@@ -130,56 +133,54 @@
       </button>
     </form>
   </div>
-  <h2>my products</h2>
-  <table class="table">
-    <thead>
-      <tr>
-        <th>No.</th>
-        <th>Name</th>
-        <th>Price</th>
-        <th>Sold Price</th>
-        <th>Stock</th>
-        <th>description</th>
-        <th>Last Update</th>
-        <th>Update</th>
-        <th>Delete</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr
-        *ngFor="
-          let product of products
-            | paginate
-              : { itemsPerPage: 10, currentPage: p, totalItems: count };
-          let i = index
-        "
-      >
-        <td>{{ i + 1 }}</td>
-        <td>{{ product.name }}</td>
-        <td>{{ product.price }}</td>
-        <td>{{ product.soldPrice }}</td>
-        <td>{{ product.stock }}</td>
-        <td>{{ product.description }}</td>
-        <td>{{ product.updatedAt }}</td>
-        <td>
-          <button
-            class="btn btn-primary btn-sm me-2"
-            (click)="openUpdateForm({product})"
-          >
-            Edit
-          </button>
-        </td>
-        <td>
-          <button
-            class="btn btn-danger btn-sm"
-            (click)="deleteProduct(product.id)"
-          >
-            Delete
-          </button>
-        </td>
-      </tr>
-    </tbody>
-  </table>
+  <div class="table-responsive">
+    <table class="table fixed-height">
+      <thead>
+        <tr>
+          <th>No.</th>
+          <th>Name</th>
+          <th>Price</th>
+          <th>Sold Price</th>
+          <th>Stock</th>
+          <th>description</th>
+          <th>Last Update</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr
+          *ngFor="
+            let product of products
+              | paginate
+                : { itemsPerPage: 10, currentPage: p, totalItems: count };
+            let i = index
+          "
+        >
+          <td>{{ i + 1 }}</td>
+          <td>{{ product.name }}</td>
+          <td>{{ product.price }}</td>
+          <td>{{ product.soldPrice }}</td>
+          <td>{{ product.stock }}</td>
+          <td>{{ product.description }}</td>
+          <td>{{ product.updatedAt }}</td>
+          <td>
+            <button
+              class="btn btn-primary btn-sm me-3"
+              (click)="openUpdateForm({product})"
+            >
+              <fa-icon [icon]="faPen"></fa-icon>
+            </button>
+            <button
+              class="btn btn-danger btn-sm"
+              (click)="deleteProduct(product.id)"
+            >
+              <fa-icon [icon]="faTrash"></fa-icon>
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
   <pagination-controls
     (pageChange)="p = $event; getproducts(p)"
   ></pagination-controls>
