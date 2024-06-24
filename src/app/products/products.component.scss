@@ -11,7 +11,7 @@ h2 {
   text-transform: capitalize;
 }
 
-.table-responsive {
+.table-container {
   height: 550px;
   overflow: hidden;
   width: 100%;
@@ -97,5 +97,15 @@ h2 {
   border: 1px solid #ced4da;
 }
 pagination-controls {
-  text-align: center;
+  display: flex;
+  justify-content: center;
+  margin-top: 10px;
+  font-size: 1.2rem;
+}
+.pagination li {
+  margin: 5px 10px !important; /* Adjust padding values as needed */
+}
+.table-cotrollers {
+  display: flex;
+  justify-content: flex-end;
 }

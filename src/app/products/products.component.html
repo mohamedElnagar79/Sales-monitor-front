@@ -10,8 +10,8 @@
       <fa-icon [icon]="faPlus" class="me-1"></fa-icon> add new product
     </button>
   </div>
-  <div class="table-responsive">
-    <table class="table fixed-height">
+  <div class="table-container table-responsive">
+    <table class="table fixed-height table-responsive">
       <thead>
         <tr>
           <th>No.</th>
@@ -40,7 +40,7 @@
           <td>{{ product.stock }}</td>
           <td>{{ product.description }}</td>
           <td>{{ product.updatedAt }}</td>
-          <td>
+          <td class="table-cotrollers">
             <button
               class="btn btn-primary btn-sm me-3"
               data-bs-toggle="modal"
@@ -64,7 +64,6 @@
     (pageChange)="p = $event; getproducts(p)"
   ></pagination-controls>
 
-  <!-- Button trigger modal -->
   <!--update product Modal -->
   <div
     class="modal fade"
