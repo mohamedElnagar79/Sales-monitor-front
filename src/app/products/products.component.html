@@ -1,8 +1,11 @@
-<div class="container mt-5">
-  <div class="products-head">
+<div class="container mt-4">
+  <div>
     <h2>my products</h2>
+  </div>
+  <div class="products-head mt-3">
+    <input type="text" class="search" />
     <button
-      class="btn btn-toggle-form mb-3"
+      class="btn btn-toggle-form mb-2"
       data-bs-toggle="modal"
       data-bs-target="#addProductModal"
     >
@@ -140,7 +143,7 @@
             <div class="form-group">
               <button
                 type="submit"
-                class="btn btn-submit mt-3 form-control my-3"
+                class="btn btn-primary mt-2 form-control my-2"
               >
                 update Product
               </button>
@@ -230,7 +233,7 @@
               ></textarea>
             </div>
             <div class="form-group">
-              <button type="submit" class="btn btn-submit my-3 form-control">
+              <button type="submit" class="btn btn-primary my-2 form-control">
                 Add Product
               </button>
               <button
@@ -269,7 +272,9 @@
             aria-label="Close"
           ></button>
         </div>
-        <div class="modal-body">are you sure to delete this product?</div>
+        <div class="modal-body text-danger">
+          Are you sure to delete this product?
+        </div>
         <div class="modal-footer">
           <button
             type="button"
