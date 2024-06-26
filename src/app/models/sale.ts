@@ -9,4 +9,5 @@ export interface Sale {
   remainingBalance: number;
   clientName: string;
   createdAt: Date;
+  comments: String;
 }
