@@ -1,0 +1,35 @@
+.container {
+  max-width: 80%;
+  margin: auto;
+}
+
+.page-title {
+  margin-bottom: 2rem;
+  text-align: center;
+  font-size: 2rem;
+}
+
+.sales-form {
+  background-color: #f9f9f9;
+  padding: 2rem;
+  border-radius: 0.5rem;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+
+  .form-label {
+    font-weight: bold;
+  }
+
+  .form-control,
+  .form-select {
+    opacity: 0.9;
+  }
+
+  .btn {
+    display: block;
+    width: 100%;
+  }
+}
+
+.sales-table {
+  margin-top: 2rem;
+}
