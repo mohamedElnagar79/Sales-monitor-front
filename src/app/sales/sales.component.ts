@@ -36,26 +36,26 @@ export class SalesComponent {
     total: 0,
     amountPaid: 0,
     remainingBalance: 0,
+    comments: '',
     createdAt: new Date(),
   };
 
   constructor(private salesService: SalesService) {}
 
   ngOnInit(): void {
-    // this.loadProducts();
+    this.loadProducts('');
     // this.loadSales();
     this.getLastSales(this.p);
   }
 
-  // loadProducts(): void {
-  //   // Replace with your API endpoint
-  //   // this.http
-  //     .get<Product[]>('http://localhost:10000/products')
-  //     .subscribe((data) => {
-  //       this.products = data;
-  //       this.filteredProducts = data; // Initialize filteredProducts
-  //     });
-  // }
+  loadProducts(search?: string): void {
+    this.salesService.getproductsList(search).subscribe((data: any) => {
+      this.products = data.data;
+      console.log('data   ===>', data);
+      console.log('products ===>', this.products);
+      this.filteredProducts = data.data; // Initialize filteredProducts
+    });
+  }
 
   getLastSales(p: number): void {
     // Replace with your API endpoint
@@ -63,8 +63,6 @@ export class SalesComponent {
       (data: any) => {
         // this.count = data.data.count;
         this.sales = data.data.rows;
-        console.log('data  ===> ', data);
-        console.log('sales  ===> ', this.sales);
         // this.startIndex = this.p > 1 ? (this.p - 1) * 8 + 1 : 1;
       },
       (error) => {

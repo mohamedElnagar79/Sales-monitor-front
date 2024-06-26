@@ -2,69 +2,115 @@
   <h2 class="page-title">Register Sale</h2>
   <!-- (ngSubmit)="onSubmit()" -->
   <form class="sales-form">
-    <div class="mb-3">
-      <label for="product" class="form-label">Product</label>
-      <input
-        type="text"
-        id="productSearch"
-        class="form-control"
-        [(ngModel)]="productSearch"
-        placeholder="Search products"
-        (input)="filterProducts()"
-      />
+    <div class="row">
+      <div class="mb-3 col-6">
+        <label for="product" class="form-label">Product</label>
+        <input
+          type="text"
+          id="productSearch"
+          class="form-control"
+          [(ngModel)]="productSearch"
+          name="productSearch"
+          placeholder="Search products"
+          (input)="filterProducts()"
+        />
 
-      <select
-        id="product"
-        class="form-select mt-2"
-        [(ngModel)]="sale.total"
-        name="product"
-        required
-      >
-        <option *ngFor="let product of filteredProducts" [value]="product.id">
-          {{ product.name }}
-        </option>
-      </select>
+        <select
+          id="product"
+          class="form-select mt-2"
+          [(ngModel)]="filterProducts"
+          name="product"
+          required
+        >
+          <option *ngFor="let product of filteredProducts" [value]="product.id">
+            {{ product.name }}
+          </option>
+        </select>
+      </div>
+
+      <div class="mb-3 col-6">
+        <label for="quantity" class="form-label">quantity</label>
+        <input
+          type="text"
+          id="quantity"
+          class="form-control"
+          [(ngModel)]="sale.quantity"
+          name="quantity"
+          required
+        />
+      </div>
+      <div class="mb-3 col-6">
+        <label for="piecePrice" class="form-label">piecePrice</label>
+        <input
+          type="text"
+          id="piecePrice"
+          class="form-control"
+          [(ngModel)]="sale.piecePrice"
+          name="piecePrice"
+          required
+        />
+      </div>
+      <div class="mb-3 col-6">
+        <label for="total" class="form-label">total</label>
+        <input
+          type="text"
+          id="total"
+          class="form-control"
+          [(ngModel)]="sale.total"
+          name="total"
+          required
+        />
+      </div>
+      <div class="mb-3 col-6">
+        <label for="amountPaid" class="form-label">amountPaid</label>
+        <input
+          type="text"
+          id="amountPaid"
+          class="form-control"
+          [(ngModel)]="sale.amountPaid"
+          name="amountPaid"
+          required
+        />
+      </div>
+      <div class="mb-3 col-6">
+        <label for="clientName" class="form-label">Client Name</label>
+        <input
+          type="text"
+          id="clientName"
+          class="form-control"
+          [(ngModel)]="sale.clientName"
+          name="clientName"
+          required
+        />
+      </div>
+
+      <div class="mb-3 col-6">
+        <label for="salePrice" class="form-label">Sale Price</label>
+        <input
+          type="number"
+          id="salePrice"
+          class="form-control"
+          [(ngModel)]="sale.total"
+          name="salePrice"
+          required
+        />
+      </div>
+
+      <div class="mb-3 col-6">
+        <label for="comments" class="form-label">comments</label>
+        <select
+          id="comments"
+          class="form-select"
+          [(ngModel)]="sale.comments"
+          name="comments"
+          required
+        >
+          <option value="paid">Paid</option>
+          <option value="pending">Pending</option>
+        </select>
+      </div>
     </div>
-
-    <div class="mb-3">
-      <label for="clientName" class="form-label">Client Name</label>
-      <input
-        type="text"
-        id="clientName"
-        class="form-control"
-        [(ngModel)]="sale.clientName"
-        name="clientName"
-        required
-      />
-    </div>
-
-    <div class="mb-3">
-      <label for="salePrice" class="form-label">Sale Price</label>
-      <input
-        type="number"
-        id="salePrice"
-        class="form-control"
-        [(ngModel)]="sale.total"
-        name="salePrice"
-        required
-      />
-    </div>
-
-    <div class="mb-3">
-      <label for="paymentStatus" class="form-label">Payment Status</label>
-      <select
-        id="paymentStatus"
-        class="form-select"
-        [(ngModel)]="sale.total"
-        name="paymentStatus"
-        required
-      >
-        <option value="paid">Paid</option>
-        <option value="pending">Pending</option>
-      </select>
-    </div>
-
-    <button type="submit" class="btn btn-primary">Register Sale</button>
+    <button type="submit" class="btn btn-primary sell">Sell Now</button>
   </form>
 
   <h3 class="mt-5">Sales List</h3>

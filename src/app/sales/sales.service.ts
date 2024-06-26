@@ -37,4 +37,23 @@ export class SalesService {
       throw new Error('Authorization token not found');
     }
   }
+
+  getproductsList(searchTerm?: string): Observable<any[]> {
+    const token = localStorage.getItem('token');
+    let params;
+    if (searchTerm) {
+      params = new HttpParams().set('search', searchTerm);
+    }
+    if (token) {
+      const headers = new HttpHeaders({
+        Authorization: `Bearer ${token}`,
+      });
+      return this.http.get<any>(this.apiUrl + `products-list`, {
+        headers,
+        params,
+      });
+    } else {
+      throw new Error('Authorization token not found');
+    }
+  }
 }
