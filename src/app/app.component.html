@@ -1,3 +1,12 @@
 <app-navbar></app-navbar>
-<router-outlet></router-outlet>
+<div class="app">
+  <div class="row m-0">
+    <div class="col-lg-2 col-md-3 p-0">
+      <app-sidebar></app-sidebar>
+    </div>
+    <div class="col-lg-10 col-md-9 p-0">
+      <router-outlet></router-outlet>
+    </div>
+  </div>
+</div>
 <app-footer></app-footer>

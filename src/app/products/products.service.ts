@@ -9,9 +9,12 @@ import { Product } from '../models/product.model';
 export class ProductsService {
   private apiUrl = 'http://localhost:10000/';
   constructor(private http: HttpClient) {}
-  getAllProducts(p: number): Observable<any[]> {
+  getAllProducts(p: number, searchTerm?: string): Observable<any[]> {
     const token = localStorage.getItem('token');
-    const params = new HttpParams().set('page', p);
+    let params = new HttpParams().set('page', p);
+    if (searchTerm) {
+      params = params.set('search', searchTerm);
+    }
     if (token) {
       const headers = new HttpHeaders({
         Authorization: `Bearer ${token}`,

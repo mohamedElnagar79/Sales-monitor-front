@@ -1,9 +1,16 @@
-<div class="container mt-4">
+<div class="container mt-5 px-5">
   <div>
     <h2>my products</h2>
   </div>
   <div class="products-head mt-3">
-    <input type="text" class="search" />
+    <input
+      type="text"
+      class="search"
+      (keyup)="getproducts(1, search)"
+      [(ngModel)]="search"
+      name="search"
+    />
+
     <button
       class="btn btn-toggle-form mb-2"
       data-bs-toggle="modal"
@@ -32,11 +39,11 @@
           *ngFor="
             let product of products
               | paginate
-                : { itemsPerPage: 10, currentPage: p, totalItems: count };
+                : { itemsPerPage: 8, currentPage: p, totalItems: count };
             let i = index
           "
         >
-          <td>{{ i + 1 }}</td>
+          <td>{{ i + startIndex }}</td>
           <td>{{ product.name }}</td>
           <td>{{ product.price }}</td>
           <td>{{ product.soldPrice }}</td>
@@ -66,7 +73,7 @@
     </table>
   </div>
   <pagination-controls
-    (pageChange)="p = $event; getproducts(p)"
+    (pageChange)="p = $event; getproducts(p, search)"
   ></pagination-controls>
 
   <!--update product Modal -->

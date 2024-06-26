@@ -18,11 +18,12 @@ import { faPen, faTrash, faPlus } from '@fortawesome/free-solid-svg-icons';
 export class ProductsComponent {
   @ViewChild('closeModal') closeModalRef!: ElementRef;
   @ViewChild('deleteModal') deleteModalRef!: ElementRef;
+  search: any = '';
   activeId: number = 0;
   faPen = faPen;
   faTrash = faTrash;
   faPlus = faPlus;
-
+  startIndex: number = 1;
   products: Product[] = [];
   p: number = 1;
   count: number = 1;
@@ -55,6 +56,7 @@ export class ProductsComponent {
   ngOnInit(): void {
     this.getproducts(this.p);
   }
+
   toggleForm(): void {
     this.showForm = !this.showForm;
   }
@@ -76,14 +78,12 @@ export class ProductsComponent {
     // });
   }
 
-  getproducts(pageNumber: number): void {
-    this.ProductsService.getAllProducts(pageNumber).subscribe(
+  getproducts(pageNumber: number, searchTerm?: any): void {
+    this.ProductsService.getAllProducts(pageNumber, searchTerm).subscribe(
       (data: any) => {
         this.count = data.data.count;
         this.products = data.data.rows;
-        console.log('data   ===>', this.products);
-        // Trigger change detection after data is fetched
-        // (assuming you have access to ChangeDetectorRef)
+        this.startIndex = this.p > 1 ? (this.p - 1) * 8 + 1 : 1;
       },
       (error) => {
         console.error('Error fetching products:', error);

@@ -1,0 +1,70 @@
+<div class="sidebar pt-5">
+  <div
+    class="d-flex flex-column align-items-center align-items-sm-start px-3 text-white min-vh-100"
+  >
+    <ul
+      class="nav nav-pills flex-column mb-sm-auto mb-0 align-items-center align-items-sm-start"
+      id="menu"
+    >
+      <li>
+        <a
+          class="nav-link align-middle px-0"
+          (click)="navigateToHome()"
+          [ngClass]="{ active: currentRoute === '/home' }"
+        >
+          <fa-icon [icon]="faHome"></fa-icon>
+          <span class="ms-1 d-none d-sm-inline">Home</span>
+        </a>
+      </li>
+      <li>
+        <a
+          data-bs-toggle="collapse"
+          class="nav-link px-0 align-middle"
+          [ngClass]="{ active: currentRoute === '/sales' }"
+          (click)="navigateTosales()"
+        >
+          <fa-icon [icon]="faCartArrowDown"></fa-icon>
+          <span class="ms-1 d-none d-sm-inline">Sales</span>
+        </a>
+      </li>
+      <li>
+        <a
+          (click)="navigateToProducts()"
+          [ngClass]="{ active: currentRoute === '/products' }"
+          class="nav-link px-0 align-middle"
+        >
+          <fa-icon [icon]="faStore"></fa-icon>
+          <span class="ms-1 d-none d-sm-inline">Products</span></a
+        >
+      </li>
+      <li>
+        <a
+          class="nav-link px-0 align-middle"
+          [ngClass]="{ active: currentRoute === '/customers' }"
+          (click)="navigateToCustomers()"
+        >
+          <fa-icon [icon]="faUsers"></fa-icon>
+          <span class="ms-1 d-none d-sm-inline">Customers</span>
+        </a>
+      </li>
+    </ul>
+    <hr />
+    <div class="dropdown pb-4">
+      <a
+        class="d-flex align-items-center text-white text-decoration-none dropdown-toggle"
+        id="dropdownUser1"
+        data-bs-toggle="dropdown"
+        aria-expanded="false"
+      >
+        <img
+          src="../../../assets/1665905529695.jpg"
+          alt="hugenerd"
+          width="40"
+          height="40"
+          class="rounded-circle"
+        />
+        <span class="d-none d-sm-inline mx-1 text-bg-dark">Nagar</span>
+      </a>
+    </div>
+  </div>
+</div>
