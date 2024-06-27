@@ -137,13 +137,13 @@ export class SalesComponent {
       id: 0,
       productId: 0,
       productName: '',
-      clientName: '',
+      clientName: 'client',
       piecePrice: 0,
-      quantity: 0,
+      quantity: 1,
       total: 0,
       amountPaid: 0,
       remainingBalance: 0,
-      comments: '',
+      comments: 'No comment ...',
       createdAt: new Date(),
     };
   }
