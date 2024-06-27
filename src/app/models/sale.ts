@@ -1,6 +1,6 @@
 export interface Sale {
   id?: number;
-  productId: number;
+  productId?: number;
   productName?: string;
   piecePrice: number;
   quantity: number;

@@ -10,9 +10,12 @@ export class OrdersService {
 
   private apiUrl = 'http://localhost:10000/';
 
-  getListOfSales(p: number): Observable<any[]> {
+  getListOfSales(p: number, searchTerm?: string): Observable<any[]> {
     const token = localStorage.getItem('token');
     let params = new HttpParams().set('page', p);
+    if (searchTerm) {
+      params = params.set('search', searchTerm);
+    }
     if (token) {
       const headers = new HttpHeaders({
         Authorization: `Bearer ${token}`,
