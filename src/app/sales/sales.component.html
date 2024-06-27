@@ -1,5 +1,5 @@
 <div class="container mt-5">
-  <h2 class="page-title">Register Sale</h2>
+  <h2 class="page-title">New Sale Entry</h2>
   <form class="sales-form" (ngSubmit)="onSubmit()">
     <div class="row">
       <div class="mb-3 col-6">
@@ -109,46 +109,4 @@
     </div>
     <button type="submit" class="btn btn-primary sell">Sell Now</button>
   </form>
-
-  <h3 class="mt-5">Sales List</h3>
-  <div class="table-container table-responsive">
-    <table class="table fixed-height table-responsive">
-      <thead>
-        <tr>
-          <th>No.</th>
-          <td>product Name</td>
-          <td>piece Price</td>
-          <td>quantity</td>
-          <td>total</td>
-          <td>amountPaid</td>
-          <td>remaining</td>
-          <td>client Name</td>
-          <td>createdAt</td>
-        </tr>
-      </thead>
-      <tbody>
-        <tr
-          *ngFor="
-            let salesItem of sales
-              | paginate
-                : { itemsPerPage: 8, currentPage: p, totalItems: count };
-            let i = index
-          "
-        >
-          <td>i</td>
-          <td>{{ salesItem.productName }}</td>
-          <td>{{ salesItem.piecePrice }}</td>
-          <td>{{ salesItem.quantity }}</td>
-          <td>{{ salesItem.total }}</td>
-          <td>{{ salesItem.amountPaid }}</td>
-          <td>{{ salesItem.remainingBalance }}</td>
-          <td>{{ salesItem.clientName }}</td>
-          <td>{{ salesItem.createdAt }}</td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
-  <pagination-controls
-    (pageChange)="p = $event; getLastSales(p)"
-  ></pagination-controls>
 </div>

@@ -1,7 +1,6 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
-import { FormsModule, NgForm } from '@angular/forms';
+import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import { NgxPaginationModule } from 'ngx-pagination';
 import { SalesService } from './sales.service';
 import { Sale } from '../models/sale';
 
@@ -14,7 +13,7 @@ interface Product {
 @Component({
   selector: 'app-sales',
   standalone: true,
-  imports: [CommonModule, NgxPaginationModule, FormsModule],
+  imports: [CommonModule, FormsModule],
 
   templateUrl: './sales.component.html',
   styleUrl: './sales.component.scss',
@@ -28,7 +27,6 @@ export class SalesComponent {
 
   products: Product[] = [];
   filteredProducts: Product[] = [];
-  sales: Sale[] = [];
   productSearch: string = '';
   sale: Sale = {
     id: 0,
@@ -49,7 +47,6 @@ export class SalesComponent {
   ngOnInit(): void {
     this.loadProducts('');
     // this.loadSales();
-    this.getLastSales(this.p);
     if (this.productSelection) {
       // You can perform actions on the productSelection element here
     } else {
@@ -60,24 +57,8 @@ export class SalesComponent {
   loadProducts(search?: string): void {
     this.salesService.getproductsList(search).subscribe((data: any) => {
       this.products = data.data;
-      console.log('data   ===>', data);
-      console.log('products ===>', this.products);
       this.filteredProducts = data.data; // Initialize filteredProducts
     });
-  }
-
-  getLastSales(p: number): void {
-    // Replace with your API endpoint
-    this.salesService.getLastSales(p).subscribe(
-      (data: any) => {
-        // this.count = data.data.count;
-        this.sales = data.data.rows;
-        // this.startIndex = this.p > 1 ? (this.p - 1) * 8 + 1 : 1;
-      },
-      (error) => {
-        console.error('Error fetching sales:', error);
-      }
-    );
   }
 
   filterProducts(event: any): void {
@@ -121,7 +102,6 @@ export class SalesComponent {
       (data: any) => {
         // this.count = data.data.count;
         console.log('hi');
-        this.getLastSales(this.p);
         this.resetForm();
         // this.startIndex = this.p > 1 ? (this.p - 1) * 8 + 1 : 1;
       },

@@ -29,6 +29,16 @@
       </li>
       <li>
         <a
+          class="nav-link align-middle px-0"
+          (click)="navigateToOrders()"
+          [ngClass]="{ active: currentRoute === '/Orders' }"
+        >
+          <fa-icon [icon]="faHome"></fa-icon>
+          <span class="ms-1 d-none d-sm-inline">Orders</span>
+        </a>
+      </li>
+      <li>
+        <a
           (click)="navigateToProducts()"
           [ngClass]="{ active: currentRoute === '/products' }"
           class="nav-link px-0 align-middle"

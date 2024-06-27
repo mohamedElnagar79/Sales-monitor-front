@@ -32,6 +32,11 @@ export class SidebarComponent {
     this.router.navigate(['/products']);
     this.currentRoute = '/products';
   }
+  navigateToOrders(): void {
+    this.router.navigate(['/orders']);
+    this.currentRoute = '/orders';
+  }
+
   navigateTosales(): void {
     this.router.navigate(['/sales']);
     this.currentRoute = '/sales';
