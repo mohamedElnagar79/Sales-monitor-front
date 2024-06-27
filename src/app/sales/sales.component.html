@@ -1,31 +1,30 @@
 <div class="container mt-5">
   <h2 class="page-title">Register Sale</h2>
-  <!-- (ngSubmit)="onSubmit()" -->
-  <form class="sales-form">
+  <form class="sales-form" (ngSubmit)="onSubmit()">
     <div class="row">
       <div class="mb-3 col-6">
         <label for="product" class="form-label">Product</label>
-        <input
-          type="text"
-          id="productSearch"
-          class="form-control"
-          [(ngModel)]="productSearch"
-          name="productSearch"
-          placeholder="Search products"
-          (input)="filterProducts()"
-        />
-
-        <select
-          id="product"
-          class="form-select mt-2"
-          [(ngModel)]="filterProducts"
-          name="product"
-          required
-        >
-          <option *ngFor="let product of filteredProducts" [value]="product.id">
-            {{ product.name }}
-          </option>
-        </select>
+        <div class="product-selection" #productSelection>
+          <input
+            type="text"
+            autocomplete="off"
+            id="productSearch"
+            class="form-control product-search"
+            placeholder="Search products"
+            (keyup)="filterProducts($event)"
+            name="productName"
+            [(ngModel)]="sale.productName"
+          />
+          <ul class="product-list" *ngIf="filteredProducts.length > 0">
+            <li
+              *ngFor="let product of filteredProducts"
+              [value]="product.id"
+              (click)="selectProduct(product)"
+            >
+              {{ product.name }}
+            </li>
+          </ul>
+        </div>
       </div>
 
       <div class="mb-3 col-6">
@@ -36,6 +35,7 @@
           class="form-control"
           [(ngModel)]="sale.quantity"
           name="quantity"
+          (keyup)="calcTotal(sale)"
           required
         />
       </div>
@@ -69,6 +69,7 @@
           class="form-control"
           [(ngModel)]="sale.amountPaid"
           name="amountPaid"
+          (keyup)="calcRemaider(sale)"
           required
         />
       </div>
@@ -85,29 +86,26 @@
       </div>
 
       <div class="mb-3 col-6">
-        <label for="salePrice" class="form-label">Sale Price</label>
+        <label for="salePrice" class="form-label">Remaining Balance</label>
         <input
           type="number"
-          id="salePrice"
+          id="remainingBalance"
           class="form-control"
-          [(ngModel)]="sale.total"
-          name="salePrice"
-          required
+          [(ngModel)]="sale.remainingBalance"
+          name="remainingBalance"
+          disabled
         />
       </div>
 
       <div class="mb-3 col-6">
         <label for="comments" class="form-label">comments</label>
-        <select
+        <input
           id="comments"
-          class="form-select"
+          class="form-control"
           [(ngModel)]="sale.comments"
           name="comments"
           required
-        >
-          <option value="paid">Paid</option>
-          <option value="pending">Pending</option>
-        </select>
+        />
       </div>
     </div>
     <button type="submit" class="btn btn-primary sell">Sell Now</button>

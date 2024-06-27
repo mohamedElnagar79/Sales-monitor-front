@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { FormsModule, NgForm } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { NgxPaginationModule } from 'ngx-pagination';
@@ -8,6 +8,7 @@ import { Sale } from '../models/sale';
 interface Product {
   id: number;
   name: string;
+  price: number;
 }
 
 @Component({
@@ -19,6 +20,9 @@ interface Product {
   styleUrl: './sales.component.scss',
 })
 export class SalesComponent {
+  @ViewChild('productSelection', { static: true })
+  productSelection!: ElementRef;
+
   p: number = 1;
   count: number = 1;
 
@@ -46,6 +50,11 @@ export class SalesComponent {
     this.loadProducts('');
     // this.loadSales();
     this.getLastSales(this.p);
+    if (this.productSelection) {
+      // You can perform actions on the productSelection element here
+    } else {
+      console.error('productSelection reference not available');
+    }
   }
 
   loadProducts(search?: string): void {
@@ -71,26 +80,53 @@ export class SalesComponent {
     );
   }
 
-  filterProducts(): void {
+  filterProducts(event: any): void {
     this.filteredProducts = this.products.filter((product) =>
-      product.name.toLowerCase().includes(this.productSearch.toLowerCase())
+      product.name.toLowerCase().includes(event.target.value.toLowerCase())
     );
+    if (this.filteredProducts.length > 0) {
+      this.productSelection.nativeElement.classList.add('active'); // Add 'active' class
+      console.log('hellooo');
+    } else {
+      this.productSelection.nativeElement.classList.remove('active'); // Remove 'active' class
+    }
   }
 
-  // onSubmit(): void {
-  //   const product = this.products.find((p) => p.id === this.sale.product);
-  //   if (product) {
-  //     // this.sale.productName = product.name;
-  //     // this.sale.dateOfSale = new Date();
-  //     // Replace with your API endpoint
-  //     this.http
-  //       .post<Sale>('http://localhost:10000/sales', this.sale)
-  //       .subscribe((data) => {
-  //         this.sales.push(data);
-  //         this.resetForm();
-  //       });
-  //   }
-  // }
+  selectProduct(product: Product): void {
+    // Update sale object with selected product details
+    this.sale.productId = product.id;
+    this.sale.productName = product.name;
+    // Hide product list
+    this.filteredProducts = [];
+    this.productSelection.nativeElement.classList.remove('active');
+    console.log('clicked', product);
+    this.sale.piecePrice = product.price;
+    this.sale.total = 0;
+    this.sale.quantity = 0;
+    this.sale.remainingBalance = 0;
+  }
+  calcTotal(product: any): void {
+    console.log('calc total ', product);
+    this.sale.total = product.piecePrice * product.quantity;
+  }
+  calcRemaider(product: any): void {
+    console.log(' calc Remaider ');
+    this.sale.remainingBalance = product.total - product.amountPaid;
+  }
+
+  onSubmit(): void {
+    this.salesService.sellProduct(this.sale).subscribe(
+      (data: any) => {
+        // this.count = data.data.count;
+        console.log('hi');
+        this.getLastSales(this.p);
+        // this.startIndex = this.p > 1 ? (this.p - 1) * 8 + 1 : 1;
+      },
+      (error) => {
+        console.error('Error fetching sales:', error);
+      }
+    );
+  }
 
   // resetForm(): void {
   //   this.sale = {
