@@ -34,13 +34,13 @@ export class SalesComponent {
     id: 0,
     productId: 0,
     productName: '',
-    clientName: '',
+    clientName: 'client',
     piecePrice: 0,
-    quantity: 0,
+    quantity: 1,
     total: 0,
     amountPaid: 0,
     remainingBalance: 0,
-    comments: '',
+    comments: 'No comment ...',
     createdAt: new Date(),
   };
 
@@ -101,13 +101,15 @@ export class SalesComponent {
     this.productSelection.nativeElement.classList.remove('active');
     console.log('clicked', product);
     this.sale.piecePrice = product.price;
-    this.sale.total = 0;
-    this.sale.quantity = 0;
+    this.sale.quantity = 1;
+    this.sale.total = this.sale.piecePrice * this.sale.quantity;
+    this.sale.amountPaid = this.sale.total;
     this.sale.remainingBalance = 0;
   }
   calcTotal(product: any): void {
     console.log('calc total ', product);
     this.sale.total = product.piecePrice * product.quantity;
+    this.sale.amountPaid = this.sale.total;
   }
   calcRemaider(product: any): void {
     console.log(' calc Remaider ');
@@ -120,6 +122,7 @@ export class SalesComponent {
         // this.count = data.data.count;
         console.log('hi');
         this.getLastSales(this.p);
+        this.resetForm();
         // this.startIndex = this.p > 1 ? (this.p - 1) * 8 + 1 : 1;
       },
       (error) => {
@@ -128,17 +131,20 @@ export class SalesComponent {
     );
   }
 
-  // resetForm(): void {
-  //   this.sale = {
-  //     id: 0,
-  //     product: 0,
-  //     productName: '',
-  //     clientName: '',
-  //     salePrice: 0,
-  //     dateOfSale: new Date(),
-  //     paymentStatus: 'paid',
-  //   };
-  //   this.productSearch = '';
-  //   this.filteredProducts = this.products;
-  // }
+  resetForm(): void {
+    this.productSearch = '';
+    this.sale = {
+      id: 0,
+      productId: 0,
+      productName: '',
+      clientName: '',
+      piecePrice: 0,
+      quantity: 0,
+      total: 0,
+      amountPaid: 0,
+      remainingBalance: 0,
+      comments: '',
+      createdAt: new Date(),
+    };
+  }
 }

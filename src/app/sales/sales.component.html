@@ -50,17 +50,7 @@
           required
         />
       </div>
-      <div class="mb-3 col-6">
-        <label for="total" class="form-label">total</label>
-        <input
-          type="text"
-          id="total"
-          class="form-control"
-          [(ngModel)]="sale.total"
-          name="total"
-          required
-        />
-      </div>
+
       <div class="mb-3 col-6">
         <label for="amountPaid" class="form-label">amountPaid</label>
         <input
@@ -84,7 +74,16 @@
           required
         />
       </div>
-
+      <div class="mb-3 col-6">
+        <label for="comments" class="form-label">comments</label>
+        <input
+          id="comments"
+          class="form-control"
+          [(ngModel)]="sale.comments"
+          name="comments"
+          required
+        />
+      </div>
       <div class="mb-3 col-6">
         <label for="salePrice" class="form-label">Remaining Balance</label>
         <input
@@ -96,15 +95,15 @@
           disabled
         />
       </div>
-
       <div class="mb-3 col-6">
-        <label for="comments" class="form-label">comments</label>
+        <label for="total" class="form-label">total</label>
         <input
-          id="comments"
+          type="text"
+          id="total"
           class="form-control"
-          [(ngModel)]="sale.comments"
-          name="comments"
-          required
+          [(ngModel)]="sale.total"
+          name="total"
+          disabled
         />
       </div>
     </div>
