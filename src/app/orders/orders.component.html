@@ -1,0 +1,163 @@
+<div class="mt-5 px-5">
+  <h3 class="mt-5">Sales List</h3>
+  <div class="sales-head mt-3">
+    <input
+      type="text"
+      class="search"
+      (keyup)="getListOfSales(1, search)"
+      [(ngModel)]="search"
+      name="search"
+    />
+
+    <button
+      class="btn btn-toggle-form mb-2"
+      data-bs-toggle="modal"
+      data-bs-target="#addProductModal"
+    >
+      <!-- (click)="toggleForm()" -->
+      <!-- <fa-icon [icon]="faPlus" class="me-1"></fa-icon>  -->
+      add new product
+    </button>
+  </div>
+  <div class="table-container table-responsive">
+    <table class="table fixed-height table-responsive">
+      <thead>
+        <tr>
+          <th>No.</th>
+          <td>product Name</td>
+          <td>piece Price</td>
+          <td>quantity</td>
+          <td>total</td>
+          <td>amountPaid</td>
+          <td>remaining</td>
+          <td>client Name</td>
+          <td>createdAt</td>
+          <td></td>
+        </tr>
+      </thead>
+      <tbody>
+        <tr
+          *ngFor="
+            let salesItem of sales
+              | paginate
+                : { itemsPerPage: 8, currentPage: p, totalItems: count };
+            let i = index
+          "
+        >
+          <td>{{ i + startIndex }}</td>
+          <td>{{ salesItem.productName }}</td>
+          <td>{{ salesItem.piecePrice }}</td>
+          <td>{{ salesItem.quantity }}</td>
+          <td>{{ salesItem.total }}</td>
+          <td>{{ salesItem.amountPaid }}</td>
+          <td>{{ salesItem.remainingBalance }}</td>
+          <td>{{ salesItem.clientName }}</td>
+          <td>{{ salesItem.createdAt }}</td>
+          <td class="table-cotrollers">
+            <button
+              class="btn btn-primary btn-sm me-3"
+              data-bs-toggle="modal"
+              data-bs-target="#updatedSalesOrdersModal"
+            >
+              <!-- (click)="openUpdateForm(product)" -->
+              <fa-icon [icon]="faPen"></fa-icon>
+            </button>
+            <button
+              class="btn btn-danger btn-sm"
+              data-bs-toggle="modal"
+              data-bs-target="#deleteModal"
+            >
+              <!-- (click)="ActivateProductToDelete(product.id)" -->
+              <fa-icon [icon]="faTrash"></fa-icon>
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <pagination-controls
+    (pageChange)="p = $event; getListOfSales(p)"
+  ></pagination-controls>
+
+  <!--update product Modal -->
+  <div
+    class="modal fade"
+    id="updatedSalesOrdersModal"
+    tabindex="-1"
+    aria-labelledby="updatedSalesOrdersModallable"
+    aria-hidden="true"
+  >
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="update-product-form">
+          <h3>update Sales Order</h3>
+          <!-- (ngSubmit)="updateOneProduct(updatedSalesObj)" -->
+          <form>
+            <div class="form-group">
+              <label for="name">clientName</label>
+              <input
+                type="text"
+                class="form-control"
+                id="clientName"
+                [(ngModel)]="updatedSalesObj.clientName"
+                name="clientName"
+                required
+              />
+            </div>
+            <div class="form-group">
+              <label for="price">remainingBalance</label>
+              <input
+                type="number"
+                class="form-control"
+                id="remainingBalance"
+                [(ngModel)]="updatedSalesObj.remainingBalance"
+                name="remainingBalance"
+                required
+              />
+            </div>
+            <div class="form-group">
+              <label for="soldPrice">comments</label>
+              <input
+                type="number"
+                class="form-control"
+                id="comments"
+                [(ngModel)]="updatedSalesObj.comments"
+                name="comments"
+                required
+              />
+            </div>
+
+            <div class="form-group">
+              <label for="amountPaid">amountPaid</label>
+              <input
+                type="number"
+                class="form-control"
+                id="amountPaid"
+                [(ngModel)]="updatedSalesObj.amountPaid"
+                name="amountPaid"
+                required
+              />
+            </div>
+
+            <div class="form-group">
+              <button
+                type="submit"
+                class="btn btn-primary mt-2 form-control my-2"
+              >
+                update Product
+              </button>
+              <button
+                type="button"
+                class="btn btn-secondary form-control"
+                data-bs-dismiss="modal"
+                #closeModal
+              >
+                Close
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

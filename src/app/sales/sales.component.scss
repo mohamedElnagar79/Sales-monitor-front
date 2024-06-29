@@ -1,0 +1,76 @@
+.container {
+  max-width: 80%;
+  margin: auto;
+}
+
+.page-title {
+  margin-bottom: 3rem;
+  // text-align: center;
+  font-size: 2rem;
+}
+
+.sales-form {
+  background-color: #f9f9f9;
+  padding: 2rem;
+  border-radius: 0.5rem;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  input {
+    width: 90%;
+  }
+  .form-label {
+    font-weight: bold;
+  }
+
+  .form-control,
+  .form-select {
+    opacity: 0.9;
+  }
+
+  .btn {
+    display: block;
+    width: 40%;
+    margin: 25px auto;
+  }
+}
+
+.sales-table {
+  margin-top: 2rem;
+}
+.product-selection {
+  position: relative;
+}
+
+.product-search {
+  padding-right: 20px;
+}
+
+.product-list {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  background-color: #f1f1f1;
+  min-width: 160px;
+  box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+  z-index: 1;
+  display: none; /* Initially hide the list */
+  max-height: 200px; /* Set a maximum height for the list */
+  overflow-y: auto;
+  list-style-type: none;
+  width: 90% !important;
+}
+
+.product-list li {
+  padding: 5px 10px;
+  cursor: pointer;
+  border-bottom: 1px solid #ddd; /* Optional styling */
+  margin: 8px auto;
+}
+
+.product-list li:hover {
+  background-color: #e8e8e8; /* Optional hover effect */
+  font-weight: 500;
+}
+
+.product-selection.active .product-list {
+  display: block; /* Show the list on focus or click */
+}
