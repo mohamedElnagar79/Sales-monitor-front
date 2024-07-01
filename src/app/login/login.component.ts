@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
-import { AuthService } from './auth.service';
+import { LoginService } from './login.service';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common'; // Import CommonModule
 
@@ -17,11 +17,11 @@ export class LoginComponent {
   errorMessage = '';
   constructor(
     private router: Router,
-    private AuthService: AuthService // private window: Window
+    private LoginService: LoginService // private window: Window
   ) {}
   onSubmit(loginForm: any): void {
     if (loginForm.valid) {
-      this.AuthService.login(this.email, this.password).subscribe(
+      this.LoginService.login(this.email, this.password).subscribe(
         (response: any) => {
           // Handle successful login response
           const token = response.data.token;

@@ -8,10 +8,12 @@ import { CustomersComponent } from './customers/customers.component';
 import { NotFoundComponent } from './not-found/not-found.component';
 import { HomeComponent } from './home/home.component';
 import { OrdersComponent } from './orders/orders.component';
+import { SidebarGuard } from './shared/sidebar/SidebarGuard';
 export const routes: Routes = [
   { path: '', pathMatch: 'full', redirectTo: 'login' },
   {
     path: 'products',
+    canLoad: [SidebarGuard],
     component: ProductsComponent,
   },
   {

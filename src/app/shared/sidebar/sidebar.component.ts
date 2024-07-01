@@ -17,7 +17,7 @@ import { Router } from '@angular/router';
   styleUrl: './sidebar.component.scss',
 })
 export class SidebarComponent {
-  isOpen: boolean = true; // Flag to track sidebar visibility
+  isOpen: boolean = false; // Flag to track sidebar visibility
   faPen = faPen;
   faUsers = faUsers;
   faHome = faHome;
@@ -48,5 +48,13 @@ export class SidebarComponent {
   navigateToHome(): void {
     this.router.navigate(['/home']);
     this.currentRoute = '/home';
+  }
+  ngOnInit(): void {
+    //   const token = localStorage.getItem('token');
+    //   if (token) {
+    //     console.log('token   ', token);
+    //     this.isOpen = true;
+    //     console.log('isOpen   ', this.isOpen);
+    //   }
   }
 }
