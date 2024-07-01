@@ -32,7 +32,10 @@
             "scripts": ["node_modules/bootstrap/dist/js/bootstrap.min.js"],
 
             "server": "src/main.server.ts",
-            "prerender": true
+            "prerender": true,
+            "ssr": {
+              "entry": "server.ts"
+            }
           },
           "configurations": {
             "production": {
@@ -89,5 +92,8 @@
         }
       }
     }
+  },
+  "cli": {
+    "analytics": false
   }
 }
