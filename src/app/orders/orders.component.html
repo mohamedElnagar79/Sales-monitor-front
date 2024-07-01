@@ -1,8 +1,5 @@
 <div class="mt-5 px-5">
   <h3 class="mt-5">Sales List</h3>
-  <div class="sales-summary mt-3">
-    <h5>Total Sales for Today:</h5>
-  </div>
   <div class="sales-head mt-3">
     <input
       type="text"
@@ -11,16 +8,6 @@
       [(ngModel)]="search"
       name="search"
     />
-
-    <button
-      class="btn btn-toggle-form mb-2"
-      data-bs-toggle="modal"
-      data-bs-target="#addProductModal"
-    >
-      <!-- (click)="toggleForm()" -->
-      <!-- <fa-icon [icon]="faPlus" class="me-1"></fa-icon>  -->
-      add new product
-    </button>
   </div>
   <div class="table-container table-responsive">
     <table class="table fixed-height table-responsive">
@@ -61,17 +48,9 @@
               class="btn btn-primary btn-sm me-3"
               data-bs-toggle="modal"
               data-bs-target="#updatedSalesOrdersModal"
+              (click)="openUpdateForm(salesItem)"
             >
-              <!-- (click)="openUpdateForm(product)" -->
               <fa-icon [icon]="faPen"></fa-icon>
-            </button>
-            <button
-              class="btn btn-danger btn-sm"
-              data-bs-toggle="modal"
-              data-bs-target="#deleteModal"
-            >
-              <!-- (click)="ActivateProductToDelete(product.id)" -->
-              <fa-icon [icon]="faTrash"></fa-icon>
             </button>
           </td>
         </tr>
@@ -93,61 +72,39 @@
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="update-product-form">
-          <h3>update Sales Order</h3>
+          <h3>return a sale</h3>
           <!-- (ngSubmit)="updateOneProduct(updatedSalesObj)" -->
           <form>
             <div class="form-group">
-              <label for="name">clientName</label>
+              <label for="price">quantity</label>
+              <input
+                type="number"
+                class="form-control"
+                id="quantity"
+                [(ngModel)]="updatedSalesObj.quantity"
+                name="quantity"
+                (keyup)="validateQuantity($event)"
+                required
+              />
+            </div>
+            <div class="form-group">
+              <label for="price">reasone</label>
               <input
                 type="text"
                 class="form-control"
-                id="clientName"
-                [(ngModel)]="updatedSalesObj.clientName"
-                name="clientName"
+                id="reasone"
+                [(ngModel)]="updatedSalesObj.reasone"
+                name="reasone"
                 required
               />
             </div>
-            <div class="form-group">
-              <label for="price">remainingBalance</label>
-              <input
-                type="number"
-                class="form-control"
-                id="remainingBalance"
-                [(ngModel)]="updatedSalesObj.remainingBalance"
-                name="remainingBalance"
-                required
-              />
-            </div>
-            <div class="form-group">
-              <label for="soldPrice">comments</label>
-              <input
-                type="number"
-                class="form-control"
-                id="comments"
-                [(ngModel)]="updatedSalesObj.comments"
-                name="comments"
-                required
-              />
-            </div>
-
-            <div class="form-group">
-              <label for="amountPaid">amountPaid</label>
-              <input
-                type="number"
-                class="form-control"
-                id="amountPaid"
-                [(ngModel)]="updatedSalesObj.amountPaid"
-                name="amountPaid"
-                required
-              />
-            </div>
-
             <div class="form-group">
               <button
                 type="submit"
+                (click)="returnSale()"
                 class="btn btn-primary mt-2 form-control my-2"
               >
-                update Product
+                return the sale
               </button>
               <button
                 type="button"

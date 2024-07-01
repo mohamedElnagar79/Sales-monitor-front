@@ -133,7 +133,7 @@ export class ProductsComponent {
   }
   ActivateProductToDelete(id: number): void {
     this.activeId = id;
-    console.log('active ', this.activeId);
+    console.log('active ===> ', this.activeId);
   }
   deleteProduct(): void {
     this.ProductsService.deleteOneProduct(this.activeId).subscribe(

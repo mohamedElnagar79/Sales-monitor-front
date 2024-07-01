@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ElementRef, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { OrdersService } from './orders.service';
 import { NgxPaginationModule } from 'ngx-pagination';
@@ -15,6 +15,8 @@ import { faPen, faTrash, faPlus } from '@fortawesome/free-solid-svg-icons';
   styleUrl: './orders.component.scss',
 })
 export class OrdersComponent {
+  @ViewChild('closeModal') closeModalRef!: ElementRef;
+
   sales: Sale[] = [];
   search: any = '';
   faPen = faPen;
@@ -23,22 +25,44 @@ export class OrdersComponent {
   p: number = 1;
   count: number = 1;
   startIndex: number = 1;
+  maxQuantity: number = 1;
 
-  updatedSalesObj: Sale = {
-    id: 0,
-    piecePrice: 0,
+  updatedSalesObj: any = {
+    SaleId: 0,
     quantity: 0,
-    total: 1,
-    amountPaid: 0,
-    remainingBalance: 0,
-    clientName: '',
-    createdAt: new Date(),
-    comments: '',
+    reasone: ' ',
   };
   constructor(private ordersService: OrdersService) {}
 
   ngOnInit(): void {
     this.getListOfSales(this.p);
+  }
+  returnSale(): void {
+    this.ordersService.returnASale(this.updatedSalesObj).subscribe(
+      (data: any) => {
+        // this.count = data.data.count;
+        this.getListOfSales(this.p);
+        this.closeModalRef.nativeElement.click();
+      },
+      (error) => {
+        console.error('Error while return a sale :', error);
+      }
+    );
+  }
+
+  openUpdateForm(saleItem: any): void {
+    this.updatedSalesObj.SaleId = saleItem.id;
+    this.updatedSalesObj.quantity = saleItem.quantity;
+    this.maxQuantity = saleItem.quantity;
+    console.log('this.up  ', this.updatedSalesObj);
+  }
+  validateQuantity(event: any) {
+    const target = event.target;
+    const value = target.value;
+    if (value > this.maxQuantity) {
+      console.log('value  ', value);
+      target.value = this.maxQuantity;
+    }
   }
 
   getListOfSales(p: number, searchTerm?: any): void {

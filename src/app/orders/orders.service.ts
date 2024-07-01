@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { ElementRef, Injectable, ViewChild } from '@angular/core';
 
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
@@ -6,6 +6,7 @@ import { Observable } from 'rxjs';
   providedIn: 'root',
 })
 export class OrdersService {
+  @ViewChild('deleteModal') deleteModalRef!: ElementRef;
   constructor(private http: HttpClient) {}
 
   private apiUrl = 'http://localhost:10000/';
@@ -23,6 +24,21 @@ export class OrdersService {
       return this.http.get<any>(this.apiUrl + `get-last-sales`, {
         headers,
         params,
+      });
+    } else {
+      throw new Error('Authorization token not found');
+    }
+  }
+
+  returnASale(updatedObj: any): Observable<any[]> {
+    const token = localStorage.getItem('token');
+
+    if (token) {
+      const headers = new HttpHeaders({
+        Authorization: `Bearer ${token}`,
+      });
+      return this.http.post<any>(this.apiUrl + `return-product`, updatedObj, {
+        headers,
       });
     } else {
       throw new Error('Authorization token not found');
