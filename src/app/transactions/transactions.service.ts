@@ -5,14 +5,19 @@ import { Observable } from 'rxjs';
 @Injectable({
   providedIn: 'root',
 })
-export class OrdersService {
+export class TransactionsService {
   constructor(private http: HttpClient) {}
 
   private apiUrl = 'http://localhost:10000/';
 
-  getListOfSales(p: number, searchTerm?: string): Observable<any[]> {
+  calcDailySales(
+    p: number,
+    date: string,
+    searchTerm?: string
+  ): Observable<any[]> {
     const token = localStorage.getItem('token');
     let params = new HttpParams().set('page', p);
+    params = params.set('date', date);
     if (searchTerm) {
       params = params.set('search', searchTerm);
     }
@@ -20,24 +25,9 @@ export class OrdersService {
       const headers = new HttpHeaders({
         Authorization: `Bearer ${token}`,
       });
-      return this.http.get<any>(this.apiUrl + `get-last-sales`, {
+      return this.http.get<any>(this.apiUrl + `calc-daily-sales`, {
         headers,
         params,
-      });
-    } else {
-      throw new Error('Authorization token not found');
-    }
-  }
-
-  returnASale(updatedObj: any): Observable<any[]> {
-    const token = localStorage.getItem('token');
-
-    if (token) {
-      const headers = new HttpHeaders({
-        Authorization: `Bearer ${token}`,
-      });
-      return this.http.post<any>(this.apiUrl + `return-product`, updatedObj, {
-        headers,
       });
     } else {
       throw new Error('Authorization token not found');

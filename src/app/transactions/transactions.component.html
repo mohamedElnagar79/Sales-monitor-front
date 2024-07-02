@@ -1,6 +1,8 @@
 <div class="container mt-5 px-5">
-  <div class="transactions-head"></div>
-  <ul class="nav nav-tabs mb-3" id="ex1" role="tablist">
+  <div class="transactions-head">
+    <h2>total of Today : {{ totalExistMoney }}</h2>
+  </div>
+  <ul class="nav nav-tabs mb-3 mt-4" id="ex1" role="tablist">
     <li class="nav-item" role="presentation">
       <a
         class="nav-link active"
@@ -10,7 +12,7 @@
         role="tab"
         aria-controls="ex1-tabs-1"
         aria-selected="true"
-        >Tab 1</a
+        >Sales</a
       >
     </li>
     <li class="nav-item" role="presentation">
@@ -22,19 +24,7 @@
         role="tab"
         aria-controls="ex1-tabs-2"
         aria-selected="false"
-        >Tab 2</a
-      >
-    </li>
-    <li class="nav-item" role="presentation">
-      <a
-        class="nav-link"
-        id="ex1-tab-3"
-        data-bs-toggle="tab"
-        href="#ex1-tabs-3"
-        role="tab"
-        aria-controls="ex1-tabs-3"
-        aria-selected="false"
-        >Tab 3</a
+        >Expenses</a
       >
     </li>
   </ul>
@@ -45,7 +35,51 @@
       role="tabpanel"
       aria-labelledby="ex1-tab-1"
     >
-      Tab 1 content
+      <div class="table-container table-responsive">
+        <table class="table fixed-height table-responsive">
+          <thead>
+            <tr>
+              <th>No.</th>
+              <td>Product Name</td>
+              <td>Remaining</td>
+              <td>Client Name</td>
+              <td>Amount Paid</td>
+            </tr>
+          </thead>
+          <tbody>
+            <tr
+              *ngFor="
+                let salesItem of sales
+                  | paginate
+                    : {
+                        itemsPerPage: 8,
+                        currentPage: p,
+                        totalItems: salesCount
+                      };
+                let i = index
+              "
+            >
+              <td>{{ i + startIndex }}</td>
+              <td>{{ salesItem.productName }}</td>
+              <td>{{ salesItem.remainingBalance }}</td>
+              <td>{{ salesItem.clientName }}</td>
+              <td>{{ salesItem.amountPaid }}</td>
+            </tr>
+            <tr>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td>
+                <b>{{ totalAmountPaid }}</b>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <pagination-controls
+        (pageChange)="p = $event; calcDailySales(p, searchDate)"
+      ></pagination-controls>
     </div>
     <div
       class="tab-pane fade"
@@ -53,15 +87,48 @@
       role="tabpanel"
       aria-labelledby="ex1-tab-2"
     >
-      Tab 2 content
-    </div>
-    <div
-      class="tab-pane fade"
-      id="ex1-tabs-3"
-      role="tabpanel"
-      aria-labelledby="ex1-tab-3"
-    >
-      Tab 3 content
+      <div class="table-container table-responsive">
+        <table class="table fixed-height table-responsive">
+          <thead>
+            <tr>
+              <th>No.</th>
+              <td>Expense Name</td>
+              <td>Description</td>
+              <td>Amount</td>
+            </tr>
+          </thead>
+          <tbody>
+            <tr
+              *ngFor="
+                let expenseItem of dailyExpense
+                  | paginate
+                    : {
+                        itemsPerPage: 8,
+                        currentPage: p,
+                        totalItems: salesCount
+                      };
+                let i = index
+              "
+            >
+              <td>{{ i + startIndex }}</td>
+              <td>{{ expenseItem.expenseName }}</td>
+              <td>{{ expenseItem.description }}</td>
+              <td>{{ expenseItem.amount }}</td>
+            </tr>
+            <tr>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td>
+                <b>{{ totalDailyExpense }}</b>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <pagination-controls
+        (pageChange)="p = $event; calcDailySales(p, searchDate)"
+      ></pagination-controls>
     </div>
   </div>
 </div>
