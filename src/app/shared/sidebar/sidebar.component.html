@@ -31,13 +31,13 @@
         <a
           class="nav-link align-middle px-0"
           (click)="navigateToOrders()"
-          [ngClass]="{ active: currentRoute === '/Orders' }"
+          [ngClass]="{ active: currentRoute === '/orders' }"
         >
           <fa-icon [icon]="faHome"></fa-icon>
           <span class="ms-1 d-none d-sm-inline">Orders</span>
         </a>
       </li>
-      <li>
+      <li *ngIf="isAdmin">
         <a
           (click)="navigateToProducts()"
           [ngClass]="{ active: currentRoute === '/products' }"
@@ -47,7 +47,7 @@
           <span class="ms-1 d-none d-sm-inline">Products</span></a
         >
       </li>
-      <li>
+      <li *ngIf="isAdmin">
         <a
           class="nav-link px-0 align-middle"
           [ngClass]="{ active: currentRoute === '/customers' }"
@@ -55,6 +55,16 @@
         >
           <fa-icon [icon]="faUsers"></fa-icon>
           <span class="ms-1 d-none d-sm-inline">Customers</span>
+        </a>
+      </li>
+      <li>
+        <a
+          class="nav-link px-0 align-middle"
+          [ngClass]="{ active: currentRoute === '/transactions' }"
+          (click)="navigateToTransactions()"
+        >
+          <fa-icon [icon]="faUsers"></fa-icon>
+          <span class="ms-1 d-none d-sm-inline">Transactions</span>
         </a>
       </li>
     </ul>
