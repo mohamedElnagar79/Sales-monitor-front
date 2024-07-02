@@ -7,6 +7,8 @@ import {
   faCartArrowDown,
   faHome,
   faStore,
+  faMoneyCheckDollar,
+  faChartLine,
 } from '@fortawesome/free-solid-svg-icons';
 import { Router, ActivatedRoute, NavigationEnd } from '@angular/router';
 @Component({
@@ -23,6 +25,8 @@ export class SidebarComponent {
   faHome = faHome;
   faCartArrowDown = faCartArrowDown;
   faStore = faStore;
+  faMoneyCheckDollar = faMoneyCheckDollar;
+  faChartLine = faChartLine;
   isAdmin: boolean = false;
   constructor(
     private router: Router,

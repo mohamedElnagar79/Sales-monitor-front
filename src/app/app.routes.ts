@@ -10,6 +10,7 @@ import { HomeComponent } from './home/home.component';
 import { OrdersComponent } from './orders/orders.component';
 import { TokenGuard } from './guards/token.guard';
 import { AdminGuard } from './guards/admin.guard';
+import { TransactionsComponent } from './transactions/transactions.component';
 
 export const routes: Routes = [
   {
@@ -49,6 +50,11 @@ export const routes: Routes = [
   {
     path: 'orders',
     component: OrdersComponent,
+    canActivate: [TokenGuard],
+  },
+  {
+    path: 'transactions',
+    component: TransactionsComponent,
     canActivate: [TokenGuard],
   },
   {
