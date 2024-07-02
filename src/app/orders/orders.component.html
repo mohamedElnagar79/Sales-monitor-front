@@ -72,34 +72,42 @@
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="update-product-form">
-          <h3>return a sale</h3>
+          <h3 *ngIf="!showReturnedCost">return a sale</h3>
           <!-- (ngSubmit)="updateOneProduct(updatedSalesObj)" -->
           <form>
-            <div class="form-group">
-              <label for="price">quantity</label>
-              <input
-                type="number"
-                class="form-control"
-                id="quantity"
-                [(ngModel)]="updatedSalesObj.quantity"
-                name="quantity"
-                (keyup)="validateQuantity($event)"
-                required
-              />
+            <div *ngIf="!showReturnedCost">
+              <div class="form-group">
+                <label for="price">quantity</label>
+                <input
+                  inputmode="numeric"
+                  class="form-control"
+                  id="quantity"
+                  [(ngModel)]="updatedSalesObj.quantity"
+                  name="quantity"
+                  (keyup)="validateQuantity($event)"
+                  required
+                />
+              </div>
+              <div class="form-group">
+                <label for="price">reasone</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="reasone"
+                  [(ngModel)]="updatedSalesObj.reasone"
+                  name="reasone"
+                  required
+                />
+              </div>
             </div>
-            <div class="form-group">
-              <label for="price">reasone</label>
-              <input
-                type="text"
-                class="form-control"
-                id="reasone"
-                [(ngModel)]="updatedSalesObj.reasone"
-                name="reasone"
-                required
-              />
+            <div class="form-group" *ngIf="showReturnedCost">
+              <h3>
+                returned Cost Is : <b>{{ returnedCost }} L.E</b>
+              </h3>
             </div>
             <div class="form-group">
               <button
+                *ngIf="!showReturnedCost"
                 type="submit"
                 (click)="returnSale()"
                 class="btn btn-primary mt-2 form-control my-2"

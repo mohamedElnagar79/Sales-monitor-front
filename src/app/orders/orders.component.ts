@@ -26,7 +26,8 @@ export class OrdersComponent {
   count: number = 1;
   startIndex: number = 1;
   maxQuantity: number = 1;
-
+  showReturnedCost: boolean = false;
+  returnedCost: number = 0;
   updatedSalesObj: any = {
     SaleId: 0,
     quantity: 0,
@@ -40,9 +41,12 @@ export class OrdersComponent {
   returnSale(): void {
     this.ordersService.returnASale(this.updatedSalesObj).subscribe(
       (data: any) => {
+        console.log('dataaaaaaaaaa ', data.data.returnedCost);
         // this.count = data.data.count;
+        this.returnedCost = data.data.returnedCost;
+        this.showReturnedCost = true;
         this.getListOfSales(this.p);
-        this.closeModalRef.nativeElement.click();
+        // this.closeModalRef.nativeElement.click();
       },
       (error) => {
         console.error('Error while return a sale :', error);
@@ -54,6 +58,7 @@ export class OrdersComponent {
     this.updatedSalesObj.SaleId = saleItem.id;
     this.updatedSalesObj.quantity = saleItem.quantity;
     this.maxQuantity = saleItem.quantity;
+    this.showReturnedCost = false;
     console.log('this.up  ', this.updatedSalesObj);
   }
   validateQuantity(event: any) {
