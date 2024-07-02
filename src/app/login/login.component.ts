@@ -25,8 +25,14 @@ export class LoginComponent {
         (response: any) => {
           // Handle successful login response
           const token = response.data.token;
+          const role = response.data.user.role;
           localStorage.setItem('token', token);
-          this.router.navigate(['/products']);
+          localStorage.setItem('role', role);
+          if (role == 'admin') {
+            this.router.navigate(['/products']);
+          } else {
+            this.router.navigate(['/sales']);
+          }
         },
         (error) => {
           // Handle login error
