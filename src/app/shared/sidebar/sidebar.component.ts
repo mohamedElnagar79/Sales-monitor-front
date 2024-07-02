@@ -8,7 +8,7 @@ import {
   faHome,
   faStore,
 } from '@fortawesome/free-solid-svg-icons';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute, NavigationEnd } from '@angular/router';
 @Component({
   selector: 'app-sidebar',
   standalone: true,
@@ -23,7 +23,12 @@ export class SidebarComponent {
   faHome = faHome;
   faCartArrowDown = faCartArrowDown;
   faStore = faStore;
-  constructor(private router: Router) {}
+  isAdmin: boolean = false;
+  constructor(
+    private router: Router,
+    private _router: Router,
+    private activatedRoute: ActivatedRoute
+  ) {}
   currentRoute: string = '/products';
   toggleSidebar() {
     this.isOpen = !this.isOpen;
@@ -35,26 +40,36 @@ export class SidebarComponent {
   navigateToOrders(): void {
     this.router.navigate(['/orders']);
     this.currentRoute = '/orders';
+    // console.log('this.currentRoute ', this.currentRoute);
   }
 
   navigateTosales(): void {
     this.router.navigate(['/sales']);
-    this.currentRoute = '/sales';
+    // this.currentRoute = '/sales';
   }
   navigateToCustomers(): void {
     this.router.navigate(['/customers']);
-    this.currentRoute = '/customers';
+    // this.currentRoute = '/customers';
   }
   navigateToHome(): void {
     this.router.navigate(['/home']);
-    this.currentRoute = '/home';
+    // this.currentRoute = '/home';
+  }
+  navigateToTransactions(): void {
+    this.router.navigate(['/transactions']);
+    // this.currentRoute = '/transactions';
   }
   ngOnInit(): void {
-    //   const token = localStorage.getItem('token');
-    //   if (token) {
-    //     console.log('token   ', token);
-    //     this.isOpen = true;
-    //     console.log('isOpen   ', this.isOpen);
-    //   }
+    const role = localStorage.getItem('role');
+    console.log('role ', role);
+    this.isAdmin = role === 'admin' ? true : false;
+    this.router.events.subscribe((event) => {
+      if (event instanceof NavigationEnd) {
+        this.currentRoute = event.url;
+      }
+    });
+    console.log('this.currentRoute ', this.currentRoute);
+
+    // this.currentRoute = this.isAdmin ? '/sales' : this.currentRoute;
   }
 }
