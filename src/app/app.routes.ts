@@ -11,6 +11,7 @@ import { OrdersComponent } from './orders/orders.component';
 import { TokenGuard } from './guards/token.guard';
 import { AdminGuard } from './guards/admin.guard';
 import { TransactionsComponent } from './transactions/transactions.component';
+import { OutgoingComponent } from './outgoing/outgoing.component';
 
 export const routes: Routes = [
   {
@@ -22,6 +23,11 @@ export const routes: Routes = [
     path: 'products',
     canActivate: [TokenGuard, AdminGuard],
     component: ProductsComponent,
+  },
+  {
+    path: 'outgoing',
+    canActivate: [TokenGuard],
+    component: OutgoingComponent,
   },
   {
     path: 'sales',

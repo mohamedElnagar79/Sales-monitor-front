@@ -1,1 +1,302 @@
-<p>outgoing works!</p>
+<div class="container mt-5 px-5">
+  <div>
+    <h2>my outgoing</h2>
+  </div>
+  <div class="outgoing-head mt-3">
+    <input
+      type="text"
+      class="search-input"
+      [(ngModel)]="search"
+      name="search"
+    />
+    <!-- (keyup)="getproducts(1, search)" -->
+
+    <button
+      class="btn btn-toggle-form mb-2"
+      data-bs-toggle="modal"
+      data-bs-target="#addProductModal"
+    >
+      <!-- (click)="toggleForm()" -->
+      <fa-icon [icon]="faPlus" class="me-1"></fa-icon> add new outgoing
+    </button>
+  </div>
+  <div class="table-container table-responsive">
+    <table class="table fixed-height table-responsive">
+      <thead>
+        <tr>
+          <th>No.</th>
+          <th>amount</th>
+          <th>expense Name</th>
+          <th>description</th>
+          <th>reasone</th>
+          <th>created At</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr
+          *ngFor="
+            let outItem of outgoing
+              | paginate
+                : { itemsPerPage: 8, currentPage: p, totalItems: count };
+            let i = index
+          "
+        >
+          <td>{{ i + startIndex }}</td>
+          <td>{{ outItem.amount }}</td>
+          <td>{{ outItem.expenseName }}</td>
+          <td>{{ outItem.description }}</td>
+          <td>{{ outItem.reasone }}</td>
+          <td>{{ outItem.updatedAt }}</td>
+          <td class="table-cotrollers">
+            <button
+              class="btn btn-primary btn-sm me-3"
+              data-bs-toggle="modal"
+              data-bs-target="#updatedProductModal"
+            >
+              <!-- (click)="openUpdateForm(product)" -->
+              <fa-icon [icon]="faPen"></fa-icon>
+            </button>
+            <button
+              class="btn btn-danger btn-sm"
+              data-bs-toggle="modal"
+              data-bs-target="#deleteModal"
+            >
+              <!-- (click)="ActivateProductToDelete(product.id)" -->
+              <fa-icon [icon]="faTrash"></fa-icon>
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <pagination-controls
+    (pageChange)="p = $event; getOutgoing(p, search)"
+  ></pagination-controls>
+
+  <!--update product Modal -->
+  <div
+    class="modal fade"
+    id="updatedOutgoingModal"
+    tabindex="-1"
+    aria-labelledby="updatedOutgoingModallable"
+    aria-hidden="true"
+  >
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="update-product-form">
+          <h3>update outgoing</h3>
+          <form (ngSubmit)="updateoutgoing(updatedOutgoing)">
+            <div class="form-group">
+              <label for="amount">amount</label>
+              <input
+                type="text"
+                class="form-control"
+                id="amount"
+                [(ngModel)]="updatedOutgoing.amount"
+                name="amount"
+                required
+              />
+            </div>
+            <div class="form-group">
+              <label for="expenseName">expense Name</label>
+              <input
+                type="number"
+                class="form-control"
+                id="expenseName"
+                [(ngModel)]="updatedOutgoing.expenseName"
+                name="expenseName"
+                required
+              />
+            </div>
+            <div class="form-group">
+              <label for="description">description</label>
+              <input
+                type="number"
+                class="form-control"
+                id="description"
+                [(ngModel)]="updatedOutgoing.description"
+                name="description"
+                required
+              />
+            </div>
+
+            <div class="form-group">
+              <label for="reasone">reasone</label>
+              <input
+                type="number"
+                class="form-control"
+                id="reasone"
+                [(ngModel)]="updatedOutgoing.reasone"
+                name="reasone"
+                required
+              />
+            </div>
+            <div class="form-group">
+              <label for="createdAt">created At</label>
+              <input
+                class="form-control"
+                id="createdAt"
+                [(ngModel)]="updatedOutgoing.createdAt"
+                name="createdAt"
+                required
+                rows="3"
+                cols="50"
+              />
+            </div>
+            <div class="form-group">
+              <button
+                type="submit"
+                class="btn btn-primary mt-2 form-control my-2"
+              >
+                update Product
+              </button>
+              <button
+                type="button"
+                class="btn btn-secondary form-control"
+                data-bs-dismiss="modal"
+                #closeModal
+              >
+                Close
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!--add product Modal -->
+  <!-- <div
+    class="modal fade"
+    id="addProductModal"
+    tabindex="-1"
+    aria-labelledby="exampleModalLabel"
+    aria-hidden="true"
+  >
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="add-product-form">
+          <h3>Add New Product</h3>
+          <form (ngSubmit)="addProduct()">
+            <div class="form-group">
+              <label for="name">Name</label>
+              <input
+                type="text"
+                class="form-control"
+                id="name"
+                [(ngModel)]="newProduct.name"
+                name="name"
+                required
+              />
+            </div>
+            <div class="form-group">
+              <label for="price">Price</label>
+              <input
+                type="number"
+                class="form-control"
+                id="price"
+                [(ngModel)]="newProduct.price"
+                name="price"
+                required
+              />
+            </div>
+            <div class="form-group">
+              <label for="soldPrice">Sold Price</label>
+              <input
+                type="number"
+                class="form-control"
+                id="soldPrice"
+                [(ngModel)]="newProduct.soldPrice"
+                name="soldPrice"
+                required
+              />
+            </div>
+
+            <div class="form-group">
+              <label for="stock">Stock</label>
+              <input
+                type="number"
+                class="form-control"
+                id="stock"
+                [(ngModel)]="newProduct.stock"
+                name="stock"
+                required
+              />
+            </div>
+            <div class="form-group">
+              <label for="description">description</label>
+              <textarea
+                class="form-control"
+                id="description"
+                [(ngModel)]="newProduct.description"
+                name="description"
+                required
+                rows="3"
+                cols="50"
+              ></textarea>
+            </div>
+            <div class="form-group">
+              <button type="submit" class="btn btn-primary my-2 form-control">
+                Add Product
+              </button>
+              <button
+                type="button"
+                class="btn btn-secondary form-control"
+                data-bs-dismiss="modal"
+              >
+                Close
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div> -->
+
+  <!-- Button trigger modal -->
+  <!-- delete Modal -->
+  <!-- <div
+    class="modal fade"
+    id="deleteModal"
+    tabindex="-1"
+    aria-labelledby="deleteModallable"
+    aria-hidden="true"
+  >
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="exampleModalLabel">
+            delete product
+          </h1>
+          <button
+            type="button"
+            class="btn-close"
+            data-bs-dismiss="modal"
+            aria-label="Close"
+          ></button>
+        </div>
+        <div class="modal-body text-danger">
+          Are you sure to delete this product?
+        </div>
+        <div class="modal-footer">
+          <button
+            type="button"
+            class="btn btn-secondary"
+            data-bs-dismiss="modal"
+            #deleteModal
+          >
+            Close
+          </button>
+          <button
+            type="button"
+            class="btn btn-danger"
+            (click)="deleteProduct()"
+          >
+            delete
+          </button>
+        </div>
+      </div>
+    </div>
+  </div> -->
+</div>
