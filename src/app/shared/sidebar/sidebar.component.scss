@@ -25,13 +25,14 @@ ul {
   font-weight: 500;
   font-size: 18px;
   margin-bottom: 1rem;
-  padding: 5px 1.5rem;
+  padding: 5px 1rem !important;
   // width: 100% !important;
 }
 .nav-link:hover {
   background-color: $primaryColor;
   color: #fff;
   cursor: pointer;
+  font-weight: 700;
 }
 .active {
   background-color: $primaryColor;
@@ -41,7 +42,7 @@ ul {
 /* Large Devices, Wide Screens */
 @media only screen and (max-width: 1199px) {
   .nav-link {
-    padding: 5px 0 !important;
+    padding: 5px 0 5px 10px !important;
     font-size: 17px;
   }
 }
