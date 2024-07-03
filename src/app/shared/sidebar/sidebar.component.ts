@@ -7,8 +7,12 @@ import {
   faCartArrowDown,
   faHome,
   faStore,
+  faMoneyCheckDollar,
+  faChartLine,
+  faCoins,
 } from '@fortawesome/free-solid-svg-icons';
-import { Router } from '@angular/router';
+import { Router, NavigationEnd } from '@angular/router';
+
 @Component({
   selector: 'app-sidebar',
   standalone: true,
@@ -19,42 +23,33 @@ import { Router } from '@angular/router';
 export class SidebarComponent {
   isOpen: boolean = false; // Flag to track sidebar visibility
   faPen = faPen;
+  faCoins = faCoins;
   faUsers = faUsers;
   faHome = faHome;
   faCartArrowDown = faCartArrowDown;
   faStore = faStore;
+  faMoneyCheckDollar = faMoneyCheckDollar;
+  faChartLine = faChartLine;
+  isAdmin: boolean = false;
   constructor(private router: Router) {}
   currentRoute: string = '/products';
   toggleSidebar() {
     this.isOpen = !this.isOpen;
   }
-  navigateToProducts(): void {
-    this.router.navigate(['/products']);
-    this.currentRoute = '/products';
-  }
-  navigateToOrders(): void {
-    this.router.navigate(['/orders']);
-    this.currentRoute = '/orders';
+
+  navigateTo(path: string): void {
+    this.router.navigate([path]);
   }
 
-  navigateTosales(): void {
-    this.router.navigate(['/sales']);
-    this.currentRoute = '/sales';
-  }
-  navigateToCustomers(): void {
-    this.router.navigate(['/customers']);
-    this.currentRoute = '/customers';
-  }
-  navigateToHome(): void {
-    this.router.navigate(['/home']);
-    this.currentRoute = '/home';
-  }
   ngOnInit(): void {
-    //   const token = localStorage.getItem('token');
-    //   if (token) {
-    //     console.log('token   ', token);
-    //     this.isOpen = true;
-    //     console.log('isOpen   ', this.isOpen);
-    //   }
+    const role = localStorage.getItem('role');
+    console.log('role ', role);
+    this.isAdmin = role === 'admin' ? true : false;
+    this.router.events.subscribe((event) => {
+      if (event instanceof NavigationEnd) {
+        this.currentRoute = event.url;
+      }
+    });
+    // console.log('this.currentRoute ', this.currentRoute);
   }
 }

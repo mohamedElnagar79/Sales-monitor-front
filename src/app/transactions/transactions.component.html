@@ -1,0 +1,168 @@
+<div class="container mt-5 px-5">
+  <div class="transactions-head">
+    <h3>Our Transactions</h3>
+    <h3>
+      total
+      <span class="total-money"
+        >{{ totalExistMoney | number : "1.0-0" }} EGP</span
+      >
+    </h3>
+  </div>
+  <div class="transactions-head">
+    <input
+      type="text"
+      class="search-input"
+      name="search"
+      (keyup)="calcDailySales(p, searchDate, search)"
+      [(ngModel)]="search"
+    />
+    <input
+      type="date"
+      class="search-input"
+      name="date"
+      (change)="calcDailySales(p, searchDate, search)"
+      [(ngModel)]="searchDate"
+    />
+  </div>
+  <ul class="nav nav-tabs mb-3 mt-4" id="ex1" role="tablist">
+    <li class="nav-item" role="presentation">
+      <a
+        class="nav-link active"
+        id="ex1-tab-1"
+        data-bs-toggle="tab"
+        href="#ex1-tabs-1"
+        role="tab"
+        aria-controls="ex1-tabs-1"
+        aria-selected="true"
+        >ُEntry</a
+      >
+    </li>
+    <li class="nav-item" role="presentation">
+      <a
+        class="nav-link"
+        id="ex1-tab-2"
+        data-bs-toggle="tab"
+        href="#ex1-tabs-2"
+        role="tab"
+        aria-controls="ex1-tabs-2"
+        aria-selected="false"
+        >Expenses</a
+      >
+    </li>
+  </ul>
+  <div class="tab-content" id="ex1-content">
+    <div
+      class="tab-pane fade show active"
+      id="ex1-tabs-1"
+      role="tabpanel"
+      aria-labelledby="ex1-tab-1"
+    >
+      <h1 class="empty-data" *ngIf="sales.length == 0">There Is No Entries</h1>
+      <div class="table-container table-responsive">
+        <table
+          class="table fixed-height table-responsive"
+          *ngIf="sales.length > 0"
+        >
+          <thead>
+            <tr>
+              <th>No.</th>
+              <td>Product Name</td>
+              <td>Remaining</td>
+              <td>Client Name</td>
+              <td>Amount Paid</td>
+            </tr>
+          </thead>
+          <tbody>
+            <tr
+              *ngFor="
+                let salesItem of sales
+                  | paginate
+                    : {
+                        itemsPerPage: 8,
+                        currentPage: p,
+                        totalItems: salesCount
+                      };
+                let i = index
+              "
+            >
+              <td>{{ i + startIndex }}</td>
+              <td>{{ salesItem.productName }}</td>
+              <td>{{ salesItem.remainingBalance }}</td>
+              <td>{{ salesItem.clientName }}</td>
+              <td>{{ salesItem.amountPaid | number : "1.0-0" }}</td>
+            </tr>
+            <tr>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td>
+                <b>{{ totalAmountPaid | number : "1.0-0" }}</b>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <pagination-controls
+        *ngIf="sales.length > 0"
+        (pageChange)="p = $event; calcDailySales(p, searchDate)"
+      ></pagination-controls>
+    </div>
+    <div
+      class="tab-pane fade"
+      id="ex1-tabs-2"
+      role="tabpanel"
+      aria-labelledby="ex1-tab-2"
+    >
+      <h1 *ngIf="dailyExpense.length == 0" class="empty-data">
+        There Is No Expenses
+      </h1>
+      <div
+        class="table-container table-responsive"
+        *ngIf="dailyExpense.length > 0"
+      >
+        <table class="table fixed-height table-responsive">
+          <thead>
+            <tr>
+              <th>No.</th>
+              <td>Expense Name</td>
+              <td>Description</td>
+              <td>Amount</td>
+            </tr>
+          </thead>
+          <tbody>
+            <tr
+              *ngFor="
+                let expenseItem of dailyExpense
+                  | paginate
+                    : {
+                        itemsPerPage: 8,
+                        currentPage: p,
+                        totalItems: salesCount
+                      };
+                let i = index
+              "
+            >
+              <td>{{ i + startIndex }}</td>
+              <td>{{ expenseItem.expenseName }}</td>
+              <td>{{ expenseItem.description }}</td>
+              <td>{{ expenseItem.amount | number : "1.0-0" }}</td>
+            </tr>
+            <tr>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td>
+                <b>{{ totalDailyExpense | number : "1.0-0" }}</b>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <pagination-controls
+        *ngIf="dailyExpense.length > 0"
+        (pageChange)="p = $event; calcDailySales(p, searchDate)"
+      ></pagination-controls>
+    </div>
+  </div>
+</div>

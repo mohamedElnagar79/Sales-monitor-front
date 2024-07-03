@@ -8,17 +8,31 @@ import { CustomersComponent } from './customers/customers.component';
 import { NotFoundComponent } from './not-found/not-found.component';
 import { HomeComponent } from './home/home.component';
 import { OrdersComponent } from './orders/orders.component';
-import { SidebarGuard } from './shared/sidebar/SidebarGuard';
+import { TokenGuard } from './guards/token.guard';
+import { AdminGuard } from './guards/admin.guard';
+import { TransactionsComponent } from './transactions/transactions.component';
+import { OutgoingComponent } from './outgoing/outgoing.component';
+
 export const routes: Routes = [
-  { path: '', pathMatch: 'full', redirectTo: 'login' },
+  {
+    path: '',
+    pathMatch: 'full',
+    redirectTo: 'login',
+  },
   {
     path: 'products',
-    canLoad: [SidebarGuard],
+    canActivate: [TokenGuard, AdminGuard],
     component: ProductsComponent,
+  },
+  {
+    path: 'outgoing',
+    canActivate: [TokenGuard],
+    component: OutgoingComponent,
   },
   {
     path: 'sales',
     component: SalesComponent,
+    canActivate: [TokenGuard],
   },
   {
     path: 'login',
@@ -27,18 +41,27 @@ export const routes: Routes = [
   {
     path: 'signup',
     component: SignupComponent,
+    canActivate: [TokenGuard],
   },
   {
     path: 'customers',
     component: CustomersComponent,
+    canActivate: [TokenGuard],
   },
   {
     path: 'home',
     component: HomeComponent,
+    canActivate: [TokenGuard],
   },
   {
     path: 'orders',
     component: OrdersComponent,
+    canActivate: [TokenGuard],
+  },
+  {
+    path: 'transactions',
+    component: TransactionsComponent,
+    canActivate: [TokenGuard],
   },
   {
     path: '**',
