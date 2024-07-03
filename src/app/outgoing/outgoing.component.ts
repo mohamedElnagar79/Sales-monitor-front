@@ -16,6 +16,7 @@ export class OutgoingComponent {
   // @ViewChild('closeModal') closeModalRef!: ElementRef;
   // @ViewChild('deleteModal') deleteModalRef!: ElementRef;
   outgoing: any = [];
+  newOutgoing: any = {};
   startIndex: number = 1;
   p: number = 1;
   count: number = 1;
@@ -37,8 +38,21 @@ export class OutgoingComponent {
   }
   getOutgoing(p: number, searchTerm?: string): void {
     console.log('helllo');
+    this.outgoingService.getOutgoing(p, searchTerm).subscribe(
+      (data: any) => {
+        // console.log('data ===>', data.data.sales.rows);
+        this.outgoing = data.data.rows;
+        this.startIndex = this.p > 1 ? (this.p - 1) * 8 + 1 : 1;
+      },
+      (error) => {
+        console.error('Error fetching outgoing', error);
+      }
+    );
   }
   updateoutgoing(outgoing: any): void {
+    console.log('helllo from update');
+  }
+  addOutgoing(outgoing: any): void {
     console.log('helllo from update');
   }
 }
