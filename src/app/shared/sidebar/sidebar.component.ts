@@ -9,8 +9,10 @@ import {
   faStore,
   faMoneyCheckDollar,
   faChartLine,
+  faCoins,
 } from '@fortawesome/free-solid-svg-icons';
-import { Router, ActivatedRoute, NavigationEnd } from '@angular/router';
+import { Router, NavigationEnd } from '@angular/router';
+
 @Component({
   selector: 'app-sidebar',
   standalone: true,
@@ -21,6 +23,7 @@ import { Router, ActivatedRoute, NavigationEnd } from '@angular/router';
 export class SidebarComponent {
   isOpen: boolean = false; // Flag to track sidebar visibility
   faPen = faPen;
+  faCoins = faCoins;
   faUsers = faUsers;
   faHome = faHome;
   faCartArrowDown = faCartArrowDown;
@@ -28,41 +31,16 @@ export class SidebarComponent {
   faMoneyCheckDollar = faMoneyCheckDollar;
   faChartLine = faChartLine;
   isAdmin: boolean = false;
-  constructor(
-    private router: Router,
-    private _router: Router,
-    private activatedRoute: ActivatedRoute
-  ) {}
+  constructor(private router: Router) {}
   currentRoute: string = '/products';
   toggleSidebar() {
     this.isOpen = !this.isOpen;
   }
-  navigateToProducts(): void {
-    this.router.navigate(['/products']);
-    this.currentRoute = '/products';
-  }
-  navigateToOrders(): void {
-    this.router.navigate(['/orders']);
-    this.currentRoute = '/orders';
-    // console.log('this.currentRoute ', this.currentRoute);
+
+  navigateTo(path: string): void {
+    this.router.navigate([path]);
   }
 
-  navigateTosales(): void {
-    this.router.navigate(['/sales']);
-    // this.currentRoute = '/sales';
-  }
-  navigateToCustomers(): void {
-    this.router.navigate(['/customers']);
-    // this.currentRoute = '/customers';
-  }
-  navigateToHome(): void {
-    this.router.navigate(['/home']);
-    // this.currentRoute = '/home';
-  }
-  navigateToTransactions(): void {
-    this.router.navigate(['/transactions']);
-    // this.currentRoute = '/transactions';
-  }
   ngOnInit(): void {
     const role = localStorage.getItem('role');
     console.log('role ', role);
@@ -72,8 +50,6 @@ export class SidebarComponent {
         this.currentRoute = event.url;
       }
     });
-    console.log('this.currentRoute ', this.currentRoute);
-
-    // this.currentRoute = this.isAdmin ? '/sales' : this.currentRoute;
+    // console.log('this.currentRoute ', this.currentRoute);
   }
 }

@@ -21,7 +21,7 @@
           data-bs-toggle="collapse"
           class="nav-link px-0 align-middle"
           [ngClass]="{ active: currentRoute === '/sales' }"
-          (click)="navigateTosales()"
+          (click)="navigateTo('sales')"
         >
           <fa-icon [icon]="faCartArrowDown"></fa-icon>
           <span class="ms-1 d-none d-sm-inline">Sales</span>
@@ -30,7 +30,7 @@
       <li>
         <a
           class="nav-link align-middle px-0"
-          (click)="navigateToOrders()"
+          (click)="navigateTo('orders')"
           [ngClass]="{ active: currentRoute === '/orders' }"
         >
           <fa-icon [icon]="faChartLine"></fa-icon>
@@ -39,7 +39,7 @@
       </li>
       <li *ngIf="isAdmin">
         <a
-          (click)="navigateToProducts()"
+          (click)="navigateTo('products')"
           [ngClass]="{ active: currentRoute === '/products' }"
           class="nav-link px-0 align-middle"
         >
@@ -51,17 +51,27 @@
         <a
           class="nav-link px-0 align-middle"
           [ngClass]="{ active: currentRoute === '/transactions' }"
-          (click)="navigateToTransactions()"
+          (click)="navigateTo('transactions')"
         >
           <fa-icon [icon]="faMoneyCheckDollar"></fa-icon>
           <span class="ms-1 d-none d-sm-inline">Transactions</span>
+        </a>
+      </li>
+      <li>
+        <a
+          class="nav-link px-0 align-middle"
+          [ngClass]="{ active: currentRoute === '/outgoing' }"
+          (click)="navigateTo('outgoing')"
+        >
+          <fa-icon [icon]="faCoins"></fa-icon>
+          <span class="ms-1 d-none d-sm-inline">outgoing</span>
         </a>
       </li>
       <li *ngIf="isAdmin">
         <a
           class="nav-link px-0 align-middle"
           [ngClass]="{ active: currentRoute === '/customers' }"
-          (click)="navigateToCustomers()"
+          (click)="navigateTo('customers')"
         >
           <fa-icon [icon]="faUsers"></fa-icon>
           <span class="ms-1 d-none d-sm-inline">Customers</span>
