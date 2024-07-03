@@ -2,6 +2,8 @@ $primaryColor: #0d6efd;
 .sidebar {
   background-color: #f9f9f9 !important;
   color: #000;
+  height: 100%;
+  overflow: auto;
 }
 ul {
   width: 100%;
@@ -23,7 +25,7 @@ ul {
   font-weight: 500;
   font-size: 18px;
   margin-bottom: 1rem;
-  padding: 5px 2rem !important;
+  padding: 5px 1.5rem !important;
   // width: 100% !important;
 }
 .nav-link:hover {
@@ -34,4 +36,41 @@ ul {
 .active {
   background-color: $primaryColor;
   font-weight: 800;
+}
+
+/* Large Devices, Wide Screens */
+@media only screen and (max-width: 1199px) {
+  .nav-link {
+    padding: 5px 1rem !important;
+  }
+}
+/* Medium Devices, Desktops */
+@media only screen and (max-width: 991px) {
+  .nav-link {
+    padding: 5px 0.5rem !important;
+  }
+}
+
+/* Small Devices, Tablets */
+@media only screen and (max-width: 767px) {
+}
+/* Extra Small Devices, Phones */
+@media only screen and (max-width: 575px) {
+  .nav-link {
+    span {
+      display: inline-block !important;
+    }
+  }
+}
+
+/* Extra Small Devices, Phones */
+@media only screen and (max-width: 479px) {
+}
+
+/* Extra Small Devices, Phones */
+@media only screen and (max-width: 360px) {
+}
+
+/* Custom, iPhone Retina */
+@media only screen and (max-width: 319px) {
 }
