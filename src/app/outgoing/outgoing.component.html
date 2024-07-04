@@ -61,8 +61,8 @@
                 class="btn btn-danger btn-sm"
                 data-bs-toggle="modal"
                 data-bs-target="#deleteModal"
+                (click)="openDeleteModal(outItem.id)"
               >
-                <!-- (click)="ActivateProductToDelete(product.id)" -->
                 <fa-icon [icon]="faTrash"></fa-icon>
               </button>
             </div>
@@ -208,9 +208,8 @@
     </div>
   </div>
 
-  <!-- Button trigger modal -->
   <!-- delete Modal -->
-  <!-- <div
+  <div
     class="modal fade"
     id="deleteModal"
     tabindex="-1"
@@ -245,12 +244,12 @@
           <button
             type="button"
             class="btn btn-danger"
-            (click)="deleteProduct()"
+            (click)="deleteOutgoing(deletedId)"
           >
             delete
           </button>
         </div>
       </div>
     </div>
-  </div> -->
+  </div>
 </div>

@@ -30,7 +30,7 @@ export class OutgoingComponent {
   faPen = faPen;
   faTrash = faTrash;
   faPlus = faPlus;
-
+  deletedId: number = 0;
   updatedOutgoing: Outgoing = {
     id: 0,
     expenseName: '',
@@ -88,5 +88,19 @@ export class OutgoingComponent {
         console.error('Error while adding outgoing', error);
       }
     );
+  }
+  deleteOutgoing(id: number): void {
+    this.outgoingService.deleteOneOutgoing(id).subscribe(
+      (data: any) => {
+        this.getOutgoing(this.p);
+        this.deleteModalRef.nativeElement.click();
+      },
+      (error) => {
+        alert(error.error.message);
+      }
+    );
+  }
+  openDeleteModal(id: number): void {
+    this.deletedId = id;
   }
 }

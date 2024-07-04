@@ -61,4 +61,18 @@ export class OutgoingService {
       throw new Error('Authorization token not found');
     }
   }
+
+  deleteOneOutgoing(id: number): Observable<any> {
+    const token = localStorage.getItem('token');
+    if (token) {
+      const headers = new HttpHeaders({
+        Authorization: `Bearer ${token}`,
+      });
+      return this.http.delete<any>(this.apiUrl + `delete-expense/${id}`, {
+        headers,
+      });
+    } else {
+      throw new Error('Authorization token not found');
+    }
+  }
 }
