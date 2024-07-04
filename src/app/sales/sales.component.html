@@ -3,14 +3,14 @@
   <form class="sales-form" (ngSubmit)="onSubmit()">
     <div class="row">
       <div class="mb-3 col-6">
-        <label for="product" class="form-label">Product</label>
+        <label for="product" class="form-label">Select Product</label>
         <div class="product-selection" #productSelection>
           <input
             type="text"
             autocomplete="off"
             id="productSearch"
             class="form-control product-search"
-            placeholder="Search products"
+            placeholder="Select Product"
             (keyup)="filterProducts($event)"
             name="productName"
             [(ngModel)]="sale.productName"
