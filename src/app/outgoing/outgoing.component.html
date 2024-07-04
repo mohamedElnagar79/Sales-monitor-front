@@ -28,7 +28,7 @@
           <th>description</th>
           <th>reasone</th>
           <th>amount</th>
-          <th>created At</th>
+          <th>Date</th>
           <th></th>
         </tr>
       </thead>
@@ -43,27 +43,29 @@
         >
           <td>{{ i + startIndex }}</td>
           <td>{{ outItem.expenseName }}</td>
-          <td>{{ outItem.description }}</td>
+          <td class="desc">{{ outItem.description }}</td>
           <td>{{ outItem.reasone }}</td>
           <td>{{ outItem.amount | number : "1.0-0" }}</td>
           <td>{{ outItem.updatedAt }}</td>
-          <td class="table-cotrollers">
-            <button
-              class="btn btn-primary btn-sm me-3"
-              data-bs-toggle="modal"
-              data-bs-target="#updatedOutgoingModal"
-            >
-              <!-- (click)="openUpdateForm(product)" -->
-              <fa-icon [icon]="faPen"></fa-icon>
-            </button>
-            <button
-              class="btn btn-danger btn-sm"
-              data-bs-toggle="modal"
-              data-bs-target="#deleteModal"
-            >
-              <!-- (click)="ActivateProductToDelete(product.id)" -->
-              <fa-icon [icon]="faTrash"></fa-icon>
-            </button>
+          <td>
+            <div class="table-cotrollers">
+              <button
+                class="btn btn-primary btn-sm me-3"
+                data-bs-toggle="modal"
+                data-bs-target="#updatedOutgoingModal"
+                (click)="openUpdateForm(outItem)"
+              >
+                <fa-icon [icon]="faPen"></fa-icon>
+              </button>
+              <button
+                class="btn btn-danger btn-sm"
+                data-bs-toggle="modal"
+                data-bs-target="#deleteModal"
+              >
+                <!-- (click)="ActivateProductToDelete(product.id)" -->
+                <fa-icon [icon]="faTrash"></fa-icon>
+              </button>
+            </div>
           </td>
         </tr>
       </tbody>
@@ -101,7 +103,7 @@
             <div class="form-group">
               <label for="expenseName">expense Name</label>
               <input
-                type="number"
+                type="text"
                 class="form-control"
                 id="expenseName"
                 [(ngModel)]="updatedOutgoing.expenseName"
@@ -112,23 +114,11 @@
             <div class="form-group">
               <label for="description">description</label>
               <input
-                type="number"
+                type="text"
                 class="form-control"
                 id="description"
                 [(ngModel)]="updatedOutgoing.description"
                 name="description"
-                required
-              />
-            </div>
-
-            <div class="form-group">
-              <label for="reasone">reasone</label>
-              <input
-                type="number"
-                class="form-control"
-                id="reasone"
-                [(ngModel)]="updatedOutgoing.reasone"
-                name="reasone"
                 required
               />
             </div>
@@ -190,18 +180,6 @@
               />
             </div>
             <div class="form-group">
-              <label for="reasone">reasone</label>
-              <input
-                type="number"
-                class="form-control"
-                id="reasone"
-                [(ngModel)]="newOutgoing.reasone"
-                name="reasone"
-                required
-              />
-            </div>
-
-            <div class="form-group">
               <label for="amount">amount</label>
               <input
                 type="number"
@@ -213,7 +191,7 @@
               />
             </div>
             <div class="form-group">
-              <button type="submit" class="btn btn-primary my-2 form-control">
+              <button type="submit" class="btn btn-primary my-3 form-control">
                 Add outgoing
               </button>
               <button
