@@ -1,21 +1,57 @@
-.container {
-  max-width: 80%;
-  margin: auto;
-}
-
+$primaryColor: #0d6efd;
+$secColor: #f9f9f9;
+$itemColor: #dfdfdf;
 .page-title {
   margin-bottom: 3rem;
   // text-align: center;
   font-size: 2rem;
 }
-
+label {
+  text-transform: capitalize;
+}
+.add-client-form {
+  padding: 20px;
+  width: 95%;
+  margin: 5px auto;
+  // margin-bottom: 20px;
+  border-radius: 5px;
+  .form-group {
+    margin-bottom: 15px;
+  }
+}
 .sales-form {
-  background-color: #f9f9f9;
+  background-color: $secColor;
   padding: 2rem;
   border-radius: 0.5rem;
+  width: 50%;
+  margin: 0 auto;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  input {
-    width: 90%;
+  .new-client {
+    display: flex;
+    justify-content: flex-end;
+    color: $primaryColor;
+    span {
+      padding-left: 5px;
+      &:hover {
+        cursor: pointer;
+      }
+    }
+
+    .client-btn {
+      border-radius: 50%;
+      font-size: 12px;
+      border: 0;
+      color: $primaryColor;
+      text-align: center;
+      margin: 0;
+    }
+  }
+  .items {
+    background-color: $itemColor;
+    padding: 10px 15px;
+    border-radius: 0.5rem;
+    max-height: 300px;
+    overflow-y: scroll;
   }
   .form-label {
     font-weight: bold;
@@ -28,7 +64,7 @@
 
   .btn {
     display: block;
-    width: 40%;
+    width: 75%;
     margin: 25px auto;
   }
 }

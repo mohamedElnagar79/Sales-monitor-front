@@ -1,57 +1,112 @@
-<div class="container mt-5">
-  <h2 class="page-title">New Sale Entry</h2>
-  <form class="sales-form" (ngSubmit)="onSubmit()">
+<div class="mt-5 px-5">
+  <h2 class="page-title">Add new Order</h2>
+  <!-- (ngSubmit)="onSubmit()" -->
+  <form class="sales-form">
     <div class="row">
-      <div class="mb-3 col-6">
-        <label for="product" class="form-label">Select Product</label>
-        <div class="product-selection" #productSelection>
-          <input
-            type="text"
-            autocomplete="off"
-            id="productSearch"
-            class="form-control product-search"
-            placeholder="Select Product"
-            (keyup)="filterProducts($event)"
-            name="productName"
-            [(ngModel)]="sale.productName"
-          />
-          <ul class="product-list" *ngIf="filteredProducts.length > 0">
-            <li
-              *ngFor="let product of filteredProducts"
-              [value]="product.id"
-              (click)="selectProduct(product)"
-            >
-              {{ product.name }}
-            </li>
-          </ul>
+      <div class="mb-2 col-12">
+        <label for="clientName" class="form-label">client name</label>
+        <input
+          type="text"
+          id="clientName"
+          class="form-control"
+          name="clientName"
+          required
+        />
+      </div>
+      <div class="mb-2 col-12">
+        <label for="clientPhone" class="form-label">client Phone</label>
+        <input
+          type="text"
+          id="clientPhone"
+          class="form-control"
+          name="clientPhone"
+          inputmode="numeric"
+          required
+        />
+      </div>
+      <div class="mb-3 col-12">
+        <div class="new-client">
+          <button
+            class="client-btn"
+            data-bs-toggle="modal"
+            data-bs-target="#addClientModal"
+          >
+            <fa-icon [icon]="faPlus"></fa-icon>
+          </button>
+          <span data-bs-toggle="modal" data-bs-target="#addClientModal">
+            add new Client</span
+          >
         </div>
       </div>
-
-      <div class="mb-3 col-6">
-        <label for="quantity" class="form-label">quantity</label>
-        <input
-          type="text"
-          id="quantity"
-          class="form-control"
-          [(ngModel)]="sale.quantity"
-          name="quantity"
-          (keyup)="calcTotal(sale)"
-          required
-        />
+      <div class="mb-3 col-12">
+        <div class="items">
+          <div
+            class="row"
+            *ngFor="let item of invoiceItems; trackBy: trackByFn"
+          >
+            <!-- select product -->
+            <div class="mb-3 col-6">
+              <label for="product" class="form-label">Select Product</label>
+              <div class="product-selection" #productSelection>
+                <div class="product-search-wrapper">
+                  <input
+                    type="text"
+                    autocomplete="off"
+                    id="productSearch"
+                    class="form-control product-search"
+                    placeholder="Select Product"
+                    (keyup)="filterProducts($event)"
+                    name="productName"
+                    [(ngModel)]="item.productId"
+                  />
+                  <ul class="product-list" *ngIf="filteredProducts.length > 0">
+                    <li
+                      *ngFor="let product of filteredProducts"
+                      [value]="product.id"
+                      (click)="selectProduct(product)"
+                    >
+                      {{ product.name }}
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+            <!-- select piecePrice -->
+            <div class="mb-3 col-3">
+              <label for="piecePrice" class="form-label">Price</label>
+              <input
+                type="text"
+                id="piecePrice"
+                class="form-control"
+                [(ngModel)]="item.piecePrice"
+                name="piecePrice"
+                required
+              />
+            </div>
+            <!-- select quantity -->
+            <div class="mb-3 col-3">
+              <label for="quantity" class="form-label">Qty</label>
+              <input
+                type="number"
+                id="quantity"
+                class="form-control"
+                [(ngModel)]="item.quantity"
+                name="quantity"
+                min="1"
+                (keyup)="calcTotal(sale)"
+                required
+              />
+            </div>
+          </div>
+          <div class="new-client">
+            <button class="client-btn" (click)="addnewItem({})">
+              <fa-icon [icon]="faPlus"></fa-icon>
+            </button>
+            <span> add new Item</span>
+          </div>
+        </div>
       </div>
-      <div class="mb-3 col-6">
-        <label for="piecePrice" class="form-label">piecePrice</label>
-        <input
-          type="text"
-          id="piecePrice"
-          class="form-control"
-          [(ngModel)]="sale.piecePrice"
-          name="piecePrice"
-          required
-        />
-      </div>
-
-      <div class="mb-3 col-6">
+      <div class="mb-3 col-4">
         <label for="amountPaid" class="form-label">amountPaid</label>
         <input
           type="text"
@@ -63,18 +118,7 @@
           required
         />
       </div>
-      <div class="mb-3 col-6">
-        <label for="clientName" class="form-label">Client Name</label>
-        <input
-          type="text"
-          id="clientName"
-          class="form-control"
-          [(ngModel)]="sale.clientName"
-          name="clientName"
-          required
-        />
-      </div>
-      <div class="mb-3 col-6">
+      <!-- <div class="mb-3 col-6">
         <label for="comments" class="form-label">comments</label>
         <input
           id="comments"
@@ -83,19 +127,9 @@
           name="comments"
           required
         />
-      </div>
-      <div class="mb-3 col-6">
-        <label for="salePrice" class="form-label">Remaining Balance</label>
-        <input
-          type="number"
-          id="remainingBalance"
-          class="form-control"
-          [(ngModel)]="sale.remainingBalance"
-          name="remainingBalance"
-          disabled
-        />
-      </div>
-      <div class="mb-3 col-6">
+      </div> -->
+
+      <div class="mb-3 col-4">
         <label for="total" class="form-label">total</label>
         <input
           type="text"
@@ -106,7 +140,72 @@
           disabled
         />
       </div>
+      <div class="mb-3 col-4">
+        <label for="salePrice" class="form-label">Remaining Balance</label>
+        <input
+          type="number"
+          id="remainingBalance"
+          class="form-control"
+          [(ngModel)]="sale.remainingBalance"
+          name="remainingBalance"
+          disabled
+        />
+      </div>
     </div>
-    <button type="submit" class="btn btn-primary sell">Sell Now</button>
+    <button type="submit" class="btn btn-primary sell">Confirm</button>
   </form>
+
+  <!--add client Modal -->
+  <div
+    class="modal fade"
+    id="addClientModal"
+    tabindex="-1"
+    aria-labelledby="clientModalLabel"
+    aria-hidden="true"
+  >
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="add-client-form">
+          <h3>Add New client</h3>
+          <!-- (ngSubmit)="addProduct()" -->
+          <form>
+            <div class="form-group">
+              <label for="name">Name</label>
+              <input
+                type="text"
+                class="form-control"
+                id="name"
+                name="name"
+                required
+              />
+            </div>
+            <div class="form-group">
+              <label for="phone">phone</label>
+              <input
+                type="string"
+                class="form-control"
+                id="phone"
+                name="phone"
+                required
+              />
+              <!-- [(ngModel)]="newProduct.phone" -->
+            </div>
+
+            <div class="form-group">
+              <button type="submit" class="btn btn-primary my-2 form-control">
+                confirm
+              </button>
+              <button
+                type="button"
+                class="btn btn-secondary form-control"
+                data-bs-dismiss="modal"
+              >
+                Close
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>

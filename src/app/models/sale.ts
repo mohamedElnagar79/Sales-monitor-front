@@ -2,7 +2,7 @@ export interface Sale {
   id?: number;
   productId?: number;
   productName?: string;
-  piecePrice: number;
+  piecePrice: any;
   quantity: number;
   total: number;
   amountPaid: number;

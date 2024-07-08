@@ -3,6 +3,9 @@ import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { SalesService } from './sales.service';
 import { Sale } from '../models/sale';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+
+import { faPlus } from '@fortawesome/free-solid-svg-icons';
 
 interface Product {
   id: number;
@@ -10,10 +13,16 @@ interface Product {
   price: number;
 }
 
+interface invoiceItem {
+  quantity: number;
+  piecePrice: any;
+  productId?: number;
+}
+
 @Component({
   selector: 'app-sales',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, FontAwesomeModule],
 
   templateUrl: './sales.component.html',
   styleUrl: './sales.component.scss',
@@ -21,19 +30,24 @@ interface Product {
 export class SalesComponent {
   @ViewChild('productSelection', { static: true })
   productSelection!: ElementRef;
-
+  faPlus = faPlus;
   p: number = 1;
   count: number = 1;
-
   products: Product[] = [];
   filteredProducts: Product[] = [];
+  invoiceItems: invoiceItem[] = [
+    {
+      piecePrice: '0.00 EGP',
+      quantity: 0,
+    },
+  ];
   productSearch: string = '';
   sale: Sale = {
     id: 0,
     productId: 0,
     productName: '',
     clientName: 'client',
-    piecePrice: 0,
+    piecePrice: '0.00 EGP',
     quantity: 1,
     total: 0,
     amountPaid: 0,
@@ -60,7 +74,9 @@ export class SalesComponent {
       this.filteredProducts = data.data; // Initialize filteredProducts
     });
   }
-
+  trackByFn(index: number, item: invoiceItem) {
+    return item; // Or a unique identifier for each item
+  }
   filterProducts(event: any): void {
     this.filteredProducts = this.products.filter((product) =>
       product.name.toLowerCase().includes(event.target.value.toLowerCase())
@@ -96,20 +112,25 @@ export class SalesComponent {
     console.log(' calc Remaider ');
     this.sale.remainingBalance = product.total - product.amountPaid;
   }
-
-  onSubmit(): void {
-    this.salesService.sellProduct(this.sale).subscribe(
-      (data: any) => {
-        // this.count = data.data.count;
-        console.log('hi');
-        this.resetForm();
-        // this.startIndex = this.p > 1 ? (this.p - 1) * 8 + 1 : 1;
-      },
-      (error) => {
-        console.error('Error fetching sales:', error);
-      }
-    );
+  addnewItem(newItem: Partial<invoiceItem> = {}) {
+    const item: any = { ...newItem };
+    this.invoiceItems.push(item);
+    console.log('now =====>>>>>> ', this.invoiceItems);
   }
+  // onSubmit(): void {
+  //   console.log('this =====>>>>>>   ', this.invoiceItems);
+  //   this.salesService.sellProduct(this.sale).subscribe(
+  //     (data: any) => {
+  //       // this.count = data.data.count;
+  //       console.log('hi');
+  //       this.resetForm();
+  //       // this.startIndex = this.p > 1 ? (this.p - 1) * 8 + 1 : 1;
+  //     },
+  //     (error) => {
+  //       console.error('Error fetching sales:', error);
+  //     }
+  //   );
+  // }
 
   resetForm(): void {
     this.productSearch = '';
