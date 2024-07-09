@@ -114,11 +114,16 @@ export class SalesComponent {
     this.invoiceItems[i].piecePrice = product.price;
     console.log('clicked', product, 'index', i);
     this.invoiceItems[i].filteredProducts = [];
+    this.calcTotal(this.invoiceItems[i]);
   }
-  calcTotal(product: any): void {
-    console.log('calc total ', product);
-    this.sale.total = product.piecePrice * product.quantity;
-    this.sale.amountPaid = this.sale.total;
+  calcTotal(item: any): void {
+    console.log('item ', item);
+    console.log('calc total ', this.sale.total);
+    let itemTotalPrice: any = item.quantity * item.piecePrice;
+    console.log('item ', item);
+    this.sale.total += itemTotalPrice;
+    this.sale.remainingBalance = this.sale.total;
+    console.log('calc total ', this.sale.total);
   }
   calcRemaider(product: any): void {
     console.log(' calc Remaider ');

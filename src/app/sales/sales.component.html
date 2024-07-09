@@ -107,7 +107,17 @@
           </div>
         </div>
       </div>
-
+      <div class="mb-3 col-4">
+        <label for="total" class="form-label">total</label>
+        <input
+          type="text"
+          id="total"
+          class="form-control"
+          [(ngModel)]="sale.total"
+          name="total"
+          disabled
+        />
+      </div>
       <div class="mb-3 col-4">
         <label for="amountPaid" class="form-label">amountPaid</label>
         <input
@@ -131,17 +141,6 @@
         />
       </div> -->
 
-      <div class="mb-3 col-4">
-        <label for="total" class="form-label">total</label>
-        <input
-          type="text"
-          id="total"
-          class="form-control"
-          [(ngModel)]="sale.total"
-          name="total"
-          disabled
-        />
-      </div>
       <div class="mb-3 col-4">
         <label for="salePrice" class="form-label">Remaining Balance</label>
         <input
