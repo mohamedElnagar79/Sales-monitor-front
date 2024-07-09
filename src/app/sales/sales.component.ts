@@ -114,16 +114,24 @@ export class SalesComponent {
     this.invoiceItems[i].piecePrice = product.price;
     console.log('clicked', product, 'index', i);
     this.invoiceItems[i].filteredProducts = [];
-    this.calcTotal(this.invoiceItems[i]);
+    this.calcTotal();
+    // this.calcTotal(this.invoiceItems[i]);
   }
-  calcTotal(item: any): void {
-    console.log('item ', item);
-    console.log('calc total ', this.sale.total);
-    let itemTotalPrice: any = item.quantity * item.piecePrice;
-    console.log('item ', item);
-    this.sale.total += itemTotalPrice;
-    this.sale.remainingBalance = this.sale.total;
-    console.log('calc total ', this.sale.total);
+  calcTotal(): void {
+    this.sale.total = 0;
+    let itemTotalPrice: number;
+    for (const item of this.invoiceItems) {
+      console.log('itemmmmm ', item);
+      if (
+        item.piecePrice == 0 ||
+        item.piecePrice == '0.00 EGP' ||
+        item.quantity != 0
+      ) {
+        console.log('22');
+        itemTotalPrice = item.piecePrice * item.quantity;
+        this.sale.total += itemTotalPrice;
+      }
+    }
   }
   calcRemaider(product: any): void {
     console.log(' calc Remaider ');
@@ -134,10 +142,10 @@ export class SalesComponent {
 
     // Check if the array has only the default object and remove it
     if (
-      this.invoiceItems.length === 1 &&
+      // this.invoiceItems.length === 1 &&
       // lastItem.productId == 0 &&
-      lastItem.piecePrice === '0.00 EGP' &&
-      lastItem.quantity === 1
+      lastItem.piecePrice === '0.00 EGP' ||
+      lastItem.quantity === 0
     ) {
       this.invoiceItems.pop();
     }
