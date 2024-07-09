@@ -48,7 +48,7 @@ label {
   }
   .items {
     background-color: $itemColor;
-    padding: 10px 15px;
+    padding: 20px 15px;
     border-radius: 0.5rem;
     max-height: 300px;
     overflow-y: scroll;
@@ -89,8 +89,8 @@ label {
   box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
   z-index: 1;
   display: none; /* Initially hide the list */
-  max-height: 200px; /* Set a maximum height for the list */
-  overflow-y: auto;
+  max-height: 150px; /* Set a maximum height for the list */
+  overflow-y: scroll;
   list-style-type: none;
   width: 90% !important;
 }
