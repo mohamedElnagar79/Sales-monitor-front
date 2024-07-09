@@ -18,7 +18,7 @@ interface invoiceItem {
   piecePrice: any;
   productId?: number;
   productName?: string;
-  filteredProducts?: any[];
+  filteredProducts?: any;
 }
 
 @Component({
@@ -38,7 +38,13 @@ export class SalesComponent {
   products: Product[] = [];
   filteredProducts: Product[] = [];
   invoiceItems: invoiceItem[] = [
-    { piecePrice: '0.00 EGP', quantity: 1, productId: 0, productName: '' },
+    {
+      piecePrice: '0.00 EGP',
+      quantity: 1,
+      productId: 0,
+      productName: '',
+      filteredProducts: [],
+    },
   ];
   ProductItems: invoiceItem[] = [];
   productSearch: string = '';
@@ -60,12 +66,6 @@ export class SalesComponent {
 
   ngOnInit(): void {
     this.loadProducts('');
-    // this.loadSales();
-    // if (this.productSelection) {
-    //   // You can perform actions on the productSelection element here
-    // } else {
-    //   console.error('productSelection reference not available');
-    // }
   }
   ngAfterViewInit(): void {
     if (this.productSelection) {
@@ -85,37 +85,35 @@ export class SalesComponent {
   trackByFn(index: number, item: invoiceItem) {
     return item; // Or a unique identifier for each item
   }
-  filterProducts(event: any): void {
-    console.log('eveent ', event.target.value);
-    this.filteredProducts = this.products.filter((product) =>
-      product.name.toLowerCase().includes(event.target.value.toLowerCase())
+  filterProducts(event: any, index: number): void {
+    console.log('eveent ', event.target.value, index);
+    console.log('this   ', this.invoiceItems[index]);
+    this.invoiceItems[index].filteredProducts = this.products.filter(
+      (product) =>
+        product.name.toLowerCase().includes(event.target.value.toLowerCase())
     );
-    if (this.filteredProducts.length > 0) {
-      this.productSelection.nativeElement.classList.add('active'); // Add 'active' class
-      console.log('hellooo', this.productSelection.nativeElement);
+    if (this.invoiceItems[index].filteredProducts.length > 0) {
+      // Add 'active' class to the corresponding product selection element
+      this.productSelection?.nativeElement?.children[index]?.classList?.add(
+        'active'
+      );
     } else {
-      this.productSelection.nativeElement.classList.remove('active'); // Remove 'active' class
+      this.productSelection?.nativeElement?.children[index]?.classList?.remove(
+        'active'
+      );
     }
   }
 
   selectProduct(product: Product, i: number): void {
     console.log('array ', this.invoiceItems);
     console.log('i', i);
-    // Update sale object with selected product details
-    // this.sale.productId = product.id;
-    // this.sale.productName = product.name;
-    // Hide product list
+
     this.filteredProducts = [];
-    this.productSelection.nativeElement.classList.remove('active');
     this.invoiceItems[i].productName = product.name;
     this.invoiceItems[i].productId = product.id;
     this.invoiceItems[i].piecePrice = product.price;
     console.log('clicked', product, 'index', i);
-    // this.sale.piecePrice = product.price;
-    // this.sale.quantity = 1;
-    // this.sale.total = this.sale.piecePrice * this.sale.quantity;
-    // this.sale.amountPaid = this.sale.total;
-    // this.sale.remainingBalance = 0;
+    this.invoiceItems[i].filteredProducts = [];
   }
   calcTotal(product: any): void {
     console.log('calc total ', product);
@@ -141,7 +139,11 @@ export class SalesComponent {
 
     if (lastItem.productId && lastItem.piecePrice && lastItem.quantity) {
       this.ProductItems.push({ ...lastItem });
-      this.invoiceItems.push({ piecePrice: '0.00 EGP', quantity: 0 });
+      this.invoiceItems.push({
+        piecePrice: '0.00 EGP',
+        quantity: 1,
+        productName: '',
+      });
     } else if (this.invoiceItems.length > 0) {
       console.error(
         'Please complete the current item before adding a new one.'

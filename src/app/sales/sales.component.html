@@ -38,6 +38,7 @@
           >
         </div>
       </div>
+      <!-- product items -->
       <div class="mb-3 col-12">
         <div class="items">
           <div class="row" *ngFor="let item of invoiceItems; let i = index">
@@ -52,13 +53,16 @@
                     id="productSearch"
                     class="form-control product-search"
                     placeholder="Select Product"
-                    (keyup)="filterProducts($event)"
+                    (keyup)="filterProducts($event, i)"
                     name="productId{{ i }}"
                     [(ngModel)]="item.productName"
                   />
-                  <ul class="product-list" *ngIf="filteredProducts.length > 0">
+                  <ul
+                    class="product-list"
+                    *ngIf="invoiceItems[i]?.filteredProducts?.length > 0"
+                  >
                     <li
-                      *ngFor="let product of filteredProducts"
+                      *ngFor="let product of invoiceItems[i].filteredProducts"
                       [value]="product.name"
                       (click)="selectProduct(product, i)"
                     >

@@ -1,6 +1,6 @@
 $primaryColor: #0d6efd;
 $secColor: #f9f9f9;
-$itemColor: #dfdfdf;
+$itemColor: #f2f2f2;
 .page-title {
   margin-bottom: 3rem;
   // text-align: center;
@@ -13,7 +13,7 @@ label {
   padding: 20px;
   width: 95%;
   margin: 5px auto;
-  // margin-bottom: 20px;
+  margin-bottom: 20px;
   border-radius: 5px;
   .form-group {
     margin-bottom: 15px;
@@ -88,7 +88,7 @@ label {
   min-width: 160px;
   box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
   z-index: 1;
-  display: none; /* Initially hide the list */
+  display: block; /* Initially hide the list */
   max-height: 150px; /* Set a maximum height for the list */
   overflow-y: scroll;
   list-style-type: none;
