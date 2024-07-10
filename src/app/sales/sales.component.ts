@@ -213,27 +213,45 @@ export class SalesComponent {
     this.clientObj.phone = client.phone;
     console.log('clientObj  ', this.clientObj);
   }
+
   selectProduct(product: Product, i: number): void {
     this.filteredProducts = [];
-    this.invoiceItems[i].productName = product.name;
-    this.invoiceItems[i].productId = product.id;
-    this.invoiceItems[i].piecePrice = product.price;
-    console.log('clicked', product, 'index', i);
-    this.invoiceItems[i].filteredProducts = [];
-    this.calcTotal();
-    // this.calcTotal(this.invoiceItems[i]);
+    const existingItemIndex = this.ProductItems.findIndex(
+      (item) => item.productId === product.id
+    );
+    const existingInvoiceItems = this.invoiceItems.findIndex(
+      (item) => item.productId === product.id
+    );
+    console.log('from select  ProductItems  ', this.ProductItems);
+    console.log('from select  invoiceItems ', this.invoiceItems);
+    console.log('from select  existingItemIndex ', existingItemIndex);
+    console.log('from select  existingInvoiceItems ', existingInvoiceItems);
+    if (existingItemIndex >= 0 || existingInvoiceItems >= 0) {
+      this.invoiceItems[i].productName = '';
+      alert('you have already add his before!');
+    } else {
+      console.log('hoooooooooooooooooooooo');
+      this.invoiceItems[i].productName = product.name;
+      this.invoiceItems[i].productId = product.id;
+      this.invoiceItems[i].piecePrice = product.price;
+      console.log('clicked', product, 'index', i);
+      this.invoiceItems[i].filteredProducts = [];
+      this.calcTotal();
+    }
   }
   calcTotal(): void {
     this.sale.total = 0;
     let itemTotalPrice: number;
     for (const item of this.invoiceItems) {
-      console.log('itemmmmm ', item);
+      // console.log('itemmmmm ', item);
       if (
         item.piecePrice == 0 ||
         item.piecePrice == '0.00 EGP' ||
         item.quantity != 0
       ) {
-        console.log('22');
+        // console.log('22');
+        console.log('from select  invoiceItems ', this.invoiceItems);
+
         itemTotalPrice = item.piecePrice * item.quantity;
         this.sale.total += itemTotalPrice;
       }
@@ -245,12 +263,12 @@ export class SalesComponent {
   }
   addnewItem() {
     const lastItem = this.invoiceItems[this.invoiceItems.length - 1];
-    console.log('lastItem  ', lastItem);
+
     // Check if the array has only the default object and remove it
     if (
       lastItem?.piecePrice === '0.00 EGP' ||
-      lastItem?.quantity === 1 ||
-      ((lastItem?.piecePrice === '0.00 EGP' || lastItem?.quantity === 1) &&
+      lastItem?.quantity === 0 ||
+      ((lastItem?.piecePrice === '0.00 EGP' || lastItem?.quantity === 0) &&
         this.invoiceItems.length != 1)
     ) {
       this.invoiceItems?.pop();
@@ -264,7 +282,7 @@ export class SalesComponent {
         // Item doesn't exist, push a copy of lastItem
         this.ProductItems.push({ ...lastItem });
       } else {
-        this.invoiceItems?.pop();
+        // this.invoiceItems?.pop();
       }
       this.invoiceItems.push({
         piecePrice: '0.00 EGP',
