@@ -4,25 +4,64 @@
   <form class="sales-form">
     <div class="row">
       <div class="mb-2 col-12">
+        <!--  -->
         <label for="clientName" class="form-label">client name</label>
-        <input
-          type="text"
-          id="clientName"
-          class="form-control"
-          name="clientName"
-          required
-        />
+        <div class="client-selection" #clientSelection>
+          <div class="client-search-wrapper">
+            <input
+              type="text"
+              autocomplete="off"
+              id="clientName"
+              class="form-control client-search"
+              name="name"
+              [(ngModel)]="clientObj.name"
+              (keyup)="filterClientsByName($event)"
+              required
+            />
+            <ul
+              class="client-list"
+              *ngIf="filteredClients.length > 0 && !phoneFlag"
+            >
+              <li
+                *ngFor="let client of filteredClients"
+                [value]="client.name"
+                (click)="selectClient(client)"
+              >
+                {{ client.name }}
+              </li>
+            </ul>
+          </div>
+        </div>
+        <!--  -->
       </div>
       <div class="mb-2 col-12">
-        <label for="clientPhone" class="form-label">client Phone</label>
-        <input
-          type="text"
-          id="clientPhone"
-          class="form-control"
-          name="clientPhone"
-          inputmode="numeric"
-          required
-        />
+        <label for="Phone" class="form-label">client Phone</label>
+        <div class="client-selection" #clientPhoneSelection>
+          <div class="client-search-wrapper">
+            <input
+              type="text"
+              autocomplete="off"
+              id="phone"
+              class="form-control client-search"
+              name="phone"
+              [(ngModel)]="clientObj.phone"
+              (keyup)="filterClientsByPhone($event)"
+              required
+            />
+            <ul
+              class="client-list"
+              *ngIf="filteredClients.length > 0 && phoneFlag"
+            >
+              <li
+                *ngFor="let client of filteredClients"
+                [value]="client.phone"
+                (click)="selectClient(client)"
+              >
+                {{ client.phone }}
+              </li>
+            </ul>
+          </div>
+        </div>
       </div>
       <div class="mb-3 col-12">
         <div class="new-client">
@@ -171,12 +210,13 @@
           <!-- (ngSubmit)="addProduct()" -->
           <form>
             <div class="form-group">
-              <label for="name">Name</label>
+              <label for="name">client Name</label>
               <input
                 type="text"
                 class="form-control"
                 id="name"
                 name="name"
+                [(ngModel)]="newClient.name"
                 required
               />
             </div>
@@ -187,13 +227,17 @@
                 class="form-control"
                 id="phone"
                 name="phone"
+                [(ngModel)]="newClient.phone"
                 required
               />
-              <!-- [(ngModel)]="newProduct.phone" -->
             </div>
 
             <div class="form-group">
-              <button type="submit" class="btn btn-primary my-2 form-control">
+              <button
+                type="submit"
+                class="btn btn-primary my-2 form-control"
+                (click)="addNewClient(newClient)"
+              >
                 confirm
               </button>
               <button

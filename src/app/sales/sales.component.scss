@@ -72,15 +72,18 @@ label {
 .sales-table {
   margin-top: 2rem;
 }
-.product-selection {
+.product-selection,
+.client-selection {
   position: relative;
 }
 
-.product-search {
+.product-search,
+.client-search {
   padding-right: 20px;
 }
 
-.product-list {
+.product-list,
+.client-list {
   position: absolute;
   top: 100%;
   left: 0;
@@ -95,18 +98,21 @@ label {
   width: 100%;
 }
 
-.product-list li {
+.product-list li,
+.client-list li {
   padding: 5px 10px;
   cursor: pointer;
   border-bottom: 1px solid #ddd; /* Optional styling */
   margin: 8px auto;
 }
 
-.product-list li:hover {
+.product-list li,
+.client-list li:hover {
   background-color: #e8e8e8; /* Optional hover effect */
   font-weight: 500;
 }
 
-.product-selection.active .product-list {
+.product-selection.active .product-list,
+.client-selection.active .product-list {
   display: block; /* Show the list on focus or click */
 }

@@ -13,12 +13,25 @@ interface Product {
   price: number;
 }
 
-interface invoiceItem {
+interface InvoiceItem {
   quantity: number;
   piecePrice: any;
   productId?: number;
   productName?: string;
   filteredProducts?: any;
+}
+interface Invoice {
+  clientName?: string;
+  phone?: string;
+  clientId?: number;
+  newInvoiceItems: InvoiceItem[];
+  amountPaid: number;
+  comments?: string;
+}
+interface Client {
+  name: '';
+  phone: '';
+  id?: 0;
 }
 
 @Component({
@@ -32,12 +45,43 @@ interface invoiceItem {
 export class SalesComponent {
   @ViewChild('productSelection', { static: false })
   productSelection!: ElementRef;
+  @ViewChild('clientSelection', { static: false })
+  clientSelection!: ElementRef;
+  @ViewChild('clientPhoneSelection', { static: false })
+  clientPhoneSelection!: ElementRef;
   faPlus = faPlus;
   p: number = 1;
   count: number = 1;
   products: Product[] = [];
+  clients: Client[] = [
+    {
+      name: '',
+      phone: '',
+    },
+  ];
+  clientObj: Client = {
+    name: '',
+    phone: '',
+  };
+  newClient: Client = {
+    name: '',
+    phone: '',
+  };
+  invoice: Invoice = {
+    clientId: 0,
+    amountPaid: 0,
+    newInvoiceItems: [
+      {
+        piecePrice: 0,
+        quantity: 0,
+      },
+    ],
+  };
   filteredProducts: Product[] = [];
-  invoiceItems: invoiceItem[] = [
+  filteredClients: Client[] = [];
+  phoneFlag: boolean = false;
+  nameFlag: boolean = false;
+  invoiceItems: InvoiceItem[] = [
     {
       piecePrice: '0.00 EGP',
       quantity: 1,
@@ -46,7 +90,7 @@ export class SalesComponent {
       filteredProducts: [],
     },
   ];
-  ProductItems: invoiceItem[] = [];
+  ProductItems: InvoiceItem[] = [];
   productSearch: string = '';
   sale: Sale = {
     id: 0,
@@ -66,6 +110,7 @@ export class SalesComponent {
 
   ngOnInit(): void {
     this.loadProducts('');
+    this.loadClients('');
   }
   ngAfterViewInit(): void {
     if (this.productSelection) {
@@ -76,15 +121,67 @@ export class SalesComponent {
     }
   }
 
+  addNewClient(newClient: Client) {
+    if (newClient.name == '' || newClient.phone == '') {
+      alert('name and phone is required ');
+    } else {
+      this.invoice.clientName = newClient.name;
+      this.invoice.phone = newClient.phone;
+      this.clientObj.name = newClient.name;
+      this.clientObj.phone = newClient.phone;
+    }
+  }
+  loadClients(name?: string, phone?: string): void {
+    this.salesService.getClientsList(name, phone).subscribe((data: any) => {
+      this.clients = data.data;
+      // this.filteredClients = data.data;
+    });
+  }
   loadProducts(search?: string): void {
     this.salesService.getproductsList(search).subscribe((data: any) => {
       this.products = data.data;
       this.filteredProducts = data.data; // Initialize filteredProducts
     });
   }
-  trackByFn(index: number, item: invoiceItem) {
+  trackByFn(index: number, item: InvoiceItem) {
     return item; // Or a unique identifier for each item
   }
+
+  filterClientsByName(event: any): void {
+    console.log('event', event.target.value.toLowerCase());
+    console.log('clients   ', this.clients);
+    this.filteredClients = this.clients.filter((client) =>
+      client.name.toLowerCase().includes(event.target.value.toLowerCase())
+    );
+    console.log('filteredClients  ', this.filteredClients);
+    if (this.filteredClients.length > 0) {
+      this.clientSelection?.nativeElement?.children?.classList?.add('active');
+    } else {
+      this.clientSelection?.nativeElement?.children?.classList?.remove(
+        'active'
+      );
+    }
+  }
+  filterClientsByPhone(event: any): void {
+    console.log('event', event.target.value.toLowerCase());
+    console.log('clients   ', this.clients);
+    this.filteredClients = this.clients.filter((client) =>
+      client.phone.toLowerCase().includes(event.target.value.toLowerCase())
+    );
+    console.log('filteredClients  ', this.filteredClients);
+    if (this.filteredClients.length > 0) {
+      this.phoneFlag = true;
+      this.clientPhoneSelection?.nativeElement?.children?.classList?.add(
+        'active'
+      );
+    } else {
+      this.phoneFlag = false;
+      this.clientPhoneSelection?.nativeElement?.children?.classList?.remove(
+        'active'
+      );
+    }
+  }
+
   filterProducts(event: any, index: number): void {
     console.log('eveent ', event.target.value, index);
     console.log('this   ', this.invoiceItems[index]);
@@ -103,11 +200,17 @@ export class SalesComponent {
       );
     }
   }
-
+  selectClient(client: Client): void {
+    console.log('client  ', client);
+    this.filteredClients = [];
+    this.phoneFlag = false;
+    this.invoice.clientId = client.id;
+    console.log('invoice   ', this.invoice);
+    this.clientObj.name = client.name;
+    this.clientObj.phone = client.phone;
+    console.log('clientObj  ', this.clientObj);
+  }
   selectProduct(product: Product, i: number): void {
-    console.log('array ', this.invoiceItems);
-    console.log('i', i);
-
     this.filteredProducts = [];
     this.invoiceItems[i].productName = product.name;
     this.invoiceItems[i].productId = product.id;
