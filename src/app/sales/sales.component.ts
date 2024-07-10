@@ -265,14 +265,13 @@ export class SalesComponent {
     const lastItem = this.invoiceItems[this.invoiceItems.length - 1];
 
     // Check if the array has only the default object and remove it
-    if (
-      lastItem?.piecePrice === '0.00 EGP' ||
-      lastItem?.quantity === 0 ||
-      ((lastItem?.piecePrice === '0.00 EGP' || lastItem?.quantity === 0) &&
-        this.invoiceItems.length != 1)
-    ) {
-      this.invoiceItems?.pop();
+    if (lastItem?.piecePrice === '0.00 EGP' || lastItem?.quantity === 0) {
+      console.log('lastItem ', this.invoiceItems[0]);
+      if (this.invoiceItems[0].productName !== '') {
+        this.invoiceItems?.pop();
+      }
     }
+    -[];
 
     if (lastItem?.productId && lastItem?.piecePrice && lastItem?.quantity) {
       const existingItemIndex = this.ProductItems.findIndex(
