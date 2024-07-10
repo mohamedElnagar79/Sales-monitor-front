@@ -297,20 +297,24 @@ export class SalesComponent {
     console.log('ProductItems:', this.ProductItems);
     console.log('InvoiceItems:', this.invoiceItems);
   }
-  // onSubmit(): void {
-  //   console.log('this =====>>>>>>   ', this.invoiceItems);
-  //   this.salesService.sellProduct(this.sale).subscribe(
-  //     (data: any) => {
-  //       // this.count = data.data.count;
-  //       console.log('hi');
-  //       this.resetForm();
-  //       // this.startIndex = this.p > 1 ? (this.p - 1) * 8 + 1 : 1;
-  //     },
-  //     (error) => {
-  //       console.error('Error fetching sales:', error);
-  //     }
-  //   );
-  // }
+
+  onSubmit(newInvoice: any): void {
+    if (newInvoice.valid) {
+      console.log('this =====>>>>>>   ', this.invoiceItems);
+
+      // this.salesService.sellProduct(this.sale).subscribe(
+      //   (data: any) => {
+      //     // this.count = data.data.count;
+      //     console.log('hi');
+      //     this.resetForm();
+      //     // this.startIndex = this.p > 1 ? (this.p - 1) * 8 + 1 : 1;
+      //   },
+      //   (error) => {
+      //     console.error('Error fetching sales:', error);
+      //   }
+      // );
+    }
+  }
 
   resetForm(): void {
     this.productSearch = '';
