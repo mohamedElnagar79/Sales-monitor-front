@@ -49,6 +49,8 @@ export class SalesComponent {
   clientSelection!: ElementRef;
   @ViewChild('clientPhoneSelection', { static: false })
   clientPhoneSelection!: ElementRef;
+  @ViewChild('closeModal') closeModalRef!: ElementRef;
+
   faPlus = faPlus;
   p: number = 1;
   count: number = 1;
@@ -129,6 +131,7 @@ export class SalesComponent {
       this.invoice.phone = newClient.phone;
       this.clientObj.name = newClient.name;
       this.clientObj.phone = newClient.phone;
+      this.closeModalRef.nativeElement.click();
     }
   }
   loadClients(name?: string, phone?: string): void {

@@ -207,7 +207,6 @@
       <div class="modal-content">
         <div class="add-client-form">
           <h3>Add New client</h3>
-          <!-- (ngSubmit)="addProduct()" -->
           <form>
             <div class="form-group">
               <label for="name">client Name</label>
@@ -244,6 +243,7 @@
                 type="button"
                 class="btn btn-secondary form-control"
                 data-bs-dismiss="modal"
+                #closeModal
               >
                 Close
               </button>
