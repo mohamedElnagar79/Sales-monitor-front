@@ -1,7 +1,7 @@
 <div class="mt-5 px-5">
   <h2 class="page-title">Add new Order</h2>
   <!-- (ngSubmit)="onSubmit()" -->
-  <form class="sales-form">
+  <form class="sales-form mb-5">
     <div class="row">
       <div class="mb-2 col-12">
         <!--  -->
@@ -120,6 +120,7 @@
                 class="form-control"
                 [(ngModel)]="item.piecePrice"
                 name="piecePrice{{ i }}"
+                (keyup)="calcTotal()"
                 required
               />
             </div>

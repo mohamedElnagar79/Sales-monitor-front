@@ -245,25 +245,34 @@ export class SalesComponent {
   }
   addnewItem() {
     const lastItem = this.invoiceItems[this.invoiceItems.length - 1];
-
+    console.log('lastItem  ', lastItem);
     // Check if the array has only the default object and remove it
     if (
-      // this.invoiceItems.length === 1 &&
-      // lastItem.productId == 0 &&
-      lastItem.piecePrice === '0.00 EGP' ||
-      lastItem.quantity === 0
+      lastItem?.piecePrice === '0.00 EGP' ||
+      lastItem?.quantity === 1 ||
+      ((lastItem?.piecePrice === '0.00 EGP' || lastItem?.quantity === 1) &&
+        this.invoiceItems.length != 1)
     ) {
-      this.invoiceItems.pop();
+      this.invoiceItems?.pop();
     }
 
-    if (lastItem.productId && lastItem.piecePrice && lastItem.quantity) {
-      this.ProductItems.push({ ...lastItem });
+    if (lastItem?.productId && lastItem?.piecePrice && lastItem?.quantity) {
+      const existingItemIndex = this.ProductItems.findIndex(
+        (item) => item.productId === lastItem.productId
+      );
+      if (existingItemIndex === -1) {
+        // Item doesn't exist, push a copy of lastItem
+        this.ProductItems.push({ ...lastItem });
+      } else {
+        this.invoiceItems?.pop();
+      }
       this.invoiceItems.push({
         piecePrice: '0.00 EGP',
         quantity: 1,
         productName: '',
       });
     } else if (this.invoiceItems.length > 0) {
+      // alert('Please complete the current item before adding a new one.');
       console.error(
         'Please complete the current item before adding a new one.'
       );
