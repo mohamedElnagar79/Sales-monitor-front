@@ -53,8 +53,10 @@ export class SalesComponent {
   @ViewChild('clientPhoneSelection', { static: false })
   clientPhoneSelection!: ElementRef;
   @ViewChild('closeModal') closeModalRef!: ElementRef;
+  @ViewChild('reviewSection') reviewSection!: ElementRef;
+
   faPlus = faPlus;
-  showReview = false;
+  showReview = true;
   p: number = 1;
   count: number = 1;
   products: Product[] = [];
@@ -342,7 +344,17 @@ export class SalesComponent {
       // );
     }
   }
+  printReview(): void {
+    const reviewSectionElement = this.reviewSection.nativeElement;
+    const clonedReviewSection = reviewSectionElement.cloneNode(true); // Clone with styles
 
+    // Optional: Modify cloned content before printing (e.g., remove unnecessary elements)
+
+    const printWindow = window.open();
+    printWindow?.document.write(clonedReviewSection.outerHTML); // Write HTML to new window
+    setTimeout(() => printWindow?.print(), 100); // Print after slight delay
+    this.showReview = false; // Hide the review section in main window
+  }
   resetForm(): void {
     this.productSearch = '';
     this.sale = {

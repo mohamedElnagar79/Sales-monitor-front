@@ -208,143 +208,153 @@
   <!-- show review section -->
   <div *ngIf="showReview" class="review-section">
     <div class="review-head">
-      <div class="row">
-        <div class="col-6">
+      <div
+        style="display: flex; flex-wrap: wrap; justify-content: space-between"
+      >
+        <div style="width: 50%">
           <h5>Invoice <span>#</span></h5>
         </div>
-        <div class="col-6">
+        <div style="width: 50%">
           <div class="right-review">
             <button (click)="this.showReview = false">X</button>
           </div>
         </div>
-        <div class="col-6">
+        <div style="width: 50%">
           <h5>{{ getFormattedDate() }}</h5>
         </div>
-        <div class="col-6">
-          <div class="right-review"></div>
-        </div>
-        <hr />
-        <div class="col-6">
+      </div>
+      <hr />
+      <div
+        #reviewSection
+        style="display: flex; flex-wrap: wrap; justify-content: space-between"
+      >
+        <div style="width: 50%">
           <h5>client name</h5>
         </div>
-        <div class="col-6">
+        <div style="width: 50%">
           <div class="right-review">
             <h5>mohamed said</h5>
           </div>
         </div>
-        <div class="col-6">
+        <div style="width: 50%">
           <h5>seller name</h5>
         </div>
-        <div class="col-6">
+        <div style="width: 50%">
           <div class="right-review">
             <h5>ahmed said</h5>
           </div>
         </div>
-        <div class="col-6">
+        <div style="width: 50%">
           <h5>Date</h5>
         </div>
-        <div class="col-6">
-          <div class="right-review">
+        <div style="width: 50%">
+          <div style="display: flex; justify-content: flex-end">
             <h5>{{ getFormattedDate() }}</h5>
           </div>
         </div>
-      </div>
-      <div class="invoice-items-table table-responsive my-3">
-        <table class="table fixed-height table-responsive">
-          <thead>
-            <tr>
-              <th>product name</th>
-              <td>Price</td>
-              <td>Qty</td>
-              <td>Total</td>
-            </tr>
-          </thead>
-          <tbody>
-            <tr
-              *ngFor="let invoiceItem of invoice.newInvoiceItems; let i = index"
-            >
-              <td>{{ invoiceItem.productName }}</td>
-              <td>{{ invoiceItem.piecePrice }}</td>
-              <td>{{ invoiceItem.quantity }}</td>
-              <td>{{ invoiceItem.total }}</td>
-            </tr>
-            <tr>
-              <td></td>
-              <td></td>
-              <td>
-                <h6>total</h6>
-                <h6>amountPaid</h6>
-                <h6>remaining</h6>
-              </td>
-              <td>
-                <h6>{{ invoice.total }}</h6>
-                <h6>{{ invoice.amountPaid }}</h6>
-                <h6>{{ invoice.remainder }}</h6>
-              </td>
-            </tr>
-          </tbody>
-        </table>
+        <div style="margin: 3rem 0; width: 100%">
+          <table class="table fixed-height table-responsive">
+            <thead>
+              <tr>
+                <th>product name</th>
+                <td>Price</td>
+                <td>Qty</td>
+                <td>Total</td>
+              </tr>
+            </thead>
+            <tbody>
+              <tr
+                *ngFor="
+                  let invoiceItem of invoice.newInvoiceItems;
+                  let i = index
+                "
+              >
+                <td>{{ invoiceItem.productName }}</td>
+                <td>{{ invoiceItem.piecePrice }}</td>
+                <td>{{ invoiceItem.quantity }}</td>
+                <td>{{ invoiceItem.total }}</td>
+              </tr>
+              <tr>
+                <td></td>
+                <td></td>
+                <td>
+                  <p><b>total</b></p>
+                  <p><b>amountPaid</b></p>
+                  <p><b>remaining</b></p>
+                </td>
+                <td>
+                  <p>{{ invoice.total }}</p>
+                  <p>{{ invoice.amountPaid }}</p>
+                  <p>{{ invoice.remainder }}</p>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
         <td class="review-cotrollers">
-          <button class="btn btn-primary me-3">save</button>
-          <button class="btn btn-primary me-3">Save & Print</button>
+          <button class="btn btn-primary me-3" style="color: red">save</button>
+          <button class="btn btn-primary me-3" (click)="printReview()">
+            Save & Print
+          </button>
         </td>
       </div>
     </div>
-  </div>
-  <!--add client Modal -->
-  <div
-    class="modal fade"
-    id="addClientModal"
-    tabindex="-1"
-    aria-labelledby="clientModalLabel"
-    aria-hidden="true"
-  >
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="add-client-form">
-          <h3>Add New client</h3>
-          <form>
-            <div class="form-group">
-              <label for="name">client Name</label>
-              <input
-                type="text"
-                class="form-control"
-                id="name"
-                name="name"
-                [(ngModel)]="newClient.name"
-                required
-              />
-            </div>
-            <div class="form-group">
-              <label for="phone">phone</label>
-              <input
-                type="string"
-                class="form-control"
-                id="phone"
-                name="phone"
-                [(ngModel)]="newClient.phone"
-                required
-              />
-            </div>
+    <!--add client Modal -->
+    <div
+      class="modal fade"
+      id="addClientModal"
+      tabindex="-1"
+      aria-labelledby="clientModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="add-client-form">
+            <h3>Add New client</h3>
+            <form>
+              <div class="form-group">
+                <label for="name">client Name</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="name"
+                  name="name"
+                  [(ngModel)]="newClient.name"
+                  required
+                />
+              </div>
+              <div class="form-group">
+                <label for="phone">phone</label>
+                <input
+                  type="string"
+                  class="form-control"
+                  id="phone"
+                  name="phone"
+                  [(ngModel)]="newClient.phone"
+                  required
+                />
+              </div>
 
-            <div class="form-group">
-              <button
-                type="button"
-                class="btn btn-primary my-2 form-control"
-                (click)="addNewClient(newClient)"
-              >
-                Confirm
-              </button>
-              <button
-                type="button"
-                class="btn btn-secondary form-control"
-                data-bs-dismiss="modal"
-                #closeModal
-              >
-                Close
-              </button>
-            </div>
-          </form>
+              <div class="form-group">
+                <button
+                  type="button"
+                  class="btn btn-primary my-2 form-control"
+                  (click)="addNewClient(newClient)"
+                >
+                  Confirm
+                </button>
+                <button
+                  type="button"
+                  class="btn btn-secondary form-control"
+                  data-bs-dismiss="modal"
+                  #closeModal
+                >
+                  Close
+                </button>
+              </div>
+            </form>
+          </div>
         </div>
       </div>
     </div>
