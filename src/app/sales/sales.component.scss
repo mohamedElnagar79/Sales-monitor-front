@@ -86,9 +86,9 @@ label {
   }
 }
 
-// .review-section {
-//   width: 70%;
-// }
+.right-review h5 {
+  color: #343a40 !important;
+}
 
 .sales-table {
   margin-top: 2rem;
@@ -148,4 +148,11 @@ label {
 .product-selection.active .product-list,
 .client-selection.active .product-list {
   display: block; /* Show the list on focus or click */
+}
+.review-cotrollers {
+  width: 100%;
+
+  button {
+    width: 100%;
+  }
 }

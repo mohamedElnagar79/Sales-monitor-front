@@ -54,7 +54,7 @@ export class SalesComponent {
   clientPhoneSelection!: ElementRef;
   @ViewChild('closeModal') closeModalRef!: ElementRef;
   faPlus = faPlus;
-  showReview = true;
+  showReview = false;
   p: number = 1;
   count: number = 1;
   products: Product[] = [];
