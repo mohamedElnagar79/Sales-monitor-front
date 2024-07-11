@@ -53,8 +53,8 @@ export class SalesComponent {
   @ViewChild('clientPhoneSelection', { static: false })
   clientPhoneSelection!: ElementRef;
   @ViewChild('closeModal') closeModalRef!: ElementRef;
-
   faPlus = faPlus;
+  showReview = true;
   p: number = 1;
   count: number = 1;
   products: Product[] = [];
@@ -113,13 +113,21 @@ export class SalesComponent {
     comments: 'No comment ...',
     createdAt: new Date(),
   };
+  getFormattedDate(): string {
+    const today = new Date();
+    const day = String(today.getDate()).padStart(2, '0'); // Add leading zero for single-digit days
+    const month = today.toLocaleString('default', { month: 'long' }); // Get full month name
+    const year = today.getFullYear();
 
+    return `${day} ${month} ${year}`;
+  }
   constructor(private salesService: SalesService) {}
 
   ngOnInit(): void {
     this.loadProducts('');
     this.loadClients('');
   }
+
   ngAfterViewInit(): void {
     if (this.productSelection) {
       console.log('this.productSelection ', this.productSelection);
@@ -262,10 +270,11 @@ export class SalesComponent {
         return;
       }
     }
+    this.calcRemaider();
   }
   calcRemaider(): void {
     console.log(' calc Remaider ');
-    this.invoice.remainder = this.invoice.total - this.invoice.amountPaid;
+    this.invoice.remainder = this.invoice.total - +this.invoice.amountPaid;
   }
   addnewItem() {
     const lastItem = this.invoiceItems[this.invoiceItems.length - 1];
@@ -305,9 +314,8 @@ export class SalesComponent {
   }
 
   onSubmit(sellForm: any): void {
-    if (sellForm.valid) {
+    if (sellForm.valid && this.invoiceItems[0].productId != 0) {
       const lastItem = this.invoiceItems[this.invoiceItems.length - 1];
-
       if (
         lastItem?.piecePrice === '0.00 EGP' ||
         lastItem?.quantity === 0 ||
@@ -318,8 +326,9 @@ export class SalesComponent {
         }
       }
       this.invoice.newInvoiceItems = [...this.invoiceItems];
-      console.log('this after =====>>>>>>   ', this.invoiceItems);
+      // console.log('this after =====>>>>>>   ', this.invoiceItems);
       console.log('=====> invoiceeee ', this.invoice);
+      this.showReview = true;
       // this.salesService.sellProduct(this.sale).subscribe(
       //   (data: any) => {
       //     // this.count = data.data.count;

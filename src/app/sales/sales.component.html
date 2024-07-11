@@ -1,7 +1,8 @@
 <div class="mt-5 px-5">
-  <h2 class="page-title">Add new Order</h2>
+  <h2 *ngIf="!showReview" class="page-title">Add new Order</h2>
   <!-- (ngSubmit)="onSubmit()" -->
   <form
+    *ngIf="!showReview"
     class="sales-form mb-5"
     #newInvoice="ngForm"
     (ngSubmit)="onSubmit(newInvoice)"
@@ -174,6 +175,7 @@
           [(ngModel)]="invoice.amountPaid"
           name="amountPaid"
           (keyup)="calcRemaider()"
+          [max]="invoice.total"
           required
         />
       </div>
@@ -203,6 +205,52 @@
     <button type="submit" class="btn btn-primary sell">Review</button>
   </form>
 
+  <!-- show review section -->
+  <div *ngIf="showReview" class="review-section">
+    <div class="review-head">
+      <div class="row">
+        <div class="col-6">
+          <h4>Invoice <span>#</span></h4>
+        </div>
+        <div class="col-6">
+          <div class="right-review">
+            <button>X</button>
+          </div>
+        </div>
+        <div class="col-6">
+          <h4>{{ getFormattedDate() }}</h4>
+        </div>
+        <div class="col-6">
+          <div class="right-review"></div>
+        </div>
+        <hr />
+        <div class="col-6">
+          <h4>client name</h4>
+        </div>
+        <div class="col-6">
+          <div class="right-review">
+            <h4>mohamed said</h4>
+          </div>
+        </div>
+        <div class="col-6">
+          <h4>seller name</h4>
+        </div>
+        <div class="col-6">
+          <div class="right-review">
+            <h4>ahmed said</h4>
+          </div>
+        </div>
+        <div class="col-6">
+          <h4>Date</h4>
+        </div>
+        <div class="col-6">
+          <div class="right-review">
+            <h4>{{ getFormattedDate }}</h4>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
   <!--add client Modal -->
   <div
     class="modal fade"

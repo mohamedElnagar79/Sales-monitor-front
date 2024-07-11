@@ -24,7 +24,8 @@ label {
   }
 }
 
-.sales-form {
+.sales-form,
+.review-section {
   background-color: $secColor;
   padding: 2rem;
   border-radius: 0.5rem;
@@ -32,7 +33,8 @@ label {
   margin: 0 auto;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 
-  .new-client {
+  .new-client,
+  .right-review {
     display: flex;
     justify-content: flex-end;
     color: $primaryColor;
@@ -83,6 +85,10 @@ label {
     font-size: 20px;
   }
 }
+
+// .review-section {
+//   width: 70%;
+// }
 
 .sales-table {
   margin-top: 2rem;
