@@ -1,24 +1,29 @@
 $primaryColor: #0d6efd;
 $secColor: #f9f9f9;
 $itemColor: #f2f2f2;
+
 .page-title {
   margin-bottom: 3rem;
   // text-align: center;
   font-size: 2rem;
 }
+
 label {
   text-transform: capitalize;
 }
+
 .add-client-form {
   padding: 20px;
   width: 95%;
   margin: 5px auto;
   margin-bottom: 20px;
   border-radius: 5px;
+
   .form-group {
     margin-bottom: 15px;
   }
 }
+
 .sales-form {
   background-color: $secColor;
   padding: 2rem;
@@ -26,10 +31,12 @@ label {
   width: 50%;
   margin: 0 auto;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+
   .new-client {
     display: flex;
     justify-content: flex-end;
     color: $primaryColor;
+
     span {
       padding-left: 5px;
       &:hover {
@@ -46,17 +53,20 @@ label {
       margin: 0;
     }
   }
+
   .items-container {
     background-color: $itemColor;
     padding: 20px 15px 15px 20px;
     border-radius: 0.5rem;
   }
+
   .items {
-    max-height: 350px;
+    max-height: 350px; /* Adjust max-height as needed */
     min-height: 140px;
-    overflow-y: scroll;
+    overflow-y: scroll; /* Enable vertical scrolling */
     overflow-x: hidden;
   }
+
   .form-label {
     font-weight: bold;
   }
@@ -77,6 +87,7 @@ label {
 .sales-table {
   margin-top: 2rem;
 }
+
 .product-selection,
 .client-selection {
   position: relative;
@@ -98,12 +109,12 @@ label {
   left: 0;
   background-color: #f1f1f1;
   min-width: 160px;
-  min-height: auto;
+  /* Removed min-height for automatic height adjustment */
 
   box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
   z-index: 1;
   display: block; /* Initially hide the list */
-  max-height: 150px; /* Set a maximum height for the list */
+  /* Removed max-height for potential overflow */
   overflow-y: scroll;
   list-style-type: none;
   width: 100%;
