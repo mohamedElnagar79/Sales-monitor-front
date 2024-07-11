@@ -1,7 +1,11 @@
 <div class="mt-5 px-5">
   <h2 class="page-title">Add new Order</h2>
   <!-- (ngSubmit)="onSubmit()" -->
-  <form class="sales-form mb-5" #newInvoice (ngSubmit)="onSubmit(newInvoice)">
+  <form
+    class="sales-form mb-5"
+    #newInvoice="ngForm"
+    (ngSubmit)="onSubmit(newInvoice)"
+  >
     <div class="row">
       <div class="mb-2 col-12">
         <!--  -->
@@ -68,6 +72,7 @@
           <button
             class="client-btn"
             data-bs-toggle="modal"
+            type="button"
             data-bs-target="#addClientModal"
           >
             <fa-icon [icon]="faPlus"></fa-icon>
@@ -142,7 +147,7 @@
             </div>
           </div>
           <div class="new-client mt-3">
-            <button class="client-btn" (click)="addnewItem()">
+            <button class="client-btn" (click)="addnewItem()" type="button">
               <fa-icon [icon]="faPlus"></fa-icon>
             </button>
             <span> add new Item</span>
@@ -155,7 +160,7 @@
           type="text"
           id="total"
           class="form-control"
-          [(ngModel)]="sale.total"
+          [(ngModel)]="invoice.total"
           name="total"
           disabled
         />
@@ -166,9 +171,9 @@
           type="text"
           id="amountPaid"
           class="form-control"
-          [(ngModel)]="sale.amountPaid"
+          [(ngModel)]="invoice.amountPaid"
           name="amountPaid"
-          (keyup)="calcRemaider(sale)"
+          (keyup)="calcRemaider()"
           required
         />
       </div>
@@ -189,7 +194,7 @@
           type="number"
           id="remainingBalance"
           class="form-control"
-          [(ngModel)]="sale.remainingBalance"
+          [(ngModel)]="invoice.remainder"
           name="remainingBalance"
           disabled
         />
@@ -236,7 +241,7 @@
 
             <div class="form-group">
               <button
-                type="submit"
+                type="button"
                 class="btn btn-primary my-2 form-control"
                 (click)="addNewClient(newClient)"
               >

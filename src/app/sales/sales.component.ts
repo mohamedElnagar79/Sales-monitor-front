@@ -19,6 +19,7 @@ interface InvoiceItem {
   productId?: number;
   productName?: string;
   filteredProducts?: any;
+  total?: number;
 }
 interface Invoice {
   clientName?: string;
@@ -27,6 +28,8 @@ interface Invoice {
   newInvoiceItems: InvoiceItem[];
   amountPaid: number;
   comments?: string;
+  total: number;
+  remainder: number;
 }
 interface Client {
   name: '';
@@ -72,6 +75,8 @@ export class SalesComponent {
   invoice: Invoice = {
     clientId: 0,
     amountPaid: 0,
+    total: 0,
+    remainder: 0,
     newInvoiceItems: [
       {
         piecePrice: 0,
@@ -89,6 +94,7 @@ export class SalesComponent {
       quantity: 1,
       productId: 0,
       productName: '',
+      total: 0,
       filteredProducts: [],
     },
   ];
@@ -240,26 +246,26 @@ export class SalesComponent {
     }
   }
   calcTotal(): void {
-    this.sale.total = 0;
-    let itemTotalPrice: number;
+    this.invoice.total = 0;
     for (const item of this.invoiceItems) {
-      // console.log('itemmmmm ', item);
       if (
-        item.piecePrice == 0 ||
-        item.piecePrice == '0.00 EGP' ||
-        item.quantity != 0
+        // item.piecePrice != 0 ||
+        // item.piecePrice != '0.00 EGP' ||
+        // item.quantity != 0 ||
+        item.productName != ''
       ) {
-        // console.log('22');
         console.log('from select  invoiceItems ', this.invoiceItems);
 
-        itemTotalPrice = item.piecePrice * item.quantity;
-        this.sale.total += itemTotalPrice;
+        item.total = item.piecePrice * item.quantity;
+        this.invoice.total += item.total;
+      } else {
+        return;
       }
     }
   }
-  calcRemaider(product: any): void {
+  calcRemaider(): void {
     console.log(' calc Remaider ');
-    this.sale.remainingBalance = product.total - product.amountPaid;
+    this.invoice.remainder = this.invoice.total - this.invoice.amountPaid;
   }
   addnewItem() {
     const lastItem = this.invoiceItems[this.invoiceItems.length - 1];
@@ -298,10 +304,22 @@ export class SalesComponent {
     console.log('InvoiceItems:', this.invoiceItems);
   }
 
-  onSubmit(newInvoice: any): void {
-    if (newInvoice.valid) {
-      console.log('this =====>>>>>>   ', this.invoiceItems);
+  onSubmit(sellForm: any): void {
+    if (sellForm.valid) {
+      const lastItem = this.invoiceItems[this.invoiceItems.length - 1];
 
+      if (
+        lastItem?.piecePrice === '0.00 EGP' ||
+        lastItem?.quantity === 0 ||
+        lastItem.productId === 0
+      ) {
+        if (this.invoiceItems[0].productName !== '') {
+          this.invoiceItems?.pop();
+        }
+      }
+      this.invoice.newInvoiceItems = [...this.invoiceItems];
+      console.log('this after =====>>>>>>   ', this.invoiceItems);
+      console.log('=====> invoiceeee ', this.invoice);
       // this.salesService.sellProduct(this.sale).subscribe(
       //   (data: any) => {
       //     // this.count = data.data.count;
