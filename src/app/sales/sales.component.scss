@@ -150,8 +150,12 @@ label {
   display: block; /* Show the list on focus or click */
 }
 .review-cotrollers {
-  width: 100%;
+  background-color: $secColor;
+  margin: 0 auto;
+  margin-bottom: 2rem;
+  padding: 2rem;
 
+  width: 50%;
   button {
     width: 100%;
   }
