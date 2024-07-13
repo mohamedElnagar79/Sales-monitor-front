@@ -26,12 +26,11 @@ label {
 
 .sales-form,
 .review-section {
-  background-color: $secColor;
-  padding: 2rem;
-  border-radius: 0.5rem;
+  background-color: #f9f9f9;
+  padding: 2rem 2rem 0 2rem;
+  border-radius: 0;
   width: 50%;
   margin: 0 auto;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 
   .new-client,
   .right-review {
@@ -153,7 +152,7 @@ label {
   background-color: $secColor;
   margin: 0 auto;
   margin-bottom: 2rem;
-  padding: 2rem;
+  padding: 0 2rem 2rem;
 
   width: 50%;
   button {

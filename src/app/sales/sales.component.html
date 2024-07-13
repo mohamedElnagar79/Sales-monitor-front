@@ -225,11 +225,10 @@
     #reviewSection
     style="
       background-color: #f9f9f9;
-      padding: 2rem;
+      padding: 0 2rem 0.5rem 2rem;
       border-radius: 0.5rem;
       width: 50%;
       margin: 0 auto;
-      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     "
   >
     <div style="display: flex; flex-wrap: wrap; justify-content: space-between">
@@ -244,7 +243,7 @@
         <h5>client name</h5>
       </div>
       <div style="width: 50%">
-        <div class="right-review">
+        <div style="display: flex; justify-content: flex-end">
           <h5>mohamed said</h5>
         </div>
       </div>
@@ -252,7 +251,7 @@
         <h5>seller name</h5>
       </div>
       <div style="width: 50%">
-        <div class="right-review">
+        <div style="display: flex; justify-content: flex-end">
           <h5>ahmed said</h5>
         </div>
       </div>
@@ -260,41 +259,49 @@
         <h5>Date</h5>
       </div>
       <div style="width: 50%">
-        <h5>{{ getFormattedDate() }}</h5>
+        <div style="display: flex; justify-content: flex-end">
+          <h5>{{ getFormattedDate() }}</h5>
+        </div>
       </div>
     </div>
     <!-- end of felex -->
-    <div style="margin: 3rem 0; width: 100%">
-      <table class="table fixed-height table-responsive">
+    <div style="padding: 2rem 0 0.5rem 0; width: 100%">
+      <table class="table" style="width: 100%">
         <thead>
           <tr>
-            <th>product name</th>
-            <td>Price</td>
-            <td>Qty</td>
-            <td>Total</td>
+            <th style="width: 25%; text-align: left">product</th>
+            <td style="width: 25%">Price</td>
+            <td style="width: 25%">Qty</td>
+            <td style="width: 25%">Total</td>
           </tr>
         </thead>
         <tbody>
           <tr
             *ngFor="let invoiceItem of invoice.newInvoiceItems; let i = index"
           >
-            <td>{{ invoiceItem.productName }}</td>
-            <td>{{ invoiceItem.piecePrice }}</td>
-            <td>{{ invoiceItem.quantity }}</td>
-            <td>{{ invoiceItem.total }}</td>
+            <td style="width: 25%">{{ invoiceItem.productName }}</td>
+            <td style="width: 25%">{{ invoiceItem.piecePrice }}</td>
+            <td style="width: 25%">{{ invoiceItem.quantity }}</td>
+            <td style="width: 25%">{{ invoiceItem.total }}</td>
           </tr>
           <tr>
-            <td></td>
-            <td></td>
-            <td>
-              <p><b>total</b></p>
-              <p><b>amountPaid</b></p>
-              <p><b>remaining</b></p>
+            <td style="width: 25%"></td>
+            <td style="width: 25%"></td>
+            <td style="width: 25%">
+              <p style="margin-bottom: 5px">total</p>
+              <p style="margin-bottom: 5px">Paid</p>
+              <p style="margin-bottom: 5px">remaining</p>
             </td>
-            <td>
-              <p>{{ invoice.total }}</p>
-              <p>{{ invoice.amountPaid }}</p>
-              <p>{{ invoice.remainder }}</p>
+            <td style="width: 25%">
+              <p style="margin-bottom: 5px">
+                <b>{{ invoice.total }}</b>
+              </p>
+              <p style="margin-bottom: 5px">
+                <b>{{ invoice.amountPaid }}</b>
+              </p>
+              <p style="margin-bottom: 5px">
+                <b>{{ invoice.remainder }}</b>
+              </p>
             </td>
           </tr>
         </tbody>

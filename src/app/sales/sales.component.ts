@@ -350,11 +350,12 @@ export class SalesComponent {
 
     // Optional: Modify cloned content before printing (e.g., remove unnecessary elements)
 
-    const printWindow = window.open();
+    const printWindow = window.open('', '_blank'); // Open in new tab/window
     printWindow?.document.write(clonedReviewSection.outerHTML); // Write HTML to new window
+    printWindow?.document.close(); // Close the document for printing
     setTimeout(() => printWindow?.print(), 100); // Print after slight delay
-    this.showReview = false; // Hide the review section in main window
   }
+
   resetForm(): void {
     this.productSearch = '';
     this.sale = {
