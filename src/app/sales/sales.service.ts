@@ -9,13 +9,13 @@ export class SalesService {
 
   constructor(private http: HttpClient) {}
 
-  sellProduct(product: {}): Observable<any> {
+  sellProduct(invoice: {}): Observable<any> {
     const token = localStorage.getItem('token');
     if (token) {
       const headers = new HttpHeaders({
         Authorization: `Bearer ${token}`,
       });
-      return this.http.post<any>(this.apiUrl + `sell-product`, product, {
+      return this.http.post<any>(this.apiUrl + `sell-product`, invoice, {
         headers,
       });
     } else {

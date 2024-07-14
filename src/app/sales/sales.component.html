@@ -129,6 +129,7 @@
                   name="piecePrice{{ i }}"
                   (keyup)="calcTotal()"
                   required
+                  [disabled]="isAdmin()"
                 />
               </div>
               <!-- select quantity -->
@@ -228,7 +229,6 @@
     style="
       background-color: #f9f9f9;
       padding: 0 2rem 0.5rem 2rem;
-      border-radius: 0.5rem;
       width: 50%;
       margin: 0 auto;
     "
@@ -242,67 +242,131 @@
     <hr />
     <div style="display: flex; flex-wrap: wrap; justify-content: space-between">
       <div style="width: 50%">
-        <h5>client name</h5>
+        <h5 style="font-size: 17px; text-transform: capitalize">client name</h5>
       </div>
       <div style="width: 50%">
         <div style="display: flex; justify-content: flex-end">
-          <h5>{{ clientName }}</h5>
+          <h5 style="font-size: 18px; text-transform: capitalize">
+            {{ clientName }}
+          </h5>
         </div>
       </div>
       <div style="width: 50%">
-        <h5>seller name</h5>
+        <h5 style="font-size: 17px; text-transform: capitalize">seller name</h5>
       </div>
       <div style="width: 50%">
         <div style="display: flex; justify-content: flex-end">
-          <h5>{{ sellerName }}</h5>
+          <h5 style="font-size: 18px; text-transform: capitalize">
+            {{ sellerName }}
+          </h5>
         </div>
       </div>
       <div style="width: 50%">
-        <h5>Date</h5>
+        <h5 style="font-size: 17px; text-transform: capitalize">Date</h5>
       </div>
       <div style="width: 50%">
         <div style="display: flex; justify-content: flex-end">
-          <h5>{{ getFormattedDate() }}</h5>
+          <h5 style="font-size: 18px; text-transform: capitalize">
+            {{ getFormattedDate() }}
+          </h5>
         </div>
       </div>
     </div>
     <!-- end of felex -->
     <div style="padding: 2rem 0 0.5rem 0; width: 100%">
-      <table class="table" style="width: 100%">
+      <table style="width: 100%">
         <thead>
-          <tr>
-            <th style="width: 25%; text-align: left">product</th>
-            <td style="width: 25%">Price</td>
-            <td style="width: 25%">Qty</td>
-            <td style="width: 25%">Total</td>
+          <tr style="border: 1px solid #cecece">
+            <td
+              style="
+                width: 40%;
+                text-align: left;
+                background-color: #cecece;
+                padding: 5px 10px;
+              "
+            >
+              product
+            </td>
+            <td
+              style="width: 10%; background-color: #cecece; padding: 5px 10px"
+            >
+              Price
+            </td>
+            <td
+              style="width: 10%; background-color: #cecece; padding: 5px 10px"
+            >
+              Qty
+            </td>
+            <td
+              style="
+                width: 40%;
+                background-color: #cecece;
+                padding: 5px 5px 5px 15%;
+              "
+            >
+              Total
+            </td>
           </tr>
         </thead>
         <tbody>
           <tr
+            style="border-bottom: 1px solid #cecece; padding: 5px 10px"
             *ngFor="let invoiceItem of invoice.newInvoiceItems; let i = index"
           >
-            <td style="width: 25%">{{ invoiceItem.productName }}</td>
-            <td style="width: 25%">{{ invoiceItem.piecePrice }}</td>
-            <td style="width: 25%">{{ invoiceItem.quantity }}</td>
-            <td style="width: 25%">{{ invoiceItem.total }}</td>
+            <td
+              style="width: 40%; background-color: #f2f2f2; padding: 5px 10px"
+            >
+              {{ invoiceItem.productName }}
+            </td>
+            <td
+              style="width: 10%; background-color: #f2f2f2; padding: 5px 10px"
+            >
+              {{ invoiceItem.piecePrice }}
+            </td>
+            <td
+              style="width: 10%; background-color: #f2f2f2; padding: 5px 10px"
+            >
+              {{ invoiceItem.quantity }}
+            </td>
+            <td
+              style="
+                width: 40%;
+                background-color: #f2f2f2;
+                padding: 5px 5px 5px 15%;
+              "
+            >
+              {{ invoiceItem.total }} EGP
+            </td>
           </tr>
           <tr>
-            <td style="width: 25%"></td>
-            <td style="width: 25%"></td>
-            <td style="width: 25%">
-              <p style="margin-bottom: 5px">total</p>
-              <p style="margin-bottom: 5px">Paid</p>
-              <p style="margin-bottom: 5px">remaining</p>
+            <td
+              style="width: 40%; background-color: #f2f2f2; padding: 5px"
+            ></td>
+            <td
+              style="width: 10%; background-color: #f2f2f2; padding: 5px"
+            ></td>
+            <td style="width: 10%; background-color: #f2f2f2; padding: 5px">
+              <p style="margin-bottom: 5px; font-size: 16px"><b>total</b></p>
+              <p style="margin-bottom: 5px; font-size: 16px"><b>Paid</b></p>
+              <p style="margin-bottom: 5px; font-size: 16px">
+                <b>remaining</b>
+              </p>
             </td>
-            <td style="width: 25%">
+            <td
+              style="
+                width: 40%;
+                background-color: #f2f2f2;
+                padding: 5px 5px 5px 15%;
+              "
+            >
               <p style="margin-bottom: 5px">
-                <b>{{ invoice.total }}</b>
+                <b>{{ invoice.total }} EGP</b>
               </p>
               <p style="margin-bottom: 5px">
-                <b>{{ invoice.amountPaid }}</b>
+                <b>{{ invoice.amountPaid }} EGP</b>
               </p>
               <p style="margin-bottom: 5px">
-                <b>{{ invoice.remainder }}</b>
+                <b>{{ invoice.remainder }} EGP</b>
               </p>
             </td>
           </tr>
@@ -314,7 +378,9 @@
   <!-- end of printing page -->
 
   <div *ngIf="showReview" class="review-cotrollers">
-    <button class="btn btn-primary me-3 my-2">Save</button>
+    <button class="btn btn-primary me-3 my-2" (click)="SaveNewInvoice()">
+      Save
+    </button>
     <button class="btn btn-primary me-3 my-2" (click)="printReview()">
       Save & Print
     </button>

@@ -60,7 +60,7 @@ export class SalesComponent {
   clientName: string = 'client';
   faPlus = faPlus;
   faClose = faClose;
-  showReview = true;
+  showReview = false;
   p: number = 1;
   count: number = 1;
   products: Product[] = [];
@@ -152,6 +152,7 @@ export class SalesComponent {
       this.clientObj.name = newClient.name;
       this.clientObj.phone = newClient.phone;
       this.clientName = newClient.name;
+      delete this.invoice.clientId;
       this.closeModalRef.nativeElement.click();
     }
   }
@@ -229,6 +230,8 @@ export class SalesComponent {
     this.filteredClients = [];
     this.phoneFlag = false;
     this.invoice.clientId = client.id;
+    delete this.invoice.clientName;
+    delete this.invoice.phone;
     this.clientName = client.name;
     console.log('invoice   ', this.invoice);
     this.clientObj.name = client.name;
@@ -281,6 +284,10 @@ export class SalesComponent {
     this.calcRemaider();
   }
   calcRemaider(): void {
+    console.log('this.invoice.remainder ', this.invoice.remainder);
+    if (this.invoice.remainder < 0 || isNaN(this.invoice.remainder)) {
+      alert('enter valid amount paid');
+    }
     console.log(' calc Remaider ');
     this.invoice.remainder = this.invoice.total - +this.invoice.amountPaid;
   }
@@ -334,20 +341,7 @@ export class SalesComponent {
         }
       }
       this.invoice.newInvoiceItems = [...this.invoiceItems];
-      // console.log('this after =====>>>>>>   ', this.invoiceItems);
-      console.log('=====> invoiceeee ', this.invoice);
       this.showReview = true;
-      // this.salesService.sellProduct(this.sale).subscribe(
-      //   (data: any) => {
-      //     // this.count = data.data.count;
-      //     console.log('hi');
-      //     this.resetForm();
-      //     // this.startIndex = this.p > 1 ? (this.p - 1) * 8 + 1 : 1;
-      //   },
-      //   (error) => {
-      //     console.error('Error fetching sales:', error);
-      //   }
-      // );
     }
   }
   printReview(): void {
@@ -364,6 +358,44 @@ export class SalesComponent {
 
   resetForm(): void {
     this.productSearch = '';
+    this.filteredProducts = [];
+    this.filteredClients = [];
+    this.invoiceItems = [
+      {
+        piecePrice: '0.00 EGP',
+        quantity: 1,
+        productId: 0,
+        productName: '',
+        total: 0,
+        filteredProducts: [],
+      },
+    ];
+    this.ProductItems = [];
+    this.newClient = {
+      name: '',
+      phone: '',
+    };
+    this.clientObj = {
+      name: '',
+      phone: '',
+    };
+    this.invoice = {
+      clientId: 0,
+      amountPaid: 0,
+      total: 0,
+      remainder: 0,
+      newInvoiceItems: [
+        {
+          piecePrice: 0,
+          quantity: 0,
+        },
+      ],
+    };
+    this.newClient = {
+      name: '',
+      phone: '',
+    };
+    this.clientName = 'client';
     this.sale = {
       id: 0,
       productId: 0,
@@ -377,5 +409,24 @@ export class SalesComponent {
       comments: 'No comment ...',
       createdAt: new Date(),
     };
+  }
+  SaveNewInvoice(): void {
+    this.salesService.sellProduct(this.invoice).subscribe(
+      (data: any) => {
+        // this.count = data.data.count;
+        console.log('data ', data);
+        this.resetForm();
+        this.showReview = false;
+        // this.startIndex = this.p > 1 ? (this.p - 1) * 8 + 1 : 1;
+      },
+      (error) => {
+        console.error('Error fetching sales:', error);
+      }
+    );
+  }
+  isAdmin(): boolean {
+    const role: any = localStorage.getItem('role');
+
+    return role == 'user' ? true : false; // Replace 'userRole' with your user role variable
   }
 }
