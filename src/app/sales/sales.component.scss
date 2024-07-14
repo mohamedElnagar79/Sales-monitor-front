@@ -157,8 +157,12 @@ label {
   width: 50%;
   button {
     width: 100%;
+    font-size: 20px;
   }
 }
-.red {
-  color: red !important;
+
+.closeReviewBtn {
+  border: 0;
+  background: none;
+  font-size: 20px;
 }

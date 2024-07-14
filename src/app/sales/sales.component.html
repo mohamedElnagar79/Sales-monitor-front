@@ -213,7 +213,9 @@
       </div>
       <div style="width: 50%">
         <div class="right-review">
-          <button (click)="this.showReview = false">X</button>
+          <button (click)="this.showReview = false" class="closeReviewBtn">
+            <fa-icon [icon]="faClose"></fa-icon>
+          </button>
         </div>
       </div>
     </div>
@@ -312,7 +314,7 @@
   <!-- end of printing page -->
 
   <div *ngIf="showReview" class="review-cotrollers">
-    <button class="btn btn-primary me-3 my-2" style="color: red">save</button>
+    <button class="btn btn-primary me-3 my-2">Save</button>
     <button class="btn btn-primary me-3 my-2" (click)="printReview()">
       Save & Print
     </button>

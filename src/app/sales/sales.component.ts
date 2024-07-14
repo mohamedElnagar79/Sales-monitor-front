@@ -5,7 +5,7 @@ import { SalesService } from './sales.service';
 import { Sale } from '../models/sale';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
-import { faPlus } from '@fortawesome/free-solid-svg-icons';
+import { faPlus, faClose } from '@fortawesome/free-solid-svg-icons';
 
 interface Product {
   id: number;
@@ -56,6 +56,7 @@ export class SalesComponent {
   @ViewChild('reviewSection') reviewSection!: ElementRef;
 
   faPlus = faPlus;
+  faClose = faClose;
   showReview = true;
   p: number = 1;
   count: number = 1;
