@@ -147,8 +147,13 @@ export class SalesComponent {
   }
 
   addNewClient(newClient: Client) {
+    if (newClient.phone.length < 11) {
+      alert('phone must be 11 char ');
+      return;
+    }
     if (newClient.name == '' || newClient.phone == '') {
       alert('name and phone is required ');
+      return;
     } else {
       this.invoice.clientName = newClient.name;
       this.invoice.phone = newClient.phone;
@@ -254,7 +259,11 @@ export class SalesComponent {
     console.log('from select  invoiceItems ', this.invoiceItems);
     console.log('from select  existingItemIndex ', existingItemIndex);
     console.log('from select  existingInvoiceItems ', existingInvoiceItems);
-    if (existingItemIndex >= 0 || existingInvoiceItems >= 0) {
+    console.log('iii ', i);
+    if (
+      existingItemIndex >= 0 ||
+      (existingInvoiceItems >= 0 && existingInvoiceItems != i)
+    ) {
       this.invoiceItems[i].productName = '';
       alert('you have already add his before!');
     } else {
@@ -352,7 +361,7 @@ export class SalesComponent {
     const clonedReviewSection = reviewSectionElement.cloneNode(true); // Clone with styles
 
     // Optional: Modify cloned content before printing (e.g., remove unnecessary elements)
-
+    this.SaveNewInvoice();
     const printWindow = window.open('', '_blank'); // Open in new tab/window
     printWindow?.document.write(clonedReviewSection.outerHTML); // Write HTML to new window
     printWindow?.document.close(); // Close the document for printing
@@ -413,13 +422,14 @@ export class SalesComponent {
       createdAt: new Date(),
     };
   }
-  SaveNewInvoice(): void {
+  SaveNewInvoice(print?: boolean): void {
     this.salesService.sellProduct(this.invoice).subscribe(
       (data: any) => {
         // this.count = data.data.count;
         console.log('data ', data);
         this.resetForm();
         this.showReview = false;
+        console.log('print ', print);
         setTimeout(() => {
           this.toastr.success('Invoice created successfully!'),
             '',
@@ -428,10 +438,14 @@ export class SalesComponent {
               positionClass: 'toast-top-center',
             };
         }, 0); // Display message after 2 seconds
-
+        if (print) {
+          console.log('print func work =========');
+          // this.printReview();
+        }
         // this.startIndex = this.p > 1 ? (this.p - 1) * 8 + 1 : 1;
       },
       (error) => {
+        alert(`${error.error.message}`);
         console.error('Error fetching sales:', error);
       }
     );

@@ -389,7 +389,11 @@
     <button class="btn btn-primary me-3 my-2" (click)="SaveNewInvoice()">
       Save
     </button>
-    <button class="btn btn-primary me-3 my-2" (click)="printReview()">
+    <button
+      disabled
+      class="btn btn-primary me-3 my-2"
+      (click)="SaveNewInvoice(true)"
+    >
       Save & Print
     </button>
   </div>
@@ -425,6 +429,8 @@
                 class="form-control"
                 id="phone"
                 name="phone"
+                minlength="11"
+                [maxLength]="11"
                 [(ngModel)]="newClient.phone"
                 required
               />
@@ -440,7 +446,7 @@
               </button>
               <button
                 type="button"
-                class="btn btn-secondary form-control"
+                class="btn btn-outline-secondary form-control"
                 data-bs-dismiss="modal"
                 #closeModal
               >
