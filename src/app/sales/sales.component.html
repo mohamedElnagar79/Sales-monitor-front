@@ -233,40 +233,47 @@
       margin: 0 auto;
     "
   >
-    <div style="display: flex; flex-wrap: wrap; justify-content: space-between">
+    <div
+      style="
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        font-size: 15px;
+      "
+    >
       <div style="width: 50%">
-        <h5>{{ getFormattedDate() }}</h5>
+        <h5 style="font-size: 15px">{{ getFormattedDate() }}</h5>
       </div>
     </div>
     <!-- end of sec row -->
     <hr />
     <div style="display: flex; flex-wrap: wrap; justify-content: space-between">
       <div style="width: 50%">
-        <h5 style="font-size: 17px; text-transform: capitalize">client name</h5>
+        <h5 style="font-size: 14px; text-transform: capitalize">client name</h5>
       </div>
       <div style="width: 50%">
         <div style="display: flex; justify-content: flex-end">
-          <h5 style="font-size: 18px; text-transform: capitalize">
+          <h5 style="font-size: 16px; text-transform: capitalize">
             {{ clientName }}
           </h5>
         </div>
       </div>
       <div style="width: 50%">
-        <h5 style="font-size: 17px; text-transform: capitalize">seller name</h5>
+        <h5 style="font-size: 14px; text-transform: capitalize">seller name</h5>
       </div>
       <div style="width: 50%">
         <div style="display: flex; justify-content: flex-end">
-          <h5 style="font-size: 18px; text-transform: capitalize">
+          <h5 style="font-size: 16px; text-transform: capitalize">
             {{ sellerName }}
           </h5>
         </div>
       </div>
       <div style="width: 50%">
-        <h5 style="font-size: 17px; text-transform: capitalize">Date</h5>
+        <h5 style="font-size: 14px; text-transform: capitalize">Date</h5>
       </div>
       <div style="width: 50%">
         <div style="display: flex; justify-content: flex-end">
-          <h5 style="font-size: 18px; text-transform: capitalize">
+          <h5 style="font-size: 16px; text-transform: capitalize">
             {{ getFormattedDate() }}
           </h5>
         </div>
@@ -346,9 +353,9 @@
               style="width: 10%; background-color: #f2f2f2; padding: 5px"
             ></td>
             <td style="width: 10%; background-color: #f2f2f2; padding: 5px">
-              <p style="margin-bottom: 5px; font-size: 16px"><b>total</b></p>
-              <p style="margin-bottom: 5px; font-size: 16px"><b>Paid</b></p>
-              <p style="margin-bottom: 5px; font-size: 16px">
+              <p style="margin-bottom: 5px; font-size: 14px"><b>total</b></p>
+              <p style="margin-bottom: 5px; font-size: 14px"><b>Paid</b></p>
+              <p style="margin-bottom: 5px; font-size: 14px">
                 <b>remaining</b>
               </p>
             </td>
@@ -357,6 +364,7 @@
                 width: 40%;
                 background-color: #f2f2f2;
                 padding: 5px 5px 5px 15%;
+                font-size: 14px;
               "
             >
               <p style="margin-bottom: 5px">
