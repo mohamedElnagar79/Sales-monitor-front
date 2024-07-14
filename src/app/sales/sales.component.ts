@@ -6,7 +6,7 @@ import { Sale } from '../models/sale';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 import { faPlus, faClose } from '@fortawesome/free-solid-svg-icons';
-
+import { ToastrService } from '../shared/toastr.service';
 interface Product {
   id: number;
   name: string;
@@ -127,7 +127,10 @@ export class SalesComponent {
 
     return `${day} ${month} ${year}`;
   }
-  constructor(private salesService: SalesService) {}
+  constructor(
+    private salesService: SalesService,
+    private toastr: ToastrService
+  ) {}
 
   ngOnInit(): void {
     this.loadProducts('');
@@ -417,6 +420,15 @@ export class SalesComponent {
         console.log('data ', data);
         this.resetForm();
         this.showReview = false;
+        setTimeout(() => {
+          this.toastr.success('Invoice created successfully!'),
+            '',
+            {
+              timeOut: 5000,
+              positionClass: 'toast-top-center',
+            };
+        }, 0); // Display message after 2 seconds
+
         // this.startIndex = this.p > 1 ? (this.p - 1) * 8 + 1 : 1;
       },
       (error) => {
