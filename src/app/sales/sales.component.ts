@@ -54,7 +54,10 @@ export class SalesComponent {
   clientPhoneSelection!: ElementRef;
   @ViewChild('closeModal') closeModalRef!: ElementRef;
   @ViewChild('reviewSection') reviewSection!: ElementRef;
-
+  sellerName: any = localStorage.getItem('name')
+    ? localStorage.getItem('name')
+    : 'computer World';
+  clientName: string = 'client';
   faPlus = faPlus;
   faClose = faClose;
   showReview = true;
@@ -148,6 +151,7 @@ export class SalesComponent {
       this.invoice.phone = newClient.phone;
       this.clientObj.name = newClient.name;
       this.clientObj.phone = newClient.phone;
+      this.clientName = newClient.name;
       this.closeModalRef.nativeElement.click();
     }
   }
@@ -225,6 +229,7 @@ export class SalesComponent {
     this.filteredClients = [];
     this.phoneFlag = false;
     this.invoice.clientId = client.id;
+    this.clientName = client.name;
     console.log('invoice   ', this.invoice);
     this.clientObj.name = client.name;
     this.clientObj.phone = client.phone;
