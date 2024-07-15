@@ -5,7 +5,13 @@
       <input type="text" class="search" [(ngModel)]="search" name="search" />
     </div>
     <div>
-      <input type="date" class="mx-3 search" />
+      <input
+        type="date"
+        class="mx-3 search"
+        name="searchDate"
+        (keyup)="getInvoices(searchDate)"
+        [(ngModel)]="searchDate"
+      />
       <button class="btn-toggle-form">
         <fa-icon [icon]="faPlus" class="me-1"></fa-icon> add new Invoice
       </button>
