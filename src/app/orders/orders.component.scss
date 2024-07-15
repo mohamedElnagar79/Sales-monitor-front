@@ -15,6 +15,7 @@ $itemColor: #f2f2f2;
   overflow-y: scroll;
   scrollbar-width: thin; /* For Firefox */
   scrollbar-color: #888 #f2f2f2; /* For Firefox */
+  text-transform: capitalize;
   .invoice-card:first-child {
     margin-top: 0 !important;
   }

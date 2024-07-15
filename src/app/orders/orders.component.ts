@@ -20,7 +20,7 @@ import { Router } from '@angular/router';
 })
 export class OrdersComponent {
   @ViewChild('closeModal') closeModalRef!: ElementRef;
-  date: any = '15-07-2024';
+  searchDate: Date = new Date();
   invoices: any = [];
   search: any = '';
   faPen = faPen;
@@ -69,13 +69,10 @@ export class OrdersComponent {
   // }
 
   getInvoices(date?: any): void {
-    // Replace with your API endpoint
     this.ordersService.getInvoices(date).subscribe(
       (data: any) => {
-        // this.count = data.data.count;
         this.invoices = data.data;
         console.log('data  ', data);
-        // this.startIndex = this.p > 1 ? (this.p - 1) * 8 + 1 : 1;
       },
       (error) => {
         console.error('Error fetching invoices:', error);
