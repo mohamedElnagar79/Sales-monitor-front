@@ -10,17 +10,17 @@ export class OrdersService {
 
   private apiUrl = 'http://localhost:10000/';
 
-  getListOfSales(p: number, searchTerm?: string): Observable<any[]> {
+  getInvoices(date?: string): Observable<any[]> {
     const token = localStorage.getItem('token');
-    let params = new HttpParams().set('page', p);
-    if (searchTerm) {
-      params = params.set('search', searchTerm);
+    let params;
+    if (date) {
+      params == new HttpParams().set('date', date);
     }
     if (token) {
       const headers = new HttpHeaders({
         Authorization: `Bearer ${token}`,
       });
-      return this.http.get<any>(this.apiUrl + `get-last-sales`, {
+      return this.http.get<any>(this.apiUrl + `invoices`, {
         headers,
         params,
       });
