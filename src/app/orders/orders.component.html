@@ -15,7 +15,7 @@
     <div *ngFor="let invoice of invoices; let i = index">
       <div class="invoice-card">
         <div>
-          <h5 class="mb-4">
+          <h5 class="mb-4 invoice-name">
             {{ invoice.clientName }}
             <span>({{ invoice.itemCount }} items)</span>
           </h5>
