@@ -15,7 +15,7 @@
     <div *ngFor="let invoice of invoices; let i = index">
       <div class="invoice-card">
         <div>
-          <h5 class="mb-4 invoice-name">
+          <h5 class="mb-4">
             {{ invoice.clientName }}
             <span>({{ invoice.itemCount }} items)</span>
           </h5>
@@ -28,14 +28,21 @@
           </div>
           <div>
             <h6 class="mb-4">
-              :<span class="ms-3">{{ invoice.total }} EGP</span>
-              <button class="circle-right mx-1">
+              :<span class="ms-3"
+                ><b>{{ invoice.total }}</b> EGP</span
+              >
+              <button
+                class="circle-right mx-1"
+                (click)="navigateTo(invoice.id)"
+              >
                 <fa-icon [icon]="faChevronRight" class="mx-1"></fa-icon>
               </button>
             </h6>
             <h6>
-              :<span class="ms-3">{{ invoice.remainingBalance }}</span
-              >EGP
+              :<span class="ms-3">
+                <b>{{ invoice.remainingBalance }}</b></span
+              >
+              EGP
             </h6>
           </div>
         </div>

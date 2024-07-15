@@ -1,8 +1,6 @@
 import { Component, ElementRef, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { OrdersService } from './orders.service';
-import { NgxPaginationModule } from 'ngx-pagination';
-import { Sale } from '../models/sale';
 import { FormsModule } from '@angular/forms';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import {
@@ -11,11 +9,12 @@ import {
   faPlus,
   faChevronRight,
 } from '@fortawesome/free-solid-svg-icons';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-orders',
   standalone: true,
-  imports: [NgxPaginationModule, CommonModule, FormsModule, FontAwesomeModule],
+  imports: [CommonModule, FormsModule, FontAwesomeModule],
   templateUrl: './orders.component.html',
   styleUrl: './orders.component.scss',
 })
@@ -32,7 +31,7 @@ export class OrdersComponent {
   showReturnedCost: boolean = false;
   returnedCost: number = 0;
 
-  constructor(private ordersService: OrdersService) {}
+  constructor(private ordersService: OrdersService, private router: Router) {}
 
   ngOnInit(): void {
     this.getInvoices();
@@ -82,5 +81,9 @@ export class OrdersComponent {
         console.error('Error fetching invoices:', error);
       }
     );
+  }
+  navigateTo(id: any): void {
+    const path: any = `invoice/${id}`;
+    this.router.navigate([path]);
   }
 }
