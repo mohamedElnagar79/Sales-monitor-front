@@ -10,6 +10,7 @@ import {
   faChevronRight,
 } from '@fortawesome/free-solid-svg-icons';
 import { Router } from '@angular/router';
+import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-orders',
@@ -20,7 +21,8 @@ import { Router } from '@angular/router';
 })
 export class OrdersComponent {
   @ViewChild('closeModal') closeModalRef!: ElementRef;
-  searchDate: Date = new Date();
+  searchDate: any = new Date();
+  formattedDate: any = '';
   invoices: any = [];
   search: any = '';
   faPen = faPen;
@@ -31,10 +33,22 @@ export class OrdersComponent {
   showReturnedCost: boolean = false;
   returnedCost: number = 0;
 
-  constructor(private ordersService: OrdersService, private router: Router) {}
+  constructor(
+    private ordersService: OrdersService,
+    private router: Router,
+    private datePipe: DatePipe
+  ) {}
 
   ngOnInit(): void {
-    this.getInvoices();
+    this.searchDate = this.datePipe.transform(this.searchDate, 'MM-dd-yyyy');
+    console.log('this ', this.searchDate);
+    this.getInvoices(this.getFormattedDate());
+  }
+  getFormattedDate(): any {
+    return (this.formattedDate = this.datePipe.transform(
+      this.searchDate,
+      'MM-dd-yyyy'
+    ));
   }
   // returnSale(): void {
   //   this.ordersService.returnASale(this.updatedSalesObj).subscribe(
@@ -72,7 +86,6 @@ export class OrdersComponent {
     this.ordersService.getInvoices(date).subscribe(
       (data: any) => {
         this.invoices = data.data;
-        console.log('data  ', data);
       },
       (error) => {
         console.error('Error fetching invoices:', error);

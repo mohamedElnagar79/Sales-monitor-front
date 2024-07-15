@@ -9,7 +9,8 @@
         type="date"
         class="mx-3 search"
         name="searchDate"
-        (keyup)="getInvoices(searchDate)"
+        [value]="searchDate"
+        (keyup)="getInvoices(getFormattedDate())"
         [(ngModel)]="searchDate"
       />
       <button class="btn-toggle-form">

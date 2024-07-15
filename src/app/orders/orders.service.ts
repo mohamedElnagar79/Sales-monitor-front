@@ -11,10 +11,11 @@ export class OrdersService {
   private apiUrl = 'http://localhost:10000/';
 
   getInvoices(date?: string): Observable<any[]> {
+    console.log('date from service', date);
     const token = localStorage.getItem('token');
     let params;
     if (date) {
-      params == new HttpParams().set('date', date);
+      params = new HttpParams().set('date', date);
     }
     if (token) {
       const headers = new HttpHeaders({
