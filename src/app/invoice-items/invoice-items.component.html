@@ -4,8 +4,11 @@
       <h3>invoice items</h3>
     </div>
     <div>
-      <button class="btn-toggle-form">
-        <fa-icon [icon]="faPlus" class="me-1"></fa-icon> add new Invoice
+      <button
+        class="btn-toggle-form"
+        (click)="navigateTo(invoiceItems[0].invoiceId)"
+      >
+        <fa-icon [icon]="faPlus" class="me-1"></fa-icon> new Invoice Item
       </button>
     </div>
   </div>
@@ -33,8 +36,7 @@
             <div class="table-cotrollers">
               <button
                 class="btn btn-primary btn-sm me-3"
-                data-bs-toggle="modal"
-                data-bs-target="#updatedProductModal"
+                (click)="navigateTo(item.invoiceId)"
               >
                 <fa-icon [icon]="faPen"></fa-icon>
               </button>

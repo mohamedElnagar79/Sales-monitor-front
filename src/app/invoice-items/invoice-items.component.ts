@@ -2,7 +2,8 @@ import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
+
 import { faPen, faTrash, faPlus } from '@fortawesome/free-solid-svg-icons';
 import { InvoiceItemsService } from './invoice-items.service';
 @Component({
@@ -19,7 +20,8 @@ export class InvoiceItemsComponent {
   faPlus = faPlus;
   constructor(
     private InvoiceItemsService: InvoiceItemsService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private router: Router
   ) {}
 
   ngOnInit(): void {
@@ -37,5 +39,9 @@ export class InvoiceItemsComponent {
         console.error('Error fetching invoices:', error);
       }
     );
+  }
+  navigateTo(id: any): void {
+    const path: any = `sales/${id}`;
+    this.router.navigate([path]);
   }
 }
