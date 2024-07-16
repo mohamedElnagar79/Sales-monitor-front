@@ -36,6 +36,11 @@ export const routes: Routes = [
     canActivate: [TokenGuard],
   },
   {
+    path: 'sales/:id',
+    component: SalesComponent,
+    canActivate: [TokenGuard],
+  },
+  {
     path: 'invoice/:id',
     component: InvoiceItemsComponent,
     canActivate: [TokenGuard],
