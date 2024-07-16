@@ -20,7 +20,7 @@
         <a
           data-bs-toggle="collapse"
           class="nav-link px-0 align-middle"
-          [ngClass]="{ active: currentRoute === '/sales' }"
+          [ngClass]="{ active: currentRoute.includes('/sales') }"
           (click)="navigateTo('sales')"
         >
           <fa-icon [icon]="faCartArrowDown"></fa-icon>
@@ -31,7 +31,10 @@
         <a
           class="nav-link align-middle px-0"
           (click)="navigateTo('orders')"
-          [ngClass]="{ active: currentRoute === '/orders' }"
+          [ngClass]="{
+            active:
+              currentRoute === '/orders' || currentRoute.includes('/invoice/')
+          }"
         >
           <fa-icon [icon]="faChartLine"></fa-icon>
           <span class="ms-1 d-none d-sm-inline">Invoices</span>

@@ -1,12 +1,17 @@
 .invoice-head {
   display: flex;
   justify-content: space-between;
-  margin-top: 5rem;
+  margin-top: 1rem;
 }
 .table-container {
   height: 500px;
   overflow: hidden;
   width: 100%;
+}
+.back {
+  background: none;
+  border: none;
+  font-size: 20px;
 }
 
 .table {

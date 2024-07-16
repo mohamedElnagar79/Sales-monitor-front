@@ -4,7 +4,12 @@ import { FormsModule } from '@angular/forms';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { ActivatedRoute, Router } from '@angular/router';
 
-import { faPen, faTrash, faPlus } from '@fortawesome/free-solid-svg-icons';
+import {
+  faPen,
+  faTrash,
+  faPlus,
+  faChevronLeft,
+} from '@fortawesome/free-solid-svg-icons';
 import { InvoiceItemsService } from './invoice-items.service';
 @Component({
   selector: 'app-invoice-items',
@@ -18,6 +23,7 @@ export class InvoiceItemsComponent {
   faPen = faPen;
   faTrash = faTrash;
   faPlus = faPlus;
+  faChevronLeft = faChevronLeft;
   constructor(
     private InvoiceItemsService: InvoiceItemsService,
     private route: ActivatedRoute,

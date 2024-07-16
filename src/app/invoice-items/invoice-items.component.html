@@ -1,5 +1,10 @@
-<div class="mt-5 px-5" *ngIf="invoiceItems.length > 0">
-  <div class="invoice-head">
+<div class="mt-5 px-5">
+  <div>
+    <button class="back">
+      <fa-icon [icon]="faChevronLeft" class="me-1"></fa-icon>
+    </button>
+  </div>
+  <div class="invoice-head" *ngIf="invoiceItems.length > 0">
     <div>
       <h3>invoice items</h3>
     </div>
