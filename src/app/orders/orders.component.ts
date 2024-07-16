@@ -21,7 +21,9 @@ import { DatePipe } from '@angular/common';
 })
 export class OrdersComponent {
   @ViewChild('closeModal') closeModalRef!: ElementRef;
-  searchDate: any = new Date();
+  today: any = new Date();
+
+  searchDate: any = this.today.toISOString().split('T')[0];
   formattedDate: any = '';
   invoices: any = [];
   search: any = '';
@@ -40,8 +42,9 @@ export class OrdersComponent {
   ) {}
 
   ngOnInit(): void {
-    this.searchDate = this.datePipe.transform(this.searchDate, 'MM-dd-yyyy');
-    console.log('this ', this.searchDate);
+    console.log('search date 0 ', this.searchDate);
+    // this.searchDate = this.datePipe.transform(this.searchDate, 'MM-dd-yyyy');
+    // console.log('this ', this.searchDate);
     this.getInvoices(this.getFormattedDate());
   }
   getFormattedDate(): any {
@@ -83,6 +86,7 @@ export class OrdersComponent {
   // }
 
   getInvoices(date?: any): void {
+    console.log('date from dunc ===> ', date);
     this.ordersService.getInvoices(date).subscribe(
       (data: any) => {
         this.invoices = data.data;

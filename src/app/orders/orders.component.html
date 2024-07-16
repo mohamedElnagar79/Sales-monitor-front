@@ -10,7 +10,7 @@
         class="mx-3 search"
         name="searchDate"
         [value]="searchDate"
-        (keyup)="getInvoices(getFormattedDate())"
+        (change)="getInvoices(getFormattedDate())"
         [(ngModel)]="searchDate"
       />
       <button class="btn-toggle-form">
@@ -18,7 +18,7 @@
       </button>
     </div>
   </div>
-  <div class="contain-invoices my-4" id="invoiceContainer">
+  <div class="contain-invoices my-5" id="invoiceContainer">
     <div *ngFor="let invoice of invoices; let i = index">
       <div class="invoice-card">
         <div>
