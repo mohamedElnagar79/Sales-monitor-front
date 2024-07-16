@@ -7,6 +7,7 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 import { faPlus, faClose } from '@fortawesome/free-solid-svg-icons';
 import { ToastrService } from '../shared/toastr.service';
+import { ActivatedRoute } from '@angular/router';
 interface Product {
   id: number;
   name: string;
@@ -22,6 +23,7 @@ interface InvoiceItem {
   total?: number;
 }
 interface Invoice {
+  invoiceId?: number;
   clientName?: string;
   phone?: string;
   clientId?: number;
@@ -63,6 +65,8 @@ export class SalesComponent {
   showReview = false;
   p: number = 1;
   count: number = 1;
+  invoiceId: number = 0;
+  titleMessage: string = 'Add new Order';
   products: Product[] = [];
   clients: Client[] = [
     {
@@ -129,10 +133,17 @@ export class SalesComponent {
   }
   constructor(
     private salesService: SalesService,
-    private toastr: ToastrService
+    private toastr: ToastrService,
+    private route: ActivatedRoute
   ) {}
 
   ngOnInit(): void {
+    const id: any = this.route.snapshot.paramMap.get('id');
+    this.titleMessage = id ? 'Update Invoice' : this.titleMessage;
+    console.log(' invoice id ', id);
+    if (id) {
+      this.getOneInvoiceById(id);
+    }
     this.loadProducts('');
     this.loadClients('');
   }
@@ -179,7 +190,21 @@ export class SalesComponent {
   trackByFn(index: number, item: InvoiceItem) {
     return item; // Or a unique identifier for each item
   }
-
+  getOneInvoiceById(invoiceId: number): void {
+    this.salesService.getOneInvoiceById(invoiceId).subscribe((data: any) => {
+      console.log('get data =====>  ', data); // Initialize filteredProducts
+      this.clientObj.phone = data.data.phone;
+      this.clientObj.name = data.data.clientName;
+      this.clientObj.id = data.data.clientId;
+      this.invoiceId = data.data.id;
+      this.invoiceItems = data.data.invoice_items;
+      this.invoice.newInvoiceItems = data.data.invoice_items;
+      this.invoice.amountPaid = data.data.amountPaid;
+      this.invoice.clientId = data.data.clientId;
+      this.invoice.invoiceId = data.data.id;
+      this.calcTotal();
+    });
+  }
   filterClientsByName(event: any): void {
     console.log('event', event.target.value.toLowerCase());
     console.log('clients   ', this.clients);
@@ -353,6 +378,7 @@ export class SalesComponent {
         }
       }
       this.invoice.newInvoiceItems = [...this.invoiceItems];
+      console.log('this.invoice', this.invoice);
       this.showReview = true;
     }
   }

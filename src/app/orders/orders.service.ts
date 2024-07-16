@@ -8,7 +8,8 @@ import { Observable } from 'rxjs';
 export class OrdersService {
   constructor(private http: HttpClient) {}
 
-  private apiUrl = 'http://localhost:10000/';
+  private apiUrl = 'http://192.168.1.36:10000/';
+  // private apiUrl = 'http://localhost:10000/';
 
   getInvoices(date?: string): Observable<any[]> {
     console.log('date from service', date);

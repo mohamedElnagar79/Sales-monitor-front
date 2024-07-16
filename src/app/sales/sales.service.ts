@@ -5,7 +5,7 @@ import { Observable } from 'rxjs';
   providedIn: 'root',
 })
 export class SalesService {
-  private apiUrl = 'http://localhost:10000/';
+  private apiUrl = 'http://192.168.1.36:10000/';
 
   constructor(private http: HttpClient) {}
 
@@ -73,6 +73,20 @@ export class SalesService {
       return this.http.get<any>(this.apiUrl + `clients-list`, {
         headers,
         params,
+      });
+    } else {
+      throw new Error('Authorization token not found');
+    }
+  }
+
+  getOneInvoiceById(invoiceId: number): Observable<any[]> {
+    const token = localStorage.getItem('token');
+    if (token) {
+      const headers = new HttpHeaders({
+        Authorization: `Bearer ${token}`,
+      });
+      return this.http.get<any>(this.apiUrl + `invoice/${invoiceId}`, {
+        headers,
       });
     } else {
       throw new Error('Authorization token not found');

@@ -1,5 +1,5 @@
 <div class="mt-5 px-5">
-  <h2 *ngIf="!showReview" class="page-title">Add new Order</h2>
+  <h2 *ngIf="!showReview" class="page-title">{{ titleMessage }}</h2>
   <!-- (ngSubmit)="onSubmit()" -->
   <form
     *ngIf="!showReview"
@@ -69,7 +69,7 @@
         </div>
       </div>
       <div class="mb-3 col-12">
-        <div class="new-client">
+        <div *ngIf="invoiceId == 0" class="new-client">
           <button
             class="client-btn"
             data-bs-toggle="modal"

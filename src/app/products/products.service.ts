@@ -7,7 +7,8 @@ import { Product } from '../models/product.model';
   providedIn: 'root',
 })
 export class ProductsService {
-  private apiUrl = 'http://localhost:10000/';
+  private apiUrl = 'http://192.168.1.36:10000/';
+  // private apiUrl = 'http://localhost:10000/';
   constructor(private http: HttpClient) {}
   getAllProducts(p: number, searchTerm?: string): Observable<any[]> {
     const token = localStorage.getItem('token');

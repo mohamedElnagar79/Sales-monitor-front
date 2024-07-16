@@ -9,7 +9,8 @@ import { Outgoing } from '../models/outgoing';
 export class OutgoingService {
   constructor(private http: HttpClient) {}
 
-  private apiUrl = 'http://localhost:10000/';
+  private apiUrl = 'http://192.168.1.36:10000/';
+  // private apiUrl = 'http://localhost:10000/';
 
   getOutgoing(p: number, searchTerm?: string): Observable<any[]> {
     const token = localStorage.getItem('token');
