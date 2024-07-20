@@ -2,12 +2,13 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Product } from '../models/product.model';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root',
 })
 export class ProductsService {
-  private apiUrl = 'http://192.168.1.36:10000/';
+  private apiUrl = environment.apiUrl;
   // private apiUrl = 'http://localhost:10000/';
   constructor(private http: HttpClient) {}
   getAllProducts(p: number, searchTerm?: string): Observable<any[]> {
