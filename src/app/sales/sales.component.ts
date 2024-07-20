@@ -1,11 +1,11 @@
 import { Component, ElementRef, ViewChild, AfterViewInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { CommonModule } from '@angular/common';
+import { CommonModule, DatePipe } from '@angular/common';
 import { SalesService } from './sales.service';
 import { Sale } from '../models/sale';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
-import { faPlus, faClose } from '@fortawesome/free-solid-svg-icons';
+import { faPlus, faClose, faSave } from '@fortawesome/free-solid-svg-icons';
 import { ToastrService } from '../shared/toastr.service';
 import { ActivatedRoute } from '@angular/router';
 interface Product {
@@ -62,12 +62,15 @@ export class SalesComponent {
   clientName: string = 'client';
   faPlus = faPlus;
   faClose = faClose;
-  showReview = false;
+  faSave = faSave;
+  showReview: boolean = false;
+  showPayment: boolean = false;
   p: number = 1;
   count: number = 1;
   invoiceId: number = 0;
   titleMessage: string = 'Add new Order';
   products: Product[] = [];
+  invoicePayments: any = [];
   clients: Client[] = [
     {
       name: '',
@@ -126,11 +129,12 @@ export class SalesComponent {
   getFormattedDate(): string {
     const today = new Date();
     const day = String(today.getDate()).padStart(2, '0'); // Add leading zero for single-digit days
-    const month = today.toLocaleString('default', { month: 'long' }); // Get full month name
+    const month = String(today.getMonth() + 1).padStart(2, '0'); // Get numeric month (01-12)
     const year = today.getFullYear();
 
-    return `${day} ${month} ${year}`;
+    return `${day}/${month}/${year}`;
   }
+
   constructor(
     private salesService: SalesService,
     private toastr: ToastrService,
@@ -189,6 +193,16 @@ export class SalesComponent {
   }
   trackByFn(index: number, item: InvoiceItem) {
     return item; // Or a unique identifier for each item
+  }
+  addPayment(): void {
+    console.log('hi add new payment');
+    this.invoicePayments.push({
+      total: this.invoice.total,
+      paid: this.invoice.amountPaid,
+      remaining: this.invoice.remainder,
+      date: this.getFormattedDate(),
+    });
+    console.log('this.invoicePayments ???? ', this.invoicePayments);
   }
   getOneInvoiceById(invoiceId: number): void {
     this.salesService.getOneInvoiceById(invoiceId).subscribe((data: any) => {
@@ -379,8 +393,13 @@ export class SalesComponent {
       }
       this.invoice.newInvoiceItems = [...this.invoiceItems];
       console.log('this.invoice', this.invoice);
-      this.showReview = true;
+      this.showPayment = true;
     }
+  }
+  showReviewSection(): void {
+    console.log('heloo');
+    this.showPayment = false;
+    this.showReview = true;
   }
   printReview(): void {
     const reviewSectionElement = this.reviewSection.nativeElement;

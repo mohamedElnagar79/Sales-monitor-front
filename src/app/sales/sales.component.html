@@ -2,7 +2,7 @@
   <h2 *ngIf="!showReview" class="page-title">{{ titleMessage }}</h2>
   <!-- (ngSubmit)="onSubmit()" -->
   <form
-    *ngIf="!showReview"
+    *ngIf="!showReview && !showPayment"
     class="sales-form mb-5"
     #newInvoice="ngForm"
     (ngSubmit)="onSubmit(newInvoice)"
@@ -152,10 +152,23 @@
             <button class="client-btn" (click)="addnewItem()" type="button">
               <fa-icon [icon]="faPlus"></fa-icon>
             </button>
-            <span> add new Item</span>
+            <span (click)="addnewItem()"> add new Item</span>
           </div>
         </div>
       </div>
+    </div>
+    <button type="submit" class="btn btn-primary sell">Next</button>
+  </form>
+  <!-- invoice payment form  -->
+
+  <form
+    *ngIf="showPayment && !showReview"
+    name="payment-form"
+    (ngSubmit)="showReviewSection()"
+    class="payment-form mb-5"
+  >
+    <h6 class="mb-3">payments</h6>
+    <div class="row m-0 p-0">
       <div class="mb-3 col-4">
         <label for="total" class="form-label">total</label>
         <input
@@ -180,19 +193,8 @@
           required
         />
       </div>
-      <!-- <div class="mb-3 col-6">
-        <label for="comments" class="form-label">comments</label>
-        <input
-          id="comments"
-          class="form-control"
-          [(ngModel)]="sale.comments"
-          name="comments"
-          required
-        />
-      </div> -->
-
       <div class="mb-3 col-4">
-        <label for="salePrice" class="form-label">Remaining Balance</label>
+        <label for="salePrice" class="form-label">Remaining</label>
         <input
           type="number"
           id="remainingBalance"
@@ -202,12 +204,51 @@
           disabled
         />
       </div>
+      <div class="new-client mt-3">
+        <button class="client-btn" (click)="addPayment()" type="button">
+          <fa-icon [icon]="faSave"></fa-icon>
+        </button>
+        <span (click)="addPayment()">Save</span>
+      </div>
+      <div class="my-2 col-12">
+        <table class="table table-responsive" style="width: 100%">
+          <thead>
+            <tr>
+              <td>date</td>
+              <td>total</td>
+              <td>Paid</td>
+              <td>Remaining</td>
+            </tr>
+          </thead>
+          <tbody>
+            <tr
+              style="border-bottom: 1px solid #cecece; padding: 5px 10px"
+              *ngFor="let item of invoicePayments; let i = index"
+            >
+              <td>
+                {{ item.date }}
+              </td>
+              <td>
+                {{ item.total }}
+              </td>
+              <td>
+                {{ item.paid }}
+              </td>
+              <td>
+                {{ item.remaining }}
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="my-3 col-12">
+        <button type="submit" class="btn btn-primary sell">Review</button>
+      </div>
     </div>
-    <button type="submit" class="btn btn-primary sell">Review</button>
   </form>
 
   <!-- show review section -->
-  <div *ngIf="showReview" class="review-section">
+  <div *ngIf="showReview && !showPayment" class="review-section">
     <div style="display: flex; flex-wrap: wrap; justify-content: space-between">
       <div style="width: 50%">
         <h5>Invoice <span>#</span></h5>
