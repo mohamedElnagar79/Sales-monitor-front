@@ -204,13 +204,13 @@
           disabled
         />
       </div>
-      <div class="new-client mt-3">
+      <div *ngIf="isUpdate" class="new-client mt-3">
         <button class="client-btn" (click)="addPayment()" type="button">
           <fa-icon [icon]="faSave"></fa-icon>
         </button>
         <span (click)="addPayment()">Save</span>
       </div>
-      <div class="my-2 col-12">
+      <div class="my-2 col-12" *ngIf="isUpdate">
         <table class="table table-responsive" style="width: 100%">
           <thead>
             <tr>
@@ -226,13 +226,13 @@
               *ngFor="let item of invoicePayments; let i = index"
             >
               <td>
-                {{ item.date }}
+                {{ item.createdAt }}
               </td>
               <td>
                 {{ item.total }}
               </td>
               <td>
-                {{ item.paid }}
+                {{ item.amountPaid }}
               </td>
               <td>
                 {{ item.remaining }}

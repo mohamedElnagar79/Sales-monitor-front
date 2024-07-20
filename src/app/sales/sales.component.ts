@@ -63,6 +63,7 @@ export class SalesComponent {
   faPlus = faPlus;
   faClose = faClose;
   faSave = faSave;
+  isUpdate: boolean = false;
   showReview: boolean = false;
   showPayment: boolean = false;
   p: number = 1;
@@ -140,13 +141,13 @@ export class SalesComponent {
     private toastr: ToastrService,
     private route: ActivatedRoute
   ) {}
-
   ngOnInit(): void {
     const id: any = this.route.snapshot.paramMap.get('id');
     this.titleMessage = id ? 'Update Invoice' : this.titleMessage;
-    console.log(' invoice id ', id);
     if (id) {
       this.getOneInvoiceById(id);
+      this.getInvoiceById(id);
+      this.isUpdate = true;
     }
     this.loadProducts('');
     this.loadClients('');
@@ -198,9 +199,9 @@ export class SalesComponent {
     console.log('hi add new payment');
     this.invoicePayments.push({
       total: this.invoice.total,
-      paid: this.invoice.amountPaid,
+      amountPaid: this.invoice.amountPaid,
       remaining: this.invoice.remainder,
-      date: this.getFormattedDate(),
+      createdAt: this.getFormattedDate(),
     });
     console.log('this.invoicePayments ???? ', this.invoicePayments);
   }
@@ -213,10 +214,16 @@ export class SalesComponent {
       this.invoiceId = data.data.id;
       this.invoiceItems = data.data.invoice_items;
       this.invoice.newInvoiceItems = data.data.invoice_items;
-      this.invoice.amountPaid = data.data.amountPaid;
+      // this.invoice.amountPaid = data.data.amountPaid;
       this.invoice.clientId = data.data.clientId;
       this.invoice.invoiceId = data.data.id;
       this.calcTotal();
+    });
+  }
+  getInvoiceById(invoiceId: any): void {
+    this.salesService.getInvoicePayments(invoiceId).subscribe((data: any) => {
+      console.log('invoiceData =====>  ', data.data); // Initialize filteredProducts
+      this.invoicePayments = [...data.data];
     });
   }
   filterClientsByName(event: any): void {
