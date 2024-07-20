@@ -3,13 +3,14 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Outgoing } from '../models/outgoing';
+import { environment } from '../../environments/environment';
 @Injectable({
   providedIn: 'root',
 })
 export class OutgoingService {
   constructor(private http: HttpClient) {}
 
-  private apiUrl = 'http://192.168.1.36:10000/';
+  private apiUrl = environment.apiUrl;
   // private apiUrl = 'http://localhost:10000/';
 
   getOutgoing(p: number, searchTerm?: string): Observable<any[]> {
