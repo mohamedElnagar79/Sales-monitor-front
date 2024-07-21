@@ -1,35 +1,34 @@
 <div class="container mt-5 px-5">
-  <div>
-    <h2>my outgoing</h2>
-  </div>
   <div class="outgoing-head mt-3">
-    <input
+    <!-- <input
       type="text"
       class="search-input"
       [(ngModel)]="search"
       name="search"
-    />
-    <!-- (keyup)="getproducts(1, search)" -->
+      (keyup)="outgoing(p, search)"
+    /> -->
+    <h2>my outgoing</h2>
 
     <button
       class="btn btn-toggle-form mb-2"
       data-bs-toggle="modal"
-      data-bs-target="#addProductModal"
+      data-bs-target="#addOutgoingModal"
     >
       <!-- (click)="toggleForm()" -->
       <fa-icon [icon]="faPlus" class="me-1"></fa-icon> add new outgoing
     </button>
   </div>
-  <div class="table-container table-responsive">
+  <h1 class="empty-data" *ngIf="outgoing.length == 0">There Is No Entries</h1>
+  <div class="table-container table-responsive" *ngIf="outgoing.length > 0">
     <table class="table fixed-height table-responsive">
       <thead>
         <tr>
           <th>No.</th>
-          <th>amount</th>
           <th>expense Name</th>
           <th>description</th>
           <th>reasone</th>
-          <th>created At</th>
+          <th>amount</th>
+          <th>Date</th>
           <th></th>
         </tr>
       </thead>
@@ -43,34 +42,37 @@
           "
         >
           <td>{{ i + startIndex }}</td>
-          <td>{{ outItem.amount }}</td>
           <td>{{ outItem.expenseName }}</td>
-          <td>{{ outItem.description }}</td>
+          <td class="desc">{{ outItem.description }}</td>
           <td>{{ outItem.reasone }}</td>
+          <td>{{ outItem.amount | number : "1.0-0" }}</td>
           <td>{{ outItem.updatedAt }}</td>
-          <td class="table-cotrollers">
-            <button
-              class="btn btn-primary btn-sm me-3"
-              data-bs-toggle="modal"
-              data-bs-target="#updatedProductModal"
-            >
-              <!-- (click)="openUpdateForm(product)" -->
-              <fa-icon [icon]="faPen"></fa-icon>
-            </button>
-            <button
-              class="btn btn-danger btn-sm"
-              data-bs-toggle="modal"
-              data-bs-target="#deleteModal"
-            >
-              <!-- (click)="ActivateProductToDelete(product.id)" -->
-              <fa-icon [icon]="faTrash"></fa-icon>
-            </button>
+          <td>
+            <div class="table-cotrollers">
+              <button
+                class="btn btn-primary btn-sm me-3"
+                data-bs-toggle="modal"
+                data-bs-target="#updatedOutgoingModal"
+                (click)="openUpdateForm(outItem)"
+              >
+                <fa-icon [icon]="faPen"></fa-icon>
+              </button>
+              <button
+                class="btn btn-danger btn-sm"
+                data-bs-toggle="modal"
+                data-bs-target="#deleteModal"
+                (click)="openDeleteModal(outItem.id)"
+              >
+                <fa-icon [icon]="faTrash"></fa-icon>
+              </button>
+            </div>
           </td>
         </tr>
       </tbody>
     </table>
   </div>
   <pagination-controls
+    *ngIf="outgoing.length > 0"
     (pageChange)="p = $event; getOutgoing(p, search)"
   ></pagination-controls>
 
@@ -84,7 +86,7 @@
   >
     <div class="modal-dialog">
       <div class="modal-content">
-        <div class="update-product-form">
+        <div class="update-outgoing-form">
           <h3>update outgoing</h3>
           <form (ngSubmit)="updateoutgoing(updatedOutgoing)">
             <div class="form-group">
@@ -101,7 +103,7 @@
             <div class="form-group">
               <label for="expenseName">expense Name</label>
               <input
-                type="number"
+                type="text"
                 class="form-control"
                 id="expenseName"
                 [(ngModel)]="updatedOutgoing.expenseName"
@@ -112,36 +114,12 @@
             <div class="form-group">
               <label for="description">description</label>
               <input
-                type="number"
+                type="text"
                 class="form-control"
                 id="description"
                 [(ngModel)]="updatedOutgoing.description"
                 name="description"
                 required
-              />
-            </div>
-
-            <div class="form-group">
-              <label for="reasone">reasone</label>
-              <input
-                type="number"
-                class="form-control"
-                id="reasone"
-                [(ngModel)]="updatedOutgoing.reasone"
-                name="reasone"
-                required
-              />
-            </div>
-            <div class="form-group">
-              <label for="createdAt">created At</label>
-              <input
-                class="form-control"
-                id="createdAt"
-                [(ngModel)]="updatedOutgoing.createdAt"
-                name="createdAt"
-                required
-                rows="3"
-                cols="50"
               />
             </div>
             <div class="form-group">
@@ -167,78 +145,54 @@
   </div>
 
   <!--add product Modal -->
-  <!-- <div
+  <div
     class="modal fade"
-    id="addProductModal"
+    id="addOutgoingModal"
     tabindex="-1"
-    aria-labelledby="exampleModalLabel"
+    aria-labelledby="addOutgoingModalLabel"
     aria-hidden="true"
   >
     <div class="modal-dialog">
       <div class="modal-content">
-        <div class="add-product-form">
-          <h3>Add New Product</h3>
-          <form (ngSubmit)="addProduct()">
+        <div class="add-outgoing-form">
+          <h3>Add New outgoing</h3>
+          <form (ngSubmit)="addOutgoing(newOutgoing)">
             <div class="form-group">
-              <label for="name">Name</label>
+              <label for="expenseName">expense name</label>
               <input
                 type="text"
                 class="form-control"
-                id="name"
-                [(ngModel)]="newProduct.name"
-                name="name"
-                required
-              />
-            </div>
-            <div class="form-group">
-              <label for="price">Price</label>
-              <input
-                type="number"
-                class="form-control"
-                id="price"
-                [(ngModel)]="newProduct.price"
-                name="price"
-                required
-              />
-            </div>
-            <div class="form-group">
-              <label for="soldPrice">Sold Price</label>
-              <input
-                type="number"
-                class="form-control"
-                id="soldPrice"
-                [(ngModel)]="newProduct.soldPrice"
-                name="soldPrice"
-                required
-              />
-            </div>
-
-            <div class="form-group">
-              <label for="stock">Stock</label>
-              <input
-                type="number"
-                class="form-control"
-                id="stock"
-                [(ngModel)]="newProduct.stock"
-                name="stock"
+                id="expenseName"
+                [(ngModel)]="newOutgoing.expenseName"
+                name="expenseName"
                 required
               />
             </div>
             <div class="form-group">
               <label for="description">description</label>
-              <textarea
+              <input
+                type="text"
                 class="form-control"
                 id="description"
-                [(ngModel)]="newProduct.description"
+                [(ngModel)]="newOutgoing.description"
                 name="description"
                 required
-                rows="3"
-                cols="50"
-              ></textarea>
+              />
             </div>
             <div class="form-group">
-              <button type="submit" class="btn btn-primary my-2 form-control">
-                Add Product
+              <label for="amount">amount</label>
+              <input
+                type="number"
+                class="form-control"
+                id="amount"
+                [(ngModel)]="newOutgoing.amount"
+                name="amount"
+                required
+              />
+            </div>
+            <div class="form-group">
+              <button type="submit" class="btn btn-primary my-3 form-control">
+                Add outgoing
               </button>
               <button
                 type="button"
@@ -252,11 +206,10 @@
         </div>
       </div>
     </div>
-  </div> -->
+  </div>
 
-  <!-- Button trigger modal -->
   <!-- delete Modal -->
-  <!-- <div
+  <div
     class="modal fade"
     id="deleteModal"
     tabindex="-1"
@@ -291,12 +244,12 @@
           <button
             type="button"
             class="btn btn-danger"
-            (click)="deleteProduct()"
+            (click)="deleteOutgoing(deletedId)"
           >
             delete
           </button>
         </div>
       </div>
     </div>
-  </div> -->
+  </div>
 </div>

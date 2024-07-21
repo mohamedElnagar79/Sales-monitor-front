@@ -1,112 +1,503 @@
-<div class="container mt-5">
-  <h2 class="page-title">New Sale Entry</h2>
-  <form class="sales-form" (ngSubmit)="onSubmit()">
+<div class="mt-5 px-5">
+  <h2 *ngIf="!showReview" class="page-title">{{ titleMessage }}</h2>
+  <!-- (ngSubmit)="onSubmit()" -->
+  <form
+    *ngIf="!showReview && !showPayment"
+    class="sales-form mb-5"
+    #newInvoice="ngForm"
+    (ngSubmit)="onSubmit(newInvoice)"
+  >
     <div class="row">
-      <div class="mb-3 col-6">
-        <label for="product" class="form-label">Product</label>
-        <div class="product-selection" #productSelection>
-          <input
-            type="text"
-            autocomplete="off"
-            id="productSearch"
-            class="form-control product-search"
-            placeholder="Search products"
-            (keyup)="filterProducts($event)"
-            name="productName"
-            [(ngModel)]="sale.productName"
-          />
-          <ul class="product-list" *ngIf="filteredProducts.length > 0">
-            <li
-              *ngFor="let product of filteredProducts"
-              [value]="product.id"
-              (click)="selectProduct(product)"
+      <div class="mb-2 col-12">
+        <!--  -->
+        <label for="clientName" class="form-label">Select Client name</label>
+        <div class="client-selection" #clientSelection>
+          <div class="client-search-wrapper">
+            <input
+              type="text"
+              autocomplete="off"
+              id="clientName"
+              class="form-control client-search"
+              name="name"
+              [(ngModel)]="clientObj.name"
+              (keyup)="filterClientsByName($event)"
+              required
+            />
+            <ul
+              class="client-list"
+              *ngIf="filteredClients.length > 0 && !phoneFlag"
             >
-              {{ product.name }}
-            </li>
-          </ul>
+              <li
+                *ngFor="let client of filteredClients"
+                [value]="client.name"
+                (click)="selectClient(client)"
+              >
+                {{ client.name }}
+              </li>
+            </ul>
+          </div>
+        </div>
+        <!--  -->
+      </div>
+      <div class="mb-2 col-12">
+        <label for="Phone" class="form-label">Select Client Phone</label>
+        <div class="client-selection" #clientPhoneSelection>
+          <div class="client-search-wrapper">
+            <input
+              type="text"
+              autocomplete="off"
+              id="phone"
+              class="form-control client-search"
+              name="phone"
+              [(ngModel)]="clientObj.phone"
+              (keyup)="filterClientsByPhone($event)"
+              required
+            />
+            <ul
+              class="client-list"
+              *ngIf="filteredClients.length > 0 && phoneFlag"
+            >
+              <li
+                *ngFor="let client of filteredClients"
+                [value]="client.phone"
+                (click)="selectClient(client)"
+              >
+                {{ client.phone }}
+              </li>
+            </ul>
+          </div>
         </div>
       </div>
+      <div class="mb-3 col-12">
+        <div *ngIf="invoiceId == 0" class="new-client">
+          <button
+            class="client-btn"
+            data-bs-toggle="modal"
+            type="button"
+            data-bs-target="#addClientModal"
+          >
+            <fa-icon [icon]="faPlus"></fa-icon>
+          </button>
+          <span data-bs-toggle="modal" data-bs-target="#addClientModal">
+            add new Client</span
+          >
+        </div>
+      </div>
+      <!-- product items -->
+      <div class="mb-3 col-12">
+        <div class="items-container">
+          <div class="items">
+            <div class="row" *ngFor="let item of invoiceItems; let i = index">
+              <!-- select product -->
+              <div class="mb-3 col-6">
+                <label for="product" class="form-label">Select Product</label>
+                <div class="product-selection" #productSelection>
+                  <div class="product-search-wrapper">
+                    <input
+                      type="text"
+                      autocomplete="off"
+                      id="productSearch"
+                      class="form-control product-search"
+                      placeholder="Select Product"
+                      (keyup)="filterProducts($event, i)"
+                      name="productId{{ i }}"
+                      [(ngModel)]="item.productName"
+                    />
+                    <ul
+                      class="product-list"
+                      *ngIf="invoiceItems[i]?.filteredProducts?.length > 0"
+                    >
+                      <li
+                        *ngFor="let product of invoiceItems[i].filteredProducts"
+                        [value]="product.name"
+                        (click)="selectProduct(product, i)"
+                      >
+                        {{ product.name }}
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+              <!-- select piecePrice -->
+              <div class="mb-3 col-3">
+                <label for="piecePrice" class="form-label">Price</label>
+                <input
+                  type="text"
+                  id="piecePrice{{ i }}"
+                  class="form-control"
+                  [(ngModel)]="item.piecePrice"
+                  name="piecePrice{{ i }}"
+                  (keyup)="calcTotal()"
+                  required
+                  [disabled]="isAdmin()"
+                />
+              </div>
+              <!-- select quantity -->
+              <div class="mb-3 col-3">
+                <label for="quantity" class="form-label">Qty</label>
+                <input
+                  type="number"
+                  id="quantity{{ i }}"
+                  class="form-control"
+                  [(ngModel)]="item.quantity"
+                  name="quantity{{ i }}"
+                  min="1"
+                  (keyup)="calcTotal()"
+                  required
+                />
+              </div>
+            </div>
+          </div>
+          <div class="new-client mt-3">
+            <button class="client-btn" (click)="addnewItem()" type="button">
+              <fa-icon [icon]="faPlus"></fa-icon>
+            </button>
+            <span (click)="addnewItem()"> add new Item</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <button type="submit" class="btn btn-primary sell">Next</button>
+  </form>
+  <!-- invoice payment form  -->
 
-      <div class="mb-3 col-6">
-        <label for="quantity" class="form-label">quantity</label>
-        <input
-          type="text"
-          id="quantity"
-          class="form-control"
-          [(ngModel)]="sale.quantity"
-          name="quantity"
-          (keyup)="calcTotal(sale)"
-          required
-        />
-      </div>
-      <div class="mb-3 col-6">
-        <label for="piecePrice" class="form-label">piecePrice</label>
-        <input
-          type="text"
-          id="piecePrice"
-          class="form-control"
-          [(ngModel)]="sale.piecePrice"
-          name="piecePrice"
-          required
-        />
-      </div>
-
-      <div class="mb-3 col-6">
-        <label for="amountPaid" class="form-label">amountPaid</label>
-        <input
-          type="text"
-          id="amountPaid"
-          class="form-control"
-          [(ngModel)]="sale.amountPaid"
-          name="amountPaid"
-          (keyup)="calcRemaider(sale)"
-          required
-        />
-      </div>
-      <div class="mb-3 col-6">
-        <label for="clientName" class="form-label">Client Name</label>
-        <input
-          type="text"
-          id="clientName"
-          class="form-control"
-          [(ngModel)]="sale.clientName"
-          name="clientName"
-          required
-        />
-      </div>
-      <div class="mb-3 col-6">
-        <label for="comments" class="form-label">comments</label>
-        <input
-          id="comments"
-          class="form-control"
-          [(ngModel)]="sale.comments"
-          name="comments"
-          required
-        />
-      </div>
-      <div class="mb-3 col-6">
-        <label for="salePrice" class="form-label">Remaining Balance</label>
-        <input
-          type="number"
-          id="remainingBalance"
-          class="form-control"
-          [(ngModel)]="sale.remainingBalance"
-          name="remainingBalance"
-          disabled
-        />
-      </div>
-      <div class="mb-3 col-6">
+  <form
+    *ngIf="showPayment && !showReview"
+    name="payment-form"
+    (ngSubmit)="showReviewSection()"
+    class="payment-form mb-5"
+  >
+    <h6 class="mb-3">payments</h6>
+    <div class="row m-0 p-0">
+      <div class="mb-3 col-4">
         <label for="total" class="form-label">total</label>
         <input
           type="text"
           id="total"
           class="form-control"
-          [(ngModel)]="sale.total"
+          [(ngModel)]="invoice.total"
           name="total"
           disabled
         />
       </div>
+      <div class="mb-3 col-4">
+        <label for="amountPaid" class="form-label">amountPaid</label>
+        <input
+          type="number"
+          id="amountPaid"
+          autocomplete="off"
+          class="form-control"
+          [(ngModel)]="invoice.amountPaid"
+          name="amountPaid"
+          (keyup)="calcRemaider()"
+          [max]="invoice.total"
+          required
+        />
+      </div>
+      <div class="mb-3 col-4">
+        <label for="salePrice" class="form-label">Remaining</label>
+        <input
+          type="number"
+          id="remainingBalance"
+          class="form-control"
+          [(ngModel)]="invoice.remainder"
+          name="remainingBalance"
+          disabled
+        />
+      </div>
+      <div *ngIf="isUpdate" class="new-client mt-3">
+        <button class="client-btn" (click)="addPayment()" type="button">
+          <fa-icon [icon]="faSave"></fa-icon>
+        </button>
+        <span (click)="addPayment()">Save</span>
+      </div>
+      <div class="my-2 col-12" *ngIf="isUpdate">
+        <table class="table table-responsive" style="width: 100%">
+          <thead>
+            <tr>
+              <td>date</td>
+              <td>total</td>
+              <td>Paid</td>
+              <td>Remaining</td>
+            </tr>
+          </thead>
+          <tbody>
+            <tr
+              style="border-bottom: 1px solid #cecece; padding: 5px 10px"
+              *ngFor="let item of invoicePayments; let i = index"
+            >
+              <td>
+                {{ item.createdAt }}
+              </td>
+              <td>
+                {{ item.total }}
+              </td>
+              <td>
+                {{ item.amountPaid }}
+              </td>
+              <td>
+                {{ item.remaining }}
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="my-3 col-12">
+        <button type="submit" class="btn btn-primary sell">Review</button>
+      </div>
     </div>
-    <button type="submit" class="btn btn-primary sell">Sell Now</button>
   </form>
+
+  <!-- show review section -->
+  <div *ngIf="showReview && !showPayment" class="review-section">
+    <div style="display: flex; flex-wrap: wrap; justify-content: space-between">
+      <div style="width: 50%">
+        <h5>Invoice <span>#</span></h5>
+      </div>
+      <div style="width: 50%">
+        <div class="right-review">
+          <button (click)="this.showReview = false" class="closeReviewBtn">
+            <fa-icon [icon]="faClose"></fa-icon>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- end of first row -->
+  <div
+    *ngIf="showReview"
+    #reviewSection
+    style="
+      background-color: #f9f9f9;
+      padding: 0 2rem 0.5rem 2rem;
+      width: 50%;
+      margin: 0 auto;
+    "
+  >
+    <div
+      style="
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        font-size: 15px;
+      "
+    >
+      <div style="width: 50%">
+        <h5 style="font-size: 15px">{{ getFormattedDate() }}</h5>
+      </div>
+    </div>
+    <!-- end of sec row -->
+    <hr />
+    <div style="display: flex; flex-wrap: wrap; justify-content: space-between">
+      <div style="width: 50%">
+        <h5 style="font-size: 14px; text-transform: capitalize">client name</h5>
+      </div>
+      <div style="width: 50%">
+        <div style="display: flex; justify-content: flex-end">
+          <h5 style="font-size: 16px; text-transform: capitalize">
+            {{ clientName }}
+          </h5>
+        </div>
+      </div>
+      <div style="width: 50%">
+        <h5 style="font-size: 14px; text-transform: capitalize">seller name</h5>
+      </div>
+      <div style="width: 50%">
+        <div style="display: flex; justify-content: flex-end">
+          <h5 style="font-size: 16px; text-transform: capitalize">
+            {{ sellerName }}
+          </h5>
+        </div>
+      </div>
+      <div style="width: 50%">
+        <h5 style="font-size: 14px; text-transform: capitalize">Date</h5>
+      </div>
+      <div style="width: 50%">
+        <div style="display: flex; justify-content: flex-end">
+          <h5 style="font-size: 16px; text-transform: capitalize">
+            {{ getFormattedDate() }}
+          </h5>
+        </div>
+      </div>
+    </div>
+    <!-- end of felex -->
+    <div style="padding: 2rem 0 0.5rem 0; width: 100%">
+      <table style="width: 100%">
+        <thead>
+          <tr style="border: 1px solid #cecece">
+            <td
+              style="
+                width: 40%;
+                text-align: left;
+                background-color: #cecece;
+                padding: 5px 10px;
+              "
+            >
+              product
+            </td>
+            <td
+              style="width: 10%; background-color: #cecece; padding: 5px 10px"
+            >
+              Price
+            </td>
+            <td
+              style="width: 10%; background-color: #cecece; padding: 5px 10px"
+            >
+              Qty
+            </td>
+            <td
+              style="
+                width: 40%;
+                background-color: #cecece;
+                padding: 5px 5px 5px 15%;
+              "
+            >
+              Total
+            </td>
+          </tr>
+        </thead>
+        <tbody>
+          <tr
+            style="border-bottom: 1px solid #cecece; padding: 5px 10px"
+            *ngFor="let invoiceItem of invoice.newInvoiceItems; let i = index"
+          >
+            <td
+              style="width: 40%; background-color: #f2f2f2; padding: 5px 10px"
+            >
+              {{ invoiceItem.productName }}
+            </td>
+            <td
+              style="width: 10%; background-color: #f2f2f2; padding: 5px 10px"
+            >
+              {{ invoiceItem.piecePrice }}
+            </td>
+            <td
+              style="width: 10%; background-color: #f2f2f2; padding: 5px 10px"
+            >
+              {{ invoiceItem.quantity }}
+            </td>
+            <td
+              style="
+                width: 40%;
+                background-color: #f2f2f2;
+                padding: 5px 5px 5px 15%;
+              "
+            >
+              {{ invoiceItem.total }} EGP
+            </td>
+          </tr>
+          <tr>
+            <td
+              style="width: 40%; background-color: #f2f2f2; padding: 5px"
+            ></td>
+            <td
+              style="width: 10%; background-color: #f2f2f2; padding: 5px"
+            ></td>
+            <td style="width: 10%; background-color: #f2f2f2; padding: 5px">
+              <p style="margin-bottom: 5px; font-size: 14px"><b>total</b></p>
+              <p style="margin-bottom: 5px; font-size: 14px"><b>Paid</b></p>
+              <p style="margin-bottom: 5px; font-size: 14px">
+                <b>remaining</b>
+              </p>
+            </td>
+            <td
+              style="
+                width: 40%;
+                background-color: #f2f2f2;
+                padding: 5px 5px 5px 15%;
+                font-size: 14px;
+              "
+            >
+              <p style="margin-bottom: 5px">
+                <b>{{ invoice.total }} EGP</b>
+              </p>
+              <p style="margin-bottom: 5px">
+                <b>{{ invoice.amountPaid }} EGP</b>
+              </p>
+              <p style="margin-bottom: 5px">
+                <b>{{ invoice.remainder }} EGP</b>
+              </p>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <!-- end of div that contain table -->
+  </div>
+  <!-- end of printing page -->
+
+  <div *ngIf="showReview" class="review-cotrollers">
+    <button class="btn btn-primary me-3 my-2" (click)="SaveNewInvoice()">
+      Save
+    </button>
+    <button
+      disabled
+      class="btn btn-primary me-3 my-2"
+      (click)="SaveNewInvoice(true)"
+    >
+      Save & Print
+    </button>
+  </div>
+
+  <!--add client Modal -->
+  <div
+    class="modal fade"
+    id="addClientModal"
+    tabindex="-1"
+    aria-labelledby="clientModalLabel"
+    aria-hidden="true"
+  >
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="add-client-form">
+          <h3>Add New client</h3>
+          <form>
+            <div class="form-group">
+              <label for="name">client Name</label>
+              <input
+                type="text"
+                class="form-control"
+                id="name"
+                name="name"
+                [(ngModel)]="newClient.name"
+                required
+              />
+            </div>
+            <div class="form-group">
+              <label for="phone">phone</label>
+              <input
+                type="string"
+                class="form-control"
+                id="phone"
+                name="phone"
+                minlength="11"
+                [maxLength]="11"
+                [(ngModel)]="newClient.phone"
+                required
+              />
+            </div>
+
+            <div class="form-group">
+              <button
+                type="button"
+                class="btn btn-primary my-2 form-control"
+                (click)="addNewClient(newClient)"
+              >
+                Confirm
+              </button>
+              <button
+                type="button"
+                class="btn btn-outline-secondary form-control"
+                data-bs-dismiss="modal"
+                #closeModal
+              >
+                Close
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>

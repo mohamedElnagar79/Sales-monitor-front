@@ -1,129 +1,125 @@
 <div class="mt-5 px-5">
   <h3 class="mt-5">order List</h3>
   <div class="sales-head mt-3">
-    <input
-      type="text"
-      class="search"
-      (keyup)="getListOfSales(1, search)"
-      [(ngModel)]="search"
-      name="search"
-    />
+    <div>
+      <input type="text" class="search" [(ngModel)]="search" name="search" />
+    </div>
+    <div>
+      <input
+        type="date"
+        class="mx-3 search"
+        name="searchDate"
+        [value]="searchDate"
+        (change)="getInvoices(getFormattedDate())"
+        [(ngModel)]="searchDate"
+      />
+      <button class="btn-toggle-form">
+        <fa-icon [icon]="faPlus" class="me-1"></fa-icon> add new Invoice
+      </button>
+    </div>
   </div>
-  <div class="table-container table-responsive">
-    <table class="table fixed-height table-responsive">
-      <thead>
-        <tr>
-          <th>No.</th>
-          <td>product Name</td>
-          <td>piece Price</td>
-          <td>quantity</td>
-          <td>total</td>
-          <td>amountPaid</td>
-          <td>remaining</td>
-          <td>client Name</td>
-          <td>createdAt</td>
-          <td></td>
-        </tr>
-      </thead>
-      <tbody>
-        <tr
-          *ngFor="
-            let salesItem of sales
-              | paginate
-                : { itemsPerPage: 8, currentPage: p, totalItems: count };
-            let i = index
-          "
-        >
-          <td>{{ i + startIndex }}</td>
-          <td>{{ salesItem.productName }}</td>
-          <td>{{ salesItem.piecePrice }}</td>
-          <td>{{ salesItem.quantity }}</td>
-          <td>{{ salesItem.total }}</td>
-          <td>{{ salesItem.amountPaid }}</td>
-          <td>{{ salesItem.remainingBalance }}</td>
-          <td>{{ salesItem.clientName }}</td>
-          <td>{{ salesItem.createdAt }}</td>
-          <td class="table-cotrollers">
-            <button
-              class="btn btn-primary btn-sm me-3"
-              data-bs-toggle="modal"
-              data-bs-target="#updatedSalesOrdersModal"
-              (click)="openUpdateForm(salesItem)"
-            >
-              <fa-icon [icon]="faPen"></fa-icon>
-            </button>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
-  <pagination-controls
-    (pageChange)="p = $event; getListOfSales(p)"
-  ></pagination-controls>
-
+  <div class="contain-invoices my-5" id="invoiceContainer">
+    <div *ngFor="let invoice of invoices; let i = index">
+      <div class="invoice-card">
+        <div>
+          <h5 class="mb-4">
+            {{ invoice.clientName }}
+            <span>({{ invoice.itemCount }} items)</span>
+          </h5>
+          <p>{{ invoice.createdAt }}</p>
+        </div>
+        <div class="card-right">
+          <div>
+            <h6 class="mb-4 me-1">Total price</h6>
+            <h6 class="mb-4 me-1">Remainig</h6>
+          </div>
+          <div>
+            <h6 class="mb-4">
+              :<span class="ms-3"
+                ><b>{{ invoice.total }}</b> EGP</span
+              >
+              <button
+                class="circle-right mx-1"
+                (click)="navigateTo(invoice.id)"
+              >
+                <fa-icon [icon]="faChevronRight" class="mx-1"></fa-icon>
+              </button>
+            </h6>
+            <h6>
+              :<span class="ms-3">
+                <b>{{ invoice.remainingBalance }}</b></span
+              >
+              EGP
+            </h6>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Hidden element
+  
   <!--update product Modal -->
-  <div
-    class="modal fade"
-    id="updatedSalesOrdersModal"
-    tabindex="-1"
-    aria-labelledby="updatedSalesOrdersModallable"
-    aria-hidden="true"
-  >
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="update-product-form">
-          <h3 *ngIf="!showReturnedCost">return a sale</h3>
-          <!-- (ngSubmit)="updateOneProduct(updatedSalesObj)" -->
-          <form>
-            <div *ngIf="!showReturnedCost">
-              <div class="form-group">
-                <label for="price">quantity</label>
-                <input
-                  inputmode="numeric"
-                  class="form-control"
-                  id="quantity"
-                  [(ngModel)]="updatedSalesObj.quantity"
-                  name="quantity"
-                  (keyup)="validateQuantity($event)"
-                  required
-                />
+    <div
+      class="modal fade"
+      id="updatedSalesOrdersModal"
+      tabindex="-1"
+      aria-labelledby="updatedSalesOrdersModallable"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="update-product-form">
+            <h3 *ngIf="!showReturnedCost">return a sale</h3>
+            <!-- (ngSubmit)="updateOneProduct(updatedSalesObj)" -->
+            <form>
+              <div *ngIf="!showReturnedCost">
+                <div class="form-group">
+                  <label for="price">quantity</label>
+                  <input
+                    inputmode="numeric"
+                    class="form-control"
+                    id="quantity"
+                    name="quantity"
+                    required
+                  />
+                  <!-- (keyup)="validateQuantity($event)" -->
+                </div>
+                <div class="form-group">
+                  <label for="price">reasone</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="reasone"
+                    name="reasone"
+                    required
+                  />
+                  <!-- [(ngModel)]="updatedSalesObj.reasone" -->
+                </div>
+              </div>
+              <div class="form-group" *ngIf="showReturnedCost">
+                <h3>
+                  returned Cost Is : <b>{{ returnedCost }} L.E</b>
+                </h3>
               </div>
               <div class="form-group">
-                <label for="price">reasone</label>
-                <input
-                  type="text"
-                  class="form-control"
-                  id="reasone"
-                  [(ngModel)]="updatedSalesObj.reasone"
-                  name="reasone"
-                  required
-                />
+                <button
+                  *ngIf="!showReturnedCost"
+                  type="submit"
+                  class="btn btn-primary mt-2 form-control my-2"
+                >
+                  <!-- (click)="returnSale()" -->
+                  return the sale
+                </button>
+                <button
+                  type="button"
+                  class="btn btn-secondary form-control"
+                  data-bs-dismiss="modal"
+                  #closeModal
+                >
+                  Close
+                </button>
               </div>
-            </div>
-            <div class="form-group" *ngIf="showReturnedCost">
-              <h3>
-                returned Cost Is : <b>{{ returnedCost }} L.E</b>
-              </h3>
-            </div>
-            <div class="form-group">
-              <button
-                *ngIf="!showReturnedCost"
-                type="submit"
-                (click)="returnSale()"
-                class="btn btn-primary mt-2 form-control my-2"
-              >
-                return the sale
-              </button>
-              <button
-                type="button"
-                class="btn btn-secondary form-control"
-                data-bs-dismiss="modal"
-                #closeModal
-              >
-                Close
-              </button>
-            </div>
-          </form>
+            </form>
+          </div>
         </div>
       </div>
     </div>

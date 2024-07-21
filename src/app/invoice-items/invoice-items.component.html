@@ -1,0 +1,62 @@
+<div class="mt-5 px-5">
+  <div>
+    <button class="back">
+      <fa-icon [icon]="faChevronLeft" class="me-1"></fa-icon>
+    </button>
+  </div>
+  <div class="invoice-head" *ngIf="invoiceItems.length > 0">
+    <div>
+      <h3>invoice items</h3>
+    </div>
+    <div>
+      <button
+        class="btn-toggle-form"
+        (click)="navigateTo(invoiceItems[0].invoiceId)"
+      >
+        <fa-icon [icon]="faPlus" class="me-1"></fa-icon> new Invoice Item
+      </button>
+    </div>
+  </div>
+
+  <div class="table-container table-responsive" *ngIf="invoiceItems.length > 0">
+    <table class="table fixed-height table-responsive">
+      <thead>
+        <tr>
+          <th>Item Name</th>
+          <th>Price</th>
+          <th>Qty</th>
+          <th>Created At</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let item of invoiceItems; let i = index">
+          <td>{{ item.productName }}</td>
+          <td>
+            <b>{{ item.piecePrice }} </b> EGP
+          </td>
+          <td>{{ item.quantity }}</td>
+          <td>{{ item.createdAt }}</td>
+          <td>
+            <div class="table-cotrollers">
+              <button
+                class="btn btn-primary btn-sm me-3"
+                (click)="navigateTo(item.invoiceId)"
+              >
+                <fa-icon [icon]="faPen"></fa-icon>
+              </button>
+              <button
+                class="btn btn-danger btn-sm"
+                data-bs-toggle="modal"
+                data-bs-target="#deleteModal"
+              >
+                <!-- (click)="ActivateProductToDelete(product.id)" -->
+                <fa-icon [icon]="faTrash"></fa-icon>
+              </button>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

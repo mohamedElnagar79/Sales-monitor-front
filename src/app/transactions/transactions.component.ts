@@ -32,8 +32,6 @@ export class TransactionsComponent {
     this.calcDailySales(this.p, this.searchDate);
   }
   calcDailySales(p: number, searchDate: string, searchTerm?: any): void {
-    console.log('ruuuuuuuuuun', searchTerm);
-    console.log('ruuuuuuuuuun', searchDate);
     this.transactionsService
       .calcDailySales(p, searchDate, searchTerm)
       .subscribe(

@@ -1,7 +1,6 @@
-.container {
-  max-width: 80%;
-  margin: auto;
-}
+$primaryColor: #0d6efd;
+$secColor: #f9f9f9;
+$itemColor: #f2f2f2;
 
 .page-title {
   margin-bottom: 3rem;
@@ -9,14 +8,67 @@
   font-size: 2rem;
 }
 
-.sales-form {
-  background-color: #f9f9f9;
-  padding: 2rem;
-  border-radius: 0.5rem;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  input {
-    width: 90%;
+label {
+  text-transform: capitalize;
+}
+
+.add-client-form {
+  padding: 20px;
+  width: 95%;
+  margin: 5px auto;
+  margin-bottom: 20px;
+  border-radius: 5px;
+
+  .form-group {
+    margin-bottom: 15px;
   }
+}
+
+.sales-form,
+.payment-form,
+.review-section {
+  background-color: #f9f9f9;
+  padding: 2rem 2rem 1rem 2rem;
+  border-radius: 0;
+  width: 50%;
+  margin: 0 auto;
+
+  .new-client,
+  .right-review {
+    display: flex;
+    justify-content: flex-end;
+    color: $primaryColor;
+
+    span {
+      padding-left: 5px;
+      &:hover {
+        cursor: pointer;
+      }
+    }
+
+    .client-btn {
+      border-radius: 50%;
+      font-size: 12px;
+      border: 0;
+      color: $primaryColor;
+      text-align: center;
+      margin: 0;
+    }
+  }
+
+  .items-container {
+    background-color: $itemColor;
+    padding: 20px 15px 15px 20px;
+    border-radius: 0.5rem;
+  }
+
+  .items {
+    max-height: 350px; /* Adjust max-height as needed */
+    min-height: 140px;
+    overflow-y: scroll; /* Enable vertical scrolling */
+    overflow-x: hidden;
+  }
+
   .form-label {
     font-weight: bold;
   }
@@ -28,49 +80,99 @@
 
   .btn {
     display: block;
-    width: 40%;
+    width: 100%;
     margin: 25px auto;
+    font-size: 18px;
   }
+}
+
+.right-review h5 {
+  color: #343a40 !important;
 }
 
 .sales-table {
   margin-top: 2rem;
 }
-.product-selection {
+
+.product-selection,
+.client-selection {
   position: relative;
 }
 
-.product-search {
+.product-search,
+.client-search {
   padding-right: 20px;
 }
 
-.product-list {
+.client-list li {
+  background-color: #e8e8e8 !important;
+}
+
+.product-list,
+.client-list {
   position: absolute;
   top: 100%;
   left: 0;
   background-color: #f1f1f1;
   min-width: 160px;
+  /* Removed min-height for automatic height adjustment */
+
   box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
   z-index: 1;
-  display: none; /* Initially hide the list */
-  max-height: 200px; /* Set a maximum height for the list */
-  overflow-y: auto;
+  display: block; /* Initially hide the list */
+  /* Removed max-height for potential overflow */
+  overflow-y: scroll;
   list-style-type: none;
-  width: 90% !important;
+  width: 100%;
+  padding: 5px;
 }
 
-.product-list li {
+.client-list {
+  max-height: 200px;
+}
+
+.product-list li,
+.client-list li {
   padding: 5px 10px;
   cursor: pointer;
   border-bottom: 1px solid #ddd; /* Optional styling */
   margin: 8px auto;
 }
 
-.product-list li:hover {
+.product-list li,
+.client-list li:hover {
   background-color: #e8e8e8; /* Optional hover effect */
   font-weight: 500;
 }
 
-.product-selection.active .product-list {
+.product-selection.active .product-list,
+.client-selection.active .product-list {
   display: block; /* Show the list on focus or click */
+}
+.review-cotrollers {
+  background-color: $secColor;
+  margin: 0 auto;
+  margin-bottom: 2rem;
+  padding: 0 2rem 2rem;
+
+  width: 50%;
+  button {
+    width: 100%;
+    font-size: 16px;
+  }
+}
+
+.closeReviewBtn {
+  border: 0;
+  background: none;
+  font-size: 20px;
+}
+.toast-container {
+  /* Reset default positioning */
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  /* Center horizontally and vertically */
+  transform: translate(-50%, -50%);
 }

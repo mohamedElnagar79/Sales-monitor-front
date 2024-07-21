@@ -26,6 +26,8 @@ export class LoginComponent {
           // Handle successful login response
           const token = response.data.token;
           const role = response.data.user.role;
+          const name = response.data.user.name;
+          localStorage.setItem('name', name);
           localStorage.setItem('token', token);
           localStorage.setItem('role', role);
           if (role == 'admin') {

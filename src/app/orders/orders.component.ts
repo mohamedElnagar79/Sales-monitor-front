@@ -1,90 +1,103 @@
 import { Component, ElementRef, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { OrdersService } from './orders.service';
-import { NgxPaginationModule } from 'ngx-pagination';
-import { Sale } from '../models/sale';
 import { FormsModule } from '@angular/forms';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import { faPen, faTrash, faPlus } from '@fortawesome/free-solid-svg-icons';
+import {
+  faPen,
+  faTrash,
+  faPlus,
+  faChevronRight,
+} from '@fortawesome/free-solid-svg-icons';
+import { Router } from '@angular/router';
+import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-orders',
   standalone: true,
-  imports: [NgxPaginationModule, CommonModule, FormsModule, FontAwesomeModule],
+  imports: [CommonModule, FormsModule, FontAwesomeModule],
   templateUrl: './orders.component.html',
   styleUrl: './orders.component.scss',
 })
 export class OrdersComponent {
   @ViewChild('closeModal') closeModalRef!: ElementRef;
+  today: any = new Date();
 
-  sales: Sale[] = [];
+  searchDate: any = this.today.toISOString().split('T')[0];
+  formattedDate: any = '';
+  invoices: any = [];
   search: any = '';
   faPen = faPen;
   faTrash = faTrash;
   faPlus = faPlus;
-  p: number = 1;
-  count: number = 1;
-  startIndex: number = 1;
+  faChevronRight = faChevronRight;
   maxQuantity: number = 1;
   showReturnedCost: boolean = false;
   returnedCost: number = 0;
-  updatedSalesObj: any = {
-    SaleId: 0,
-    quantity: 0,
-    reasone: ' ',
-  };
-  constructor(private ordersService: OrdersService) {}
+
+  constructor(
+    private ordersService: OrdersService,
+    private router: Router,
+    private datePipe: DatePipe
+  ) {}
 
   ngOnInit(): void {
-    this.getListOfSales(this.p);
+    console.log('search date 0 ', this.searchDate);
+    // this.searchDate = this.datePipe.transform(this.searchDate, 'MM-dd-yyyy');
+    // console.log('this ', this.searchDate);
+    this.getInvoices(this.getFormattedDate());
   }
-  returnSale(): void {
-    this.ordersService.returnASale(this.updatedSalesObj).subscribe(
+  getFormattedDate(): any {
+    return (this.formattedDate = this.datePipe.transform(
+      this.searchDate,
+      'MM-dd-yyyy'
+    ));
+  }
+  // returnSale(): void {
+  //   this.ordersService.returnASale(this.updatedSalesObj).subscribe(
+  //     (data: any) => {
+  //       console.log('dataaaaaaaaaa ', data.data.returnedCost);
+  //       // this.count = data.data.count;
+  //       this.returnedCost = data.data.returnedCost;
+  //       this.showReturnedCost = true;
+  //       this.getListOfSales(this.p);
+  //       // this.closeModalRef.nativeElement.click();
+  //     },
+  //     (error) => {
+  //       console.error('Error while return a sale :', error);
+  //     }
+  //   );
+  // }
+
+  // openUpdateForm(saleItem: any): void {
+  //   this.updatedSalesObj.SaleId = saleItem.id;
+  //   this.updatedSalesObj.quantity = saleItem.quantity;
+  //   this.maxQuantity = saleItem.quantity;
+  //   this.showReturnedCost = false;
+  //   console.log('this.up  ', this.updatedSalesObj);
+  // }
+  // validateQuantity(event: any) {
+  //   const target = event.target;
+  //   const value = target.value;
+  //   if (value > this.maxQuantity) {
+  //     console.log('value  ', value);
+  //     target.value = this.maxQuantity;
+  //   }
+  // }
+
+  getInvoices(date?: any): void {
+    console.log('date from dunc ===> ', date);
+    this.ordersService.getInvoices(date).subscribe(
       (data: any) => {
-        console.log('dataaaaaaaaaa ', data.data.returnedCost);
-        // this.count = data.data.count;
-        this.returnedCost = data.data.returnedCost;
-        this.showReturnedCost = true;
-        this.getListOfSales(this.p);
-        // this.closeModalRef.nativeElement.click();
+        this.invoices = data.data;
       },
       (error) => {
-        console.error('Error while return a sale :', error);
+        console.error('Error fetching invoices:', error);
       }
     );
   }
-
-  openUpdateForm(saleItem: any): void {
-    this.updatedSalesObj.SaleId = saleItem.id;
-    this.updatedSalesObj.quantity = saleItem.quantity;
-    this.maxQuantity = saleItem.quantity;
-    this.showReturnedCost = false;
-    console.log('this.up  ', this.updatedSalesObj);
-  }
-  validateQuantity(event: any) {
-    const target = event.target;
-    const value = target.value;
-    if (value > this.maxQuantity) {
-      console.log('value  ', value);
-      target.value = this.maxQuantity;
-    }
-  }
-
-  getListOfSales(p: number, searchTerm?: any): void {
-    // Replace with your API endpoint
-    this.ordersService.getListOfSales(p, searchTerm).subscribe(
-      (data: any) => {
-        // this.count = data.data.count;
-        this.sales = data.data.rows;
-        this.count = data.data.count;
-        this.startIndex = this.p > 1 ? (this.p - 1) * 8 + 1 : 1;
-
-        console.log('data  ', data);
-        // this.startIndex = this.p > 1 ? (this.p - 1) * 8 + 1 : 1;
-      },
-      (error) => {
-        console.error('Error fetching sales:', error);
-      }
-    );
+  navigateTo(id: any): void {
+    const path: any = `invoice/${id}`;
+    this.router.navigate([path]);
   }
 }

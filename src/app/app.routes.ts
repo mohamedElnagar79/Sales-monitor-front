@@ -12,6 +12,7 @@ import { TokenGuard } from './guards/token.guard';
 import { AdminGuard } from './guards/admin.guard';
 import { TransactionsComponent } from './transactions/transactions.component';
 import { OutgoingComponent } from './outgoing/outgoing.component';
+import { InvoiceItemsComponent } from './invoice-items/invoice-items.component';
 
 export const routes: Routes = [
   {
@@ -32,6 +33,16 @@ export const routes: Routes = [
   {
     path: 'sales',
     component: SalesComponent,
+    canActivate: [TokenGuard],
+  },
+  {
+    path: 'sales/:id',
+    component: SalesComponent,
+    canActivate: [TokenGuard],
+  },
+  {
+    path: 'invoice/:id',
+    component: InvoiceItemsComponent,
     canActivate: [TokenGuard],
   },
   {
