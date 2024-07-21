@@ -146,8 +146,8 @@ export class SalesComponent {
     const id: any = this.route.snapshot.paramMap.get('id');
     this.titleMessage = id ? 'Update Invoice' : this.titleMessage;
     if (id) {
-      this.getOneInvoiceById(id);
       this.getInvoiceById(id);
+      this.getOneInvoiceById(id);
       this.isUpdate = true;
     }
     this.loadProducts('');
@@ -197,14 +197,15 @@ export class SalesComponent {
     return item; // Or a unique identifier for each item
   }
   addPayment(): void {
-    console.log('hi add new payment');
+    this.TotalOfOldPaid += this.invoice.amountPaid;
+    this.calcRemaider();
     this.invoicePayments.push({
       total: this.invoice.total,
       amountPaid: this.invoice.amountPaid,
       remaining: this.invoice.remainder,
       createdAt: this.getFormattedDate(),
     });
-    console.log('this.invoicePayments ???? ', this.invoicePayments);
+    this.invoice.amountPaid = 0;
   }
   getOneInvoiceById(invoiceId: number): void {
     this.salesService.getOneInvoiceById(invoiceId).subscribe((data: any) => {
@@ -225,6 +226,8 @@ export class SalesComponent {
     this.salesService.getInvoicePayments(invoiceId).subscribe((data: any) => {
       this.invoicePayments = [...data.data.payments];
       this.TotalOfOldPaid = data.data.totalOfOldPaid;
+
+      console.log('data.data.totalOfOldPaid', data.data.totalOfOldPaid);
       console.log('TotalOfOldPaid ', this.TotalOfOldPaid);
     });
     this.calcRemaider();
@@ -345,16 +348,15 @@ export class SalesComponent {
     this.calcRemaider();
   }
   calcRemaider(): void {
-    console.log('this.invoice.remainder ', this.invoice.remainder);
     if (this.invoice.remainder < 0 || isNaN(this.invoice.remainder)) {
       alert('enter valid amount paid');
     }
-    console.log(' calc Remaider ', this.invoice.remainder);
-    console.log(' calc amount paid ', +this.invoice.amountPaid);
-    console.log(' this.TotalOfOldPaid ', this.TotalOfOldPaid);
-    this.invoice.remainder =
-      this.invoice.total - (+this.invoice.amountPaid + this.TotalOfOldPaid);
-    console.log(' calc Remaider2 ', this.invoice.remainder);
+
+    this.invoice.remainder = this.isUpdate
+      ? this.invoice.total - this.TotalOfOldPaid
+      : this.invoice.total - +this.invoice.amountPaid;
+    console.log('heloo TotalOfOldPaid', this.TotalOfOldPaid);
+    console.log('heloo remainder', this.invoice.remainder);
   }
   addnewItem() {
     const lastItem = this.invoiceItems[this.invoiceItems.length - 1];
@@ -414,6 +416,7 @@ export class SalesComponent {
     console.log('heloo');
     this.showPayment = false;
     this.showReview = true;
+    this.invoice.amountPaid = this.TotalOfOldPaid;
   }
   printReview(): void {
     const reviewSectionElement = this.reviewSection.nativeElement;

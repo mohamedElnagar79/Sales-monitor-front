@@ -183,8 +183,9 @@
       <div class="mb-3 col-4">
         <label for="amountPaid" class="form-label">amountPaid</label>
         <input
-          type="text"
+          type="number"
           id="amountPaid"
+          autocomplete="off"
           class="form-control"
           [(ngModel)]="invoice.amountPaid"
           name="amountPaid"
