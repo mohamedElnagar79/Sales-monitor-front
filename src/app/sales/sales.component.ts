@@ -4,6 +4,7 @@ import { CommonModule, DatePipe } from '@angular/common';
 import { SalesService } from './sales.service';
 import { Sale } from '../models/sale';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { Router, NavigationEnd } from '@angular/router';
 
 import { faPlus, faClose, faSave } from '@fortawesome/free-solid-svg-icons';
 import { ToastrService } from '../shared/toastr.service';
@@ -73,6 +74,8 @@ export class SalesComponent {
   titleMessage: string = 'Add new Order';
   products: Product[] = [];
   invoicePayments: any = [];
+  newPayments: any = [];
+  updatedInvoice: any = {};
   clients: Client[] = [
     {
       name: '',
@@ -140,7 +143,8 @@ export class SalesComponent {
   constructor(
     private salesService: SalesService,
     private toastr: ToastrService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private navigateRoute: Router
   ) {}
   ngOnInit(): void {
     const id: any = this.route.snapshot.paramMap.get('id');
@@ -200,6 +204,12 @@ export class SalesComponent {
     this.TotalOfOldPaid += this.invoice.amountPaid;
     this.calcRemaider();
     this.invoicePayments.push({
+      total: this.invoice.total,
+      amountPaid: this.invoice.amountPaid,
+      remaining: this.invoice.remainder,
+      createdAt: this.getFormattedDate(),
+    });
+    this.newPayments.push({
       total: this.invoice.total,
       amountPaid: this.invoice.amountPaid,
       remaining: this.invoice.remainder,
@@ -416,14 +426,21 @@ export class SalesComponent {
     console.log('heloo');
     this.showPayment = false;
     this.showReview = true;
-    this.invoice.amountPaid = this.TotalOfOldPaid;
+    this.invoice.amountPaid = this.isUpdate
+      ? this.TotalOfOldPaid
+      : this.invoice.amountPaid;
+    this.updatedInvoice.newPayments = [...this.newPayments];
+    this.updatedInvoice.invoice = this.invoice;
+    this.updatedInvoice.clientId = this.invoice.clientId;
+    this.updatedInvoice.invoiceId = this.invoiceId;
+    console.log('updatedInvoice  ', this.updatedInvoice);
   }
   printReview(): void {
     const reviewSectionElement = this.reviewSection.nativeElement;
     const clonedReviewSection = reviewSectionElement.cloneNode(true); // Clone with styles
 
     // Optional: Modify cloned content before printing (e.g., remove unnecessary elements)
-    this.SaveNewInvoice();
+    this.SaveInvoice();
     const printWindow = window.open('', '_blank'); // Open in new tab/window
     printWindow?.document.write(clonedReviewSection.outerHTML); // Write HTML to new window
     printWindow?.document.close(); // Close the document for printing
@@ -484,33 +501,56 @@ export class SalesComponent {
       createdAt: new Date(),
     };
   }
-  SaveNewInvoice(print?: boolean): void {
-    this.salesService.sellProduct(this.invoice).subscribe(
-      (data: any) => {
-        // this.count = data.data.count;
-        console.log('data ', data);
-        this.resetForm();
-        this.showReview = false;
-        console.log('print ', print);
-        setTimeout(() => {
-          this.toastr.success('Invoice created successfully!'),
-            '',
-            {
-              timeOut: 5000,
-              positionClass: 'toast-top-center',
-            };
-        }, 0); // Display message after 2 seconds
-        if (print) {
-          console.log('print func work =========');
-          // this.printReview();
+  SaveInvoice(print?: boolean): void {
+    if (this.isUpdate) {
+      this.salesService.updateInvoice(this.updatedInvoice).subscribe(
+        (data: any) => {
+          console.log('data ', data);
+          // this.resetForm();
+
+          setTimeout(() => {
+            this.toastr.success('Invoice Updated successfully!'),
+              '',
+              {
+                timeOut: 5000,
+                positionClass: 'toast-top-center',
+              };
+          }, 0); // Display message after 2 seconds
+          this.navigateRoute.navigate(['orders']);
+        },
+        (error) => {
+          alert(`${error.error.message}`);
+          console.error('Error updating invoice:', error);
         }
-        // this.startIndex = this.p > 1 ? (this.p - 1) * 8 + 1 : 1;
-      },
-      (error) => {
-        alert(`${error.error.message}`);
-        console.error('Error fetching sales:', error);
-      }
-    );
+      );
+    } else {
+      this.salesService.sellProduct(this.invoice).subscribe(
+        (data: any) => {
+          // this.count = data.data.count;
+          console.log('data ', data);
+          this.resetForm();
+          this.showReview = false;
+          console.log('print ', print);
+          setTimeout(() => {
+            this.toastr.success('Invoice created successfully!'),
+              '',
+              {
+                timeOut: 5000,
+                positionClass: 'toast-top-center',
+              };
+          }, 0); // Display message after 2 seconds
+          if (print) {
+            console.log('print func work =========');
+            // this.printReview();
+          }
+          // this.startIndex = this.p > 1 ? (this.p - 1) * 8 + 1 : 1;
+        },
+        (error) => {
+          alert(`${error.error.message}`);
+          console.error('Error creating invoice:', error);
+        }
+      );
+    }
   }
   isAdmin(): boolean {
     const role: any = localStorage.getItem('role');
