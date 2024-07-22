@@ -10,10 +10,10 @@
     </div>
     <div>
       <button
-        class="btn-toggle-form"
+        class="btn btn-primary btn-sm me-3"
         (click)="navigateTo(invoiceItems[0].invoiceId)"
       >
-        <fa-icon [icon]="faPlus" class="me-1"></fa-icon> new Invoice Item
+        <fa-icon [icon]="faPen"></fa-icon>
       </button>
     </div>
   </div>
@@ -39,12 +39,6 @@
           <td>{{ item.createdAt }}</td>
           <td>
             <div class="table-cotrollers">
-              <button
-                class="btn btn-primary btn-sm me-3"
-                (click)="navigateTo(item.invoiceId)"
-              >
-                <fa-icon [icon]="faPen"></fa-icon>
-              </button>
               <button
                 class="btn btn-danger btn-sm"
                 data-bs-toggle="modal"
