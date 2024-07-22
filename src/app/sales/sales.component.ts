@@ -201,22 +201,36 @@ export class SalesComponent {
     return item; // Or a unique identifier for each item
   }
   addPayment(): void {
-    this.TotalOfOldPaid += this.invoice.amountPaid;
-    this.calcRemaider();
-    this.invoicePayments.push({
-      total: this.invoice.total,
-      amountPaid: this.invoice.amountPaid,
-      remaining: this.invoice.remainder,
-      createdAt: this.getFormattedDate(),
-    });
-    this.newPayments.push({
-      total: this.invoice.total,
-      amountPaid: this.invoice.amountPaid,
-      remaining: this.invoice.remainder,
-      createdAt: this.getFormattedDate(),
-    });
-    this.invoice.amountPaid = 0;
+    if (
+      this.invoice.amountPaid > 0 &&
+      this.invoice.amountPaid <= this.invoice.remainder
+    ) {
+      this.TotalOfOldPaid += this.invoice.amountPaid;
+      this.calcRemaider();
+      this.invoicePayments.push({
+        total: this.invoice.total,
+        amountPaid: this.invoice.amountPaid,
+        remaining: this.invoice.remainder,
+        createdAt: this.getFormattedDate(),
+      });
+      this.newPayments.push({
+        total: this.invoice.total,
+        amountPaid: this.invoice.amountPaid,
+        remaining: this.invoice.remainder,
+        createdAt: this.getFormattedDate(),
+      });
+      this.invoice.amountPaid = 0;
+    } else
+      setTimeout(() => {
+        this.toastr.warning('enter valid amount!'),
+          '',
+          {
+            timeOut: 5000,
+            positionClass: 'toast-top-center',
+          };
+      }, 0);
   }
+
   getOneInvoiceById(invoiceId: number): void {
     this.salesService.getOneInvoiceById(invoiceId).subscribe((data: any) => {
       console.log('get data =====>  ', data); // Initialize filteredProducts
@@ -359,7 +373,14 @@ export class SalesComponent {
   }
   calcRemaider(): void {
     if (this.invoice.remainder < 0 || isNaN(this.invoice.remainder)) {
-      alert('enter valid amount paid');
+      setTimeout(() => {
+        this.toastr.warning('enter valid amount!'),
+          '',
+          {
+            timeOut: 2000,
+            positionClass: 'toast-top-center',
+          };
+      }, 0);
     }
 
     this.invoice.remainder = this.isUpdate
