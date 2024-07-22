@@ -10,10 +10,10 @@
     </div>
     <div>
       <button
-        class="btn-toggle-form"
+        class="btn btn-primary btn-sm me-3"
         (click)="navigateTo(invoiceItems[0].invoiceId)"
       >
-        <fa-icon [icon]="faPlus" class="me-1"></fa-icon> new Invoice Item
+        <fa-icon [icon]="faPen"></fa-icon>
       </button>
     </div>
   </div>
@@ -40,17 +40,11 @@
           <td>
             <div class="table-cotrollers">
               <button
-                class="btn btn-primary btn-sm me-3"
-                (click)="navigateTo(item.invoiceId)"
-              >
-                <fa-icon [icon]="faPen"></fa-icon>
-              </button>
-              <button
                 class="btn btn-danger btn-sm"
                 data-bs-toggle="modal"
                 data-bs-target="#deleteModal"
+                (click)="ActivateInvoiceItemToDelete(item.id)"
               >
-                <!-- (click)="ActivateProductToDelete(product.id)" -->
                 <fa-icon [icon]="faTrash"></fa-icon>
               </button>
             </div>
@@ -58,5 +52,49 @@
         </tr>
       </tbody>
     </table>
+  </div>
+  <!-- delete Modal -->
+  <div
+    class="modal fade"
+    id="deleteModal"
+    tabindex="-1"
+    aria-labelledby="deleteModallable"
+    aria-hidden="true"
+  >
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="exampleModalLabel">
+            delete product
+          </h1>
+          <button
+            type="button"
+            class="btn-close"
+            data-bs-dismiss="modal"
+            aria-label="Close"
+          ></button>
+        </div>
+        <div class="modal-body text-danger">
+          Are you sure to delete this item?
+        </div>
+        <div class="modal-footer">
+          <button
+            type="button"
+            class="btn btn-secondary"
+            data-bs-dismiss="modal"
+            #deleteModal
+          >
+            Close
+          </button>
+          <button
+            type="button"
+            class="btn btn-danger"
+            (click)="deleteInvoiceItem()"
+          >
+            delete
+          </button>
+        </div>
+      </div>
+    </div>
   </div>
 </div>
