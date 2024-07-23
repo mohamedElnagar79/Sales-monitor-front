@@ -81,7 +81,10 @@ export class SalesComponent {
   products: Product[] = [];
   invoicePayments: any = [];
   newPayments: any = [];
+  updatedinvoiceItems: any = [];
   updatedInvoice: any = {};
+  invoice_items_data: any = [];
+  updated_invoice_items_data_to_compare: any = [];
   clients: Client[] = [
     {
       name: '',
@@ -245,7 +248,11 @@ export class SalesComponent {
       this.clientObj.id = data.data.clientId;
       this.invoiceId = data.data.id;
       this.invoiceItems = data.data.invoice_items;
-      this.invoice.newInvoiceItems = data.data.invoice_items;
+      this.invoiceItems = data.data.invoice_items;
+      // this.invoice.newInvoiceItems = data.data.invoice_items;
+      for (const item of data.data.invoice_items) {
+        this.invoice_items_data.push({ ...item });
+      }
       // this.invoice.amountPaid = data.data.amountPaid;
       this.invoice.clientId = data.data.clientId;
       this.invoice.invoiceId = data.data.id;
@@ -467,7 +474,27 @@ export class SalesComponent {
     this.updatedInvoice.invoice = this.invoice;
     this.updatedInvoice.clientId = this.invoice.clientId;
     this.updatedInvoice.invoiceId = this.invoiceId;
-    console.log('updatedInvoice  ', this.updatedInvoice);
+
+    console.log('invoice_items_data==> ', this.invoice_items_data);
+    console.log('invoice.newInvoiceItems==> ', this.invoice.newInvoiceItems);
+    this.updatedinvoiceItems = this.invoice.newInvoiceItems.filter(
+      (item: any) => {
+        // Find matching item in invoice_items_data
+        const existingItem = this.invoice_items_data.find(
+          (invoiceItem: any) => invoiceItem.id === item.id // Use 'invoiceItem' here
+        );
+
+        // Check if price or quantity changed (assuming 'piecePrice' is the correct key)
+        return (
+          existingItem &&
+          (item.piecePrice !== existingItem.piecePrice ||
+            item.quantity !== existingItem.quantity)
+        );
+      }
+    );
+
+    console.log('updatedinvoiceItems', this.updatedinvoiceItems);
+    this.updatedInvoice.updatedinvoiceItems = [...this.updatedinvoiceItems];
   }
   showUpdateSection(): void {
     this.showReview = false;
