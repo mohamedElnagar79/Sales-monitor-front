@@ -6,7 +6,12 @@ import { Sale } from '../models/sale';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { Router, NavigationEnd } from '@angular/router';
 
-import { faPlus, faClose, faSave } from '@fortawesome/free-solid-svg-icons';
+import {
+  faPlus,
+  faClose,
+  faSave,
+  faChevronLeft,
+} from '@fortawesome/free-solid-svg-icons';
 import { ToastrService } from '../shared/toastr.service';
 import { ActivatedRoute } from '@angular/router';
 interface Product {
@@ -64,6 +69,7 @@ export class SalesComponent {
   faPlus = faPlus;
   faClose = faClose;
   faSave = faSave;
+  faChevronLeft = faChevronLeft;
   isUpdate: boolean = false;
   showReview: boolean = false;
   showPayment: boolean = false;
@@ -75,7 +81,10 @@ export class SalesComponent {
   products: Product[] = [];
   invoicePayments: any = [];
   newPayments: any = [];
+  updatedinvoiceItems: any = [];
   updatedInvoice: any = {};
+  invoice_items_data: any = [];
+  updated_invoice_items_data_to_compare: any = [];
   clients: Client[] = [
     {
       name: '',
@@ -239,7 +248,11 @@ export class SalesComponent {
       this.clientObj.id = data.data.clientId;
       this.invoiceId = data.data.id;
       this.invoiceItems = data.data.invoice_items;
-      this.invoice.newInvoiceItems = data.data.invoice_items;
+      this.invoiceItems = data.data.invoice_items;
+      // this.invoice.newInvoiceItems = data.data.invoice_items;
+      for (const item of data.data.invoice_items) {
+        this.invoice_items_data.push({ ...item });
+      }
       // this.invoice.amountPaid = data.data.amountPaid;
       this.invoice.clientId = data.data.clientId;
       this.invoice.invoiceId = data.data.id;
@@ -247,14 +260,14 @@ export class SalesComponent {
     });
   }
   getInvoiceById(invoiceId: any): any {
+    console.log('get invoice is running');
     this.salesService.getInvoicePayments(invoiceId).subscribe((data: any) => {
       this.invoicePayments = [...data.data.payments];
       this.TotalOfOldPaid = data.data.totalOfOldPaid;
-
       console.log('data.data.totalOfOldPaid', data.data.totalOfOldPaid);
       console.log('TotalOfOldPaid ', this.TotalOfOldPaid);
+      this.calcRemaider();
     });
-    this.calcRemaider();
   }
   filterClientsByName(event: any): void {
     console.log('event', event.target.value.toLowerCase());
@@ -372,22 +385,29 @@ export class SalesComponent {
     this.calcRemaider();
   }
   calcRemaider(): void {
-    if (this.invoice.remainder < 0 || isNaN(this.invoice.remainder)) {
-      setTimeout(() => {
-        this.toastr.warning('enter valid amount!'),
-          '',
-          {
-            timeOut: 2000,
-            positionClass: 'toast-top-center',
-          };
-      }, 0);
-    }
-
+    console.log('calc is running');
+    console.log('this.total ---- ', this.invoice.total);
+    console.log('this.TotalOfOldPaid ---- ', this.TotalOfOldPaid);
+    console.log(
+      'this.this.invoice.total - this.TotalOfOldPaid ---- ',
+      this.invoice.total - this.TotalOfOldPaid
+    );
     this.invoice.remainder = this.isUpdate
       ? this.invoice.total - this.TotalOfOldPaid
       : this.invoice.total - +this.invoice.amountPaid;
     console.log('heloo TotalOfOldPaid', this.TotalOfOldPaid);
     console.log('heloo remainder', this.invoice.remainder);
+    if (this.invoice.remainder < 0 || isNaN(this.invoice.remainder)) {
+      console.log('invalidddddd noww ', this.invoice.remainder);
+      // setTimeout(() => {
+      //   this.toastr.warning('enter valid amount!'),
+      //     '',
+      //     {
+      //       timeOut: 2000,
+      //       positionClass: 'toast-top-center',
+      //     };
+      // }, 0);
+    }
   }
   addnewItem() {
     const lastItem = this.invoiceItems[this.invoiceItems.length - 1];
@@ -454,7 +474,35 @@ export class SalesComponent {
     this.updatedInvoice.invoice = this.invoice;
     this.updatedInvoice.clientId = this.invoice.clientId;
     this.updatedInvoice.invoiceId = this.invoiceId;
-    console.log('updatedInvoice  ', this.updatedInvoice);
+
+    console.log('invoice_items_data==> ', this.invoice_items_data);
+    console.log('invoice.newInvoiceItems==> ', this.invoice.newInvoiceItems);
+    this.updatedinvoiceItems = this.invoice.newInvoiceItems.filter(
+      (item: any) => {
+        // Find matching item in invoice_items_data
+        const existingItem = this.invoice_items_data.find(
+          (invoiceItem: any) => invoiceItem.id === item.id // Use 'invoiceItem' here
+        );
+
+        // Check if price or quantity changed (assuming 'piecePrice' is the correct key)
+        return (
+          existingItem &&
+          (item.piecePrice !== existingItem.piecePrice ||
+            item.quantity !== existingItem.quantity)
+        );
+      }
+    );
+
+    console.log('updatedinvoiceItems', this.updatedinvoiceItems);
+    this.updatedInvoice.updatedinvoiceItems = [...this.updatedinvoiceItems];
+  }
+  showUpdateSection(): void {
+    this.showReview = false;
+    this.showPayment = false;
+  }
+  showPaymentSection(): void {
+    this.showReview = false;
+    this.showPayment = true;
   }
   printReview(): void {
     const reviewSectionElement = this.reviewSection.nativeElement;
