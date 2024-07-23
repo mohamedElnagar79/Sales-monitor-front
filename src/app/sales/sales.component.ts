@@ -6,7 +6,12 @@ import { Sale } from '../models/sale';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { Router, NavigationEnd } from '@angular/router';
 
-import { faPlus, faClose, faSave } from '@fortawesome/free-solid-svg-icons';
+import {
+  faPlus,
+  faClose,
+  faSave,
+  faChevronLeft,
+} from '@fortawesome/free-solid-svg-icons';
 import { ToastrService } from '../shared/toastr.service';
 import { ActivatedRoute } from '@angular/router';
 interface Product {
@@ -64,6 +69,7 @@ export class SalesComponent {
   faPlus = faPlus;
   faClose = faClose;
   faSave = faSave;
+  faChevronLeft = faChevronLeft;
   isUpdate: boolean = false;
   showReview: boolean = false;
   showPayment: boolean = false;
@@ -247,14 +253,14 @@ export class SalesComponent {
     });
   }
   getInvoiceById(invoiceId: any): any {
+    console.log('get invoice is running');
     this.salesService.getInvoicePayments(invoiceId).subscribe((data: any) => {
       this.invoicePayments = [...data.data.payments];
       this.TotalOfOldPaid = data.data.totalOfOldPaid;
-
       console.log('data.data.totalOfOldPaid', data.data.totalOfOldPaid);
       console.log('TotalOfOldPaid ', this.TotalOfOldPaid);
+      this.calcRemaider();
     });
-    this.calcRemaider();
   }
   filterClientsByName(event: any): void {
     console.log('event', event.target.value.toLowerCase());
@@ -372,22 +378,29 @@ export class SalesComponent {
     this.calcRemaider();
   }
   calcRemaider(): void {
-    if (this.invoice.remainder < 0 || isNaN(this.invoice.remainder)) {
-      setTimeout(() => {
-        this.toastr.warning('enter valid amount!'),
-          '',
-          {
-            timeOut: 2000,
-            positionClass: 'toast-top-center',
-          };
-      }, 0);
-    }
-
+    console.log('calc is running');
+    console.log('this.total ---- ', this.invoice.total);
+    console.log('this.TotalOfOldPaid ---- ', this.TotalOfOldPaid);
+    console.log(
+      'this.this.invoice.total - this.TotalOfOldPaid ---- ',
+      this.invoice.total - this.TotalOfOldPaid
+    );
     this.invoice.remainder = this.isUpdate
       ? this.invoice.total - this.TotalOfOldPaid
       : this.invoice.total - +this.invoice.amountPaid;
     console.log('heloo TotalOfOldPaid', this.TotalOfOldPaid);
     console.log('heloo remainder', this.invoice.remainder);
+    if (this.invoice.remainder < 0 || isNaN(this.invoice.remainder)) {
+      console.log('invalidddddd noww ', this.invoice.remainder);
+      // setTimeout(() => {
+      //   this.toastr.warning('enter valid amount!'),
+      //     '',
+      //     {
+      //       timeOut: 2000,
+      //       positionClass: 'toast-top-center',
+      //     };
+      // }, 0);
+    }
   }
   addnewItem() {
     const lastItem = this.invoiceItems[this.invoiceItems.length - 1];
@@ -455,6 +468,14 @@ export class SalesComponent {
     this.updatedInvoice.clientId = this.invoice.clientId;
     this.updatedInvoice.invoiceId = this.invoiceId;
     console.log('updatedInvoice  ', this.updatedInvoice);
+  }
+  showUpdateSection(): void {
+    this.showReview = false;
+    this.showPayment = false;
+  }
+  showPaymentSection(): void {
+    this.showReview = false;
+    this.showPayment = true;
   }
   printReview(): void {
     const reviewSectionElement = this.reviewSection.nativeElement;
