@@ -395,9 +395,11 @@ export class SalesComponent {
       this.updatedinvoiceItems.length > 0 &&
       this.invoice.total - this.TotalOfOldPaid < 0
     ) {
-      console.log('heloo from condition=========');
+      console.log('heloo from condition====');
       this.invoice.remainder = 0;
-      const returns = this.TotalOfOldPaid - this.invoice.total;
+      let returns: number = 0;
+      returns = this.TotalOfOldPaid - this.invoice.total;
+      this.TotalOfOldPaid -= returns;
       setTimeout(() => {
         this.toastr.warning(`${this.clientObj.name} will take  ${returns}EGP`),
           '',
@@ -493,6 +495,7 @@ export class SalesComponent {
       );
       this.calcRemaider();
       this.showPayment = true;
+      this.invoice.amountPaid = 0;
       console.log('updatedinvoiceItems', this.updatedinvoiceItems);
       this.updatedInvoice.updatedinvoiceItems = [...this.updatedinvoiceItems];
     }
@@ -501,6 +504,7 @@ export class SalesComponent {
     console.log('heloo');
     this.showPayment = false;
     this.showReview = true;
+    console.log('update amount paid', this.TotalOfOldPaid, this.returnesMoney);
     this.invoice.amountPaid = this.isUpdate
       ? this.TotalOfOldPaid
       : this.invoice.amountPaid;
@@ -517,6 +521,7 @@ export class SalesComponent {
     this.showPayment = false;
   }
   showPaymentSection(): void {
+    this.invoice.amountPaid = 0;
     this.showReview = false;
     this.showPayment = true;
   }
