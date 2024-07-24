@@ -7,15 +7,15 @@
     <div>
       <input
         type="date"
-        class="mx-3 search"
+        class="ml-3 search"
         name="searchDate"
         [value]="searchDate"
         (change)="getInvoices(getFormattedDate())"
         [(ngModel)]="searchDate"
       />
-      <button class="btn-toggle-form">
+      <!-- <button class="btn-toggle-form">
         <fa-icon [icon]="faPlus" class="me-1"></fa-icon> add new Invoice
-      </button>
+      </button> -->
     </div>
   </div>
   <div class="contain-invoices my-5" id="invoiceContainer">

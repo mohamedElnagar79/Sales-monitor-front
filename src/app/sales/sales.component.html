@@ -148,7 +148,7 @@
               </div>
             </div>
           </div>
-          <div class="new-client mt-3">
+          <div class="new-client mt-3" *ngIf="!isUpdate">
             <button class="client-btn" (click)="addnewItem()" type="button">
               <fa-icon [icon]="faPlus"></fa-icon>
             </button>
@@ -167,8 +167,11 @@
     (ngSubmit)="showReviewSection()"
     class="payment-form mb-5"
   >
-    <h6 class="mb-3">payments</h6>
-    <div class="row m-0 p-0">
+    <button (click)="showUpdateSection()" class="back">
+      <fa-icon [icon]="faChevronLeft" class="me-1" click></fa-icon>
+    </button>
+    <span class="payment-head">payments</span>
+    <div class="row m-0 p-0 mt-3">
       <div class="mb-3 col-4">
         <label for="total" class="form-label">total</label>
         <input
@@ -205,11 +208,10 @@
           disabled
         />
       </div>
-      <div *ngIf="isUpdate" class="new-client mt-3">
-        <button class="client-btn" (click)="addPayment()" type="button">
-          <fa-icon [icon]="faSave"></fa-icon>
+      <div *ngIf="isUpdate && invoice.remainder > 0" class="new-client mt-3">
+        <button class="save-payment-btn" (click)="addPayment()" type="button">
+          Save
         </button>
-        <span (click)="addPayment()">Save</span>
       </div>
       <div class="my-2 col-12" *ngIf="isUpdate">
         <table class="table table-responsive" style="width: 100%">
@@ -241,6 +243,9 @@
             </tr>
           </tbody>
         </table>
+        <h6 *ngIf="returnesMoney > 0" class="returns">
+          Returns Money: <b>{{ returnesMoney }} </b>EGP
+        </h6>
       </div>
       <div class="my-3 col-12">
         <button type="submit" class="btn btn-primary sell">Review</button>
@@ -252,7 +257,10 @@
   <div *ngIf="showReview && !showPayment" class="review-section">
     <div style="display: flex; flex-wrap: wrap; justify-content: space-between">
       <div style="width: 50%">
-        <h5>Invoice <span>#</span></h5>
+        <button (click)="showPaymentSection()" class="back">
+          <fa-icon [icon]="faChevronLeft" class="me-1" click></fa-icon>
+        </button>
+        <span class="payment-head">Invoice #</span>
       </div>
       <div style="width: 50%">
         <div class="right-review">
@@ -428,13 +436,13 @@
   <!-- end of printing page -->
 
   <div *ngIf="showReview" class="review-cotrollers">
-    <button class="btn btn-primary me-3 my-2" (click)="SaveNewInvoice()">
+    <button class="btn btn-primary me-3 my-2" (click)="SaveInvoice()">
       Save
     </button>
     <button
       disabled
       class="btn btn-primary me-3 my-2"
-      (click)="SaveNewInvoice(true)"
+      (click)="SaveInvoice(true)"
     >
       Save & Print
     </button>

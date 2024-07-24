@@ -4,8 +4,14 @@ import { CommonModule, DatePipe } from '@angular/common';
 import { SalesService } from './sales.service';
 import { Sale } from '../models/sale';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { Router, NavigationEnd } from '@angular/router';
 
-import { faPlus, faClose, faSave } from '@fortawesome/free-solid-svg-icons';
+import {
+  faPlus,
+  faClose,
+  faSave,
+  faChevronLeft,
+} from '@fortawesome/free-solid-svg-icons';
 import { ToastrService } from '../shared/toastr.service';
 import { ActivatedRoute } from '@angular/router';
 interface Product {
@@ -63,16 +69,23 @@ export class SalesComponent {
   faPlus = faPlus;
   faClose = faClose;
   faSave = faSave;
+  faChevronLeft = faChevronLeft;
   isUpdate: boolean = false;
   showReview: boolean = false;
   showPayment: boolean = false;
   TotalOfOldPaid: number = 0;
+  returnesMoney: number = 0;
   p: number = 1;
   count: number = 1;
   invoiceId: number = 0;
   titleMessage: string = 'Add new Order';
   products: Product[] = [];
   invoicePayments: any = [];
+  newPayments: any = [];
+  updatedinvoiceItems: any = [];
+  updatedInvoice: any = {};
+  invoice_items_data: any = [];
+  updated_invoice_items_data_to_compare: any = [];
   clients: Client[] = [
     {
       name: '',
@@ -140,7 +153,8 @@ export class SalesComponent {
   constructor(
     private salesService: SalesService,
     private toastr: ToastrService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private navigateRoute: Router
   ) {}
   ngOnInit(): void {
     const id: any = this.route.snapshot.paramMap.get('id');
@@ -197,16 +211,36 @@ export class SalesComponent {
     return item; // Or a unique identifier for each item
   }
   addPayment(): void {
-    this.TotalOfOldPaid += this.invoice.amountPaid;
-    this.calcRemaider();
-    this.invoicePayments.push({
-      total: this.invoice.total,
-      amountPaid: this.invoice.amountPaid,
-      remaining: this.invoice.remainder,
-      createdAt: this.getFormattedDate(),
-    });
-    this.invoice.amountPaid = 0;
+    if (
+      this.invoice.amountPaid > 0 &&
+      this.invoice.amountPaid <= this.invoice.remainder
+    ) {
+      this.TotalOfOldPaid += this.invoice.amountPaid;
+      this.calcRemaider();
+      this.invoicePayments.push({
+        total: this.invoice.total,
+        amountPaid: this.invoice.amountPaid,
+        remaining: this.invoice.remainder,
+        createdAt: this.getFormattedDate(),
+      });
+      this.newPayments.push({
+        total: this.invoice.total,
+        amountPaid: this.invoice.amountPaid,
+        remaining: this.invoice.remainder,
+        createdAt: this.getFormattedDate(),
+      });
+      this.invoice.amountPaid = 0;
+    } else
+      setTimeout(() => {
+        this.toastr.warning('enter valid amount!'),
+          '',
+          {
+            timeOut: 5000,
+            positionClass: 'toast-top-center',
+          };
+      }, 0);
   }
+
   getOneInvoiceById(invoiceId: number): void {
     this.salesService.getOneInvoiceById(invoiceId).subscribe((data: any) => {
       console.log('get data =====>  ', data); // Initialize filteredProducts
@@ -215,7 +249,11 @@ export class SalesComponent {
       this.clientObj.id = data.data.clientId;
       this.invoiceId = data.data.id;
       this.invoiceItems = data.data.invoice_items;
-      this.invoice.newInvoiceItems = data.data.invoice_items;
+      this.invoiceItems = data.data.invoice_items;
+      // this.invoice.newInvoiceItems = data.data.invoice_items;
+      for (const item of data.data.invoice_items) {
+        this.invoice_items_data.push({ ...item });
+      }
       // this.invoice.amountPaid = data.data.amountPaid;
       this.invoice.clientId = data.data.clientId;
       this.invoice.invoiceId = data.data.id;
@@ -223,14 +261,15 @@ export class SalesComponent {
     });
   }
   getInvoiceById(invoiceId: any): any {
+    console.log('get invoice is running');
     this.salesService.getInvoicePayments(invoiceId).subscribe((data: any) => {
       this.invoicePayments = [...data.data.payments];
       this.TotalOfOldPaid = data.data.totalOfOldPaid;
-
+      this.returnesMoney = data.data.returnesMoney;
       console.log('data.data.totalOfOldPaid', data.data.totalOfOldPaid);
       console.log('TotalOfOldPaid ', this.TotalOfOldPaid);
+      this.calcRemaider();
     });
-    this.calcRemaider();
   }
   filterClientsByName(event: any): void {
     console.log('event', event.target.value.toLowerCase());
@@ -348,15 +387,45 @@ export class SalesComponent {
     this.calcRemaider();
   }
   calcRemaider(): void {
-    if (this.invoice.remainder < 0 || isNaN(this.invoice.remainder)) {
-      alert('enter valid amount paid');
+    console.log('calc is running');
+    console.log('this.total ---- ', this.invoice.total);
+    console.log('this.TotalOfOldPaid ---- ', this.TotalOfOldPaid);
+    if (
+      this.isUpdate &&
+      this.updatedinvoiceItems.length > 0 &&
+      this.invoice.total - this.TotalOfOldPaid < 0
+    ) {
+      console.log('heloo from condition====');
+      this.invoice.remainder = 0;
+      let returns: number = 0;
+      returns = this.TotalOfOldPaid - this.invoice.total;
+      this.TotalOfOldPaid -= returns;
+      setTimeout(() => {
+        this.toastr.warning(`${this.clientObj.name} will take  ${returns}EGP`),
+          '',
+          {
+            timeOut: 9000,
+            positionClass: 'toast-top-center',
+          };
+      }, 0);
+    } else {
+      this.invoice.remainder = this.isUpdate
+        ? this.invoice.total - this.TotalOfOldPaid
+        : this.invoice.total - +this.invoice.amountPaid;
+      console.log('heloo TotalOfOldPaid', this.TotalOfOldPaid);
+      console.log('heloo remainder', this.invoice.remainder);
     }
-
-    this.invoice.remainder = this.isUpdate
-      ? this.invoice.total - this.TotalOfOldPaid
-      : this.invoice.total - +this.invoice.amountPaid;
-    console.log('heloo TotalOfOldPaid', this.TotalOfOldPaid);
-    console.log('heloo remainder', this.invoice.remainder);
+    if (this.invoice.remainder < 0 || isNaN(this.invoice.remainder)) {
+      console.log('invalidddddd noww ', this.invoice.remainder);
+      // setTimeout(() => {
+      //   this.toastr.warning('enter valid amount!'),
+      //     '',
+      //     {
+      //       timeOut: 2000,
+      //       positionClass: 'toast-top-center',
+      //     };
+      // }, 0);
+    }
   }
   addnewItem() {
     const lastItem = this.invoiceItems[this.invoiceItems.length - 1];
@@ -409,21 +478,59 @@ export class SalesComponent {
       }
       this.invoice.newInvoiceItems = [...this.invoiceItems];
       console.log('this.invoice', this.invoice);
+      this.updatedinvoiceItems = this.invoice.newInvoiceItems.filter(
+        (item: any) => {
+          // Find matching item in invoice_items_data
+          const existingItem = this.invoice_items_data.find(
+            (invoiceItem: any) => invoiceItem.id === item.id // Use 'invoiceItem' here
+          );
+
+          // Check if price or quantity changed (assuming 'piecePrice' is the correct key)
+          return (
+            existingItem &&
+            (item.piecePrice !== existingItem.piecePrice ||
+              item.quantity !== existingItem.quantity)
+          );
+        }
+      );
+      this.calcRemaider();
       this.showPayment = true;
+      this.invoice.amountPaid = 0;
+      console.log('updatedinvoiceItems', this.updatedinvoiceItems);
+      this.updatedInvoice.updatedinvoiceItems = [...this.updatedinvoiceItems];
     }
   }
   showReviewSection(): void {
     console.log('heloo');
     this.showPayment = false;
     this.showReview = true;
-    this.invoice.amountPaid = this.TotalOfOldPaid;
+    console.log('update amount paid', this.TotalOfOldPaid, this.returnesMoney);
+    this.invoice.amountPaid = this.isUpdate
+      ? this.TotalOfOldPaid
+      : this.invoice.amountPaid;
+    this.updatedInvoice.newPayments = [...this.newPayments];
+    this.updatedInvoice.invoice = this.invoice;
+    this.updatedInvoice.clientId = this.invoice.clientId;
+    this.updatedInvoice.invoiceId = this.invoiceId;
+
+    console.log('invoice_items_data==> ', this.invoice_items_data);
+    console.log('invoice.newInvoiceItems==> ', this.invoice.newInvoiceItems);
+  }
+  showUpdateSection(): void {
+    this.showReview = false;
+    this.showPayment = false;
+  }
+  showPaymentSection(): void {
+    this.invoice.amountPaid = 0;
+    this.showReview = false;
+    this.showPayment = true;
   }
   printReview(): void {
     const reviewSectionElement = this.reviewSection.nativeElement;
     const clonedReviewSection = reviewSectionElement.cloneNode(true); // Clone with styles
 
     // Optional: Modify cloned content before printing (e.g., remove unnecessary elements)
-    this.SaveNewInvoice();
+    this.SaveInvoice();
     const printWindow = window.open('', '_blank'); // Open in new tab/window
     printWindow?.document.write(clonedReviewSection.outerHTML); // Write HTML to new window
     printWindow?.document.close(); // Close the document for printing
@@ -484,33 +591,56 @@ export class SalesComponent {
       createdAt: new Date(),
     };
   }
-  SaveNewInvoice(print?: boolean): void {
-    this.salesService.sellProduct(this.invoice).subscribe(
-      (data: any) => {
-        // this.count = data.data.count;
-        console.log('data ', data);
-        this.resetForm();
-        this.showReview = false;
-        console.log('print ', print);
-        setTimeout(() => {
-          this.toastr.success('Invoice created successfully!'),
-            '',
-            {
-              timeOut: 5000,
-              positionClass: 'toast-top-center',
-            };
-        }, 0); // Display message after 2 seconds
-        if (print) {
-          console.log('print func work =========');
-          // this.printReview();
+  SaveInvoice(print?: boolean): void {
+    if (this.isUpdate) {
+      this.salesService.updateInvoice(this.updatedInvoice).subscribe(
+        (data: any) => {
+          console.log('data ', data);
+          // this.resetForm();
+
+          setTimeout(() => {
+            this.toastr.success('Invoice Updated successfully!'),
+              '',
+              {
+                timeOut: 5000,
+                positionClass: 'toast-top-center',
+              };
+          }, 0); // Display message after 2 seconds
+          this.navigateRoute.navigate(['orders']);
+        },
+        (error) => {
+          alert(`${error.error.message}`);
+          console.error('Error updating invoice:', error);
         }
-        // this.startIndex = this.p > 1 ? (this.p - 1) * 8 + 1 : 1;
-      },
-      (error) => {
-        alert(`${error.error.message}`);
-        console.error('Error fetching sales:', error);
-      }
-    );
+      );
+    } else {
+      this.salesService.sellProduct(this.invoice).subscribe(
+        (data: any) => {
+          // this.count = data.data.count;
+          console.log('data ', data);
+          this.resetForm();
+          this.showReview = false;
+          console.log('print ', print);
+          setTimeout(() => {
+            this.toastr.success('Invoice created successfully!'),
+              '',
+              {
+                timeOut: 5000,
+                positionClass: 'toast-top-center',
+              };
+          }, 0); // Display message after 2 seconds
+          if (print) {
+            console.log('print func work =========');
+            // this.printReview();
+          }
+          // this.startIndex = this.p > 1 ? (this.p - 1) * 8 + 1 : 1;
+        },
+        (error) => {
+          alert(`${error.error.message}`);
+          console.error('Error creating invoice:', error);
+        }
+      );
+    }
   }
   isAdmin(): boolean {
     const role: any = localStorage.getItem('role');

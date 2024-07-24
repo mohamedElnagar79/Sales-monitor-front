@@ -11,7 +11,6 @@ export class InvoiceItemsService {
   constructor(private http: HttpClient) {}
 
   private apiUrl = environment.apiUrl;
-  // private apiUrl = 'http://localhost:10000/';
 
   getInvoiceItems(id: number): Observable<any[]> {
     const token = localStorage.getItem('token');
@@ -20,6 +19,19 @@ export class InvoiceItemsService {
         Authorization: `Bearer ${token}`,
       });
       return this.http.get<any>(this.apiUrl + `invoice-items/${id}`, {
+        headers,
+      });
+    } else {
+      throw new Error('Authorization token not found');
+    }
+  }
+  deleteOneInvoiceItem(id: number): Observable<any> {
+    const token = localStorage.getItem('token');
+    if (token) {
+      const headers = new HttpHeaders({
+        Authorization: `Bearer ${token}`,
+      });
+      return this.http.delete<any>(this.apiUrl + `invoice-item/${id}`, {
         headers,
       });
     } else {

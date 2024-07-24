@@ -106,4 +106,17 @@ export class SalesService {
       throw new Error('Authorization token not found');
     }
   }
+  updateInvoice(invoice: any): Observable<any> {
+    const token = localStorage.getItem('token');
+    if (token) {
+      const headers = new HttpHeaders({
+        Authorization: `Bearer ${token}`,
+      });
+      return this.http.put<any>(this.apiUrl + `invoice`, invoice, {
+        headers,
+      });
+    } else {
+      throw new Error('Authorization token not found');
+    }
+  }
 }

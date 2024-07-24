@@ -11,7 +11,35 @@ $itemColor: #f2f2f2;
 label {
   text-transform: capitalize;
 }
+.back {
+  display: inline-block;
+}
+.save-payment-btn {
+  border: 1px solid $primaryColor;
+  border-radius: 5px;
+  padding: 1px 8px;
+  margin-bottom: 1rem;
+  color: $primaryColor;
+  background: none;
+  &:hover {
+    background-color: $primaryColor;
+    color: #fff;
+  }
+}
+.returns {
+  background-color: #ebedf0;
+  display: inline-block;
+  padding: 5px;
+  margin-top: 0.5rem;
+  b {
+    color: orange;
+  }
+}
 
+.payment-head {
+  font-size: 20px;
+  margin-left: 5px;
+}
 .add-client-form {
   padding: 20px;
   width: 95%;
