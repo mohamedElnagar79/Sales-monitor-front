@@ -74,6 +74,7 @@ export class SalesComponent {
   showReview: boolean = false;
   showPayment: boolean = false;
   TotalOfOldPaid: number = 0;
+  returnesMoney: number = 0;
   p: number = 1;
   count: number = 1;
   invoiceId: number = 0;
@@ -264,6 +265,7 @@ export class SalesComponent {
     this.salesService.getInvoicePayments(invoiceId).subscribe((data: any) => {
       this.invoicePayments = [...data.data.payments];
       this.TotalOfOldPaid = data.data.totalOfOldPaid;
+      this.returnesMoney = data.data.returnesMoney;
       console.log('data.data.totalOfOldPaid', data.data.totalOfOldPaid);
       console.log('TotalOfOldPaid ', this.TotalOfOldPaid);
       this.calcRemaider();
@@ -388,15 +390,29 @@ export class SalesComponent {
     console.log('calc is running');
     console.log('this.total ---- ', this.invoice.total);
     console.log('this.TotalOfOldPaid ---- ', this.TotalOfOldPaid);
-    console.log(
-      'this.this.invoice.total - this.TotalOfOldPaid ---- ',
-      this.invoice.total - this.TotalOfOldPaid
-    );
-    this.invoice.remainder = this.isUpdate
-      ? this.invoice.total - this.TotalOfOldPaid
-      : this.invoice.total - +this.invoice.amountPaid;
-    console.log('heloo TotalOfOldPaid', this.TotalOfOldPaid);
-    console.log('heloo remainder', this.invoice.remainder);
+    if (
+      this.isUpdate &&
+      this.updatedinvoiceItems.length > 0 &&
+      this.invoice.total - this.TotalOfOldPaid < 0
+    ) {
+      console.log('heloo from condition=========');
+      this.invoice.remainder = 0;
+      const returns = this.TotalOfOldPaid - this.invoice.total;
+      setTimeout(() => {
+        this.toastr.warning(`${this.clientObj.name} will take  ${returns}EGP`),
+          '',
+          {
+            timeOut: 9000,
+            positionClass: 'toast-top-center',
+          };
+      }, 0);
+    } else {
+      this.invoice.remainder = this.isUpdate
+        ? this.invoice.total - this.TotalOfOldPaid
+        : this.invoice.total - +this.invoice.amountPaid;
+      console.log('heloo TotalOfOldPaid', this.TotalOfOldPaid);
+      console.log('heloo remainder', this.invoice.remainder);
+    }
     if (this.invoice.remainder < 0 || isNaN(this.invoice.remainder)) {
       console.log('invalidddddd noww ', this.invoice.remainder);
       // setTimeout(() => {
@@ -460,7 +476,25 @@ export class SalesComponent {
       }
       this.invoice.newInvoiceItems = [...this.invoiceItems];
       console.log('this.invoice', this.invoice);
+      this.updatedinvoiceItems = this.invoice.newInvoiceItems.filter(
+        (item: any) => {
+          // Find matching item in invoice_items_data
+          const existingItem = this.invoice_items_data.find(
+            (invoiceItem: any) => invoiceItem.id === item.id // Use 'invoiceItem' here
+          );
+
+          // Check if price or quantity changed (assuming 'piecePrice' is the correct key)
+          return (
+            existingItem &&
+            (item.piecePrice !== existingItem.piecePrice ||
+              item.quantity !== existingItem.quantity)
+          );
+        }
+      );
+      this.calcRemaider();
       this.showPayment = true;
+      console.log('updatedinvoiceItems', this.updatedinvoiceItems);
+      this.updatedInvoice.updatedinvoiceItems = [...this.updatedinvoiceItems];
     }
   }
   showReviewSection(): void {
@@ -477,24 +511,6 @@ export class SalesComponent {
 
     console.log('invoice_items_data==> ', this.invoice_items_data);
     console.log('invoice.newInvoiceItems==> ', this.invoice.newInvoiceItems);
-    this.updatedinvoiceItems = this.invoice.newInvoiceItems.filter(
-      (item: any) => {
-        // Find matching item in invoice_items_data
-        const existingItem = this.invoice_items_data.find(
-          (invoiceItem: any) => invoiceItem.id === item.id // Use 'invoiceItem' here
-        );
-
-        // Check if price or quantity changed (assuming 'piecePrice' is the correct key)
-        return (
-          existingItem &&
-          (item.piecePrice !== existingItem.piecePrice ||
-            item.quantity !== existingItem.quantity)
-        );
-      }
-    );
-
-    console.log('updatedinvoiceItems', this.updatedinvoiceItems);
-    this.updatedInvoice.updatedinvoiceItems = [...this.updatedinvoiceItems];
   }
   showUpdateSection(): void {
     this.showReview = false;

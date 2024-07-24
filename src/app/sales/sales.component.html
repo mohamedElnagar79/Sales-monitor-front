@@ -243,6 +243,9 @@
             </tr>
           </tbody>
         </table>
+        <h6 *ngIf="returnesMoney > 0" class="returns">
+          Returns Money: <b>{{ returnesMoney }} </b>EGP
+        </h6>
       </div>
       <div class="my-3 col-12">
         <button type="submit" class="btn btn-primary sell">Review</button>
