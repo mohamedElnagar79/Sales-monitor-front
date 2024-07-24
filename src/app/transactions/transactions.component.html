@@ -13,7 +13,7 @@
       type="text"
       class="search-input"
       name="search"
-      (keyup)="calcDailySales(p, searchDate, search)"
+      (keyup)="calcDailySales(p, getFormattedDate(), search)"
       [(ngModel)]="search"
     />
     <input
