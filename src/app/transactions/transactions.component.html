@@ -57,57 +57,78 @@
       role="tabpanel"
       aria-labelledby="ex1-tab-1"
     >
-      <h1 class="empty-data" *ngIf="sales.length == 0">There Is No Entries</h1>
-      <div class="table-container table-responsive">
-        <table
-          class="table fixed-height table-responsive"
-          *ngIf="sales.length > 0"
+      <h1 class="empty-data" *ngIf="sales.length == 0">There Is No orders</h1>
+      <!-- start of accordion -->
+      <div class="accordion accordion-flush" id="accordionFlushExample">
+        <div
+          *ngFor="let invoice of sales; let i = index"
+          class="accordion-item my-3"
         >
-          <thead>
-            <tr>
-              <th>No.</th>
-              <td>Product Name</td>
-              <td>Remaining</td>
-              <td>Client Name</td>
-              <td>Amount Paid</td>
-            </tr>
-          </thead>
-          <tbody>
-            <tr
-              *ngFor="
-                let salesItem of sales
-                  | paginate
-                    : {
-                        itemsPerPage: 8,
-                        currentPage: p,
-                        totalItems: salesCount
-                      };
-                let i = index
-              "
+          <h2 class="accordion-header">
+            <button
+              class="accordion-button collapsed"
+              type="button"
+              data-bs-toggle="collapse"
+              [attr.data-bs-target]="'#collapse' + invoice.id"
+              aria-expanded="false"
+              [attr.aria-controls]="'collapse' + invoice.id"
             >
-              <td>{{ i + startIndex }}</td>
-              <td>{{ salesItem.productName }}</td>
-              <td>{{ salesItem.remainingBalance }}</td>
-              <td>{{ salesItem.clientName }}</td>
-              <td>{{ salesItem.amountPaid | number : "1.0-0" }}</td>
-            </tr>
-            <tr>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td>
-                <b>{{ totalAmountPaid | number : "1.0-0" }}</b>
-              </td>
-            </tr>
-          </tbody>
-        </table>
+              {{ invoice.client.name }}
+            </button>
+          </h2>
+          <div
+            [id]="'collapse' + invoice.id"
+            class="accordion-collapse collapse"
+            data-bs-parent="#accordionFlushExample"
+          >
+            <div class="accordion-body">
+              <div class="table-container table-responsive">
+                <table
+                  class="table orders-table fixed-height table-responsive"
+                  *ngIf="sales.length > 0"
+                >
+                  <thead>
+                    <tr>
+                      <td>No.</td>
+                      <td>Product Name</td>
+                      <td>Piece price</td>
+                      <td>Qty</td>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr
+                      *ngFor="
+                        let invoiceItem of invoice.invoice_items
+                          | paginate
+                            : {
+                                itemsPerPage: 8,
+                                currentPage: p,
+                                totalItems: salesCount
+                              };
+                        let i = index
+                      "
+                    >
+                      <td>{{ i + startIndex }}</td>
+                      <td>{{ invoiceItem.product.name }}</td>
+                      <td>
+                        {{ invoiceItem.piecePrice | number : "1.0-0" }} EGP
+                      </td>
+                      <td>{{ invoiceItem.quantity }}</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
+      <!-- end of accordions -->
       <pagination-controls
         *ngIf="sales.length > 0"
         (pageChange)="p = $event; calcDailySales(p, searchDate)"
       ></pagination-controls>
     </div>
+    <!-- expenses tab -->
     <div
       class="tab-pane fade"
       id="ex1-tabs-2"
