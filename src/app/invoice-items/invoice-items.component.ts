@@ -51,7 +51,12 @@ export class InvoiceItemsComponent {
       }
     );
   }
+  backToOrders(): void {
+    const path: any = `orders/`;
+    this.router.navigate([path]);
+  }
   navigateTo(id: any): void {
+    console.log('hhhhhh=====');
     const path: any = `sales/${id}`;
     this.router.navigate([path]);
   }

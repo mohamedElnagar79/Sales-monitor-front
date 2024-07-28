@@ -116,6 +116,7 @@ export class SalesComponent {
   filteredClients: Client[] = [];
   phoneFlag: boolean = false;
   nameFlag: boolean = false;
+  returns: number = 0;
   invoiceItems: InvoiceItem[] = [
     {
       piecePrice: '0.00 EGP',
@@ -397,11 +398,12 @@ export class SalesComponent {
     ) {
       console.log('heloo from condition====');
       this.invoice.remainder = 0;
-      let returns: number = 0;
-      returns = this.TotalOfOldPaid - this.invoice.total;
-      this.TotalOfOldPaid -= returns;
+      this.returns = this.TotalOfOldPaid - this.invoice.total;
+      this.TotalOfOldPaid -= this.returns;
       setTimeout(() => {
-        this.toastr.warning(`${this.clientObj.name} will take  ${returns}EGP`),
+        this.toastr.warning(
+          `${this.clientObj.name} will take  ${this.returns} EGP`
+        ),
           '',
           {
             timeOut: 9000,
@@ -606,6 +608,18 @@ export class SalesComponent {
                 positionClass: 'toast-top-center',
               };
           }, 0); // Display message after 2 seconds
+          if (this.returns > 0) {
+            setTimeout(() => {
+              this.toastr.warning(
+                `${this.clientObj.name} will take  ${this.returns} EGP`
+              ),
+                '',
+                {
+                  timeOut: 12000,
+                  positionClass: 'toast-top-center',
+                };
+            }, 0);
+          }
           this.navigateRoute.navigate(['orders']);
         },
         (error) => {
