@@ -26,7 +26,19 @@ $primaryColor: #0d6efd;
   .table {
     width: 100%;
     background-color: transparent;
-    margin: 1rem 0;
+    // margin: 1rem 0;
+  }
+  .orders-table {
+    thead tr td {
+      background-color: #cecece;
+      width: 40%;
+      padding: 5px 10px;
+    }
+    tbody tr td {
+      width: 40%;
+      background-color: #f2f2f2;
+      padding: 5px 10px;
+    }
   }
   pagination-controls {
     display: flex;
@@ -48,8 +60,8 @@ $primaryColor: #0d6efd;
 }
 
 .table-container {
-  height: 500px;
-  overflow: hidden;
+  height: auto;
+  overflow: auto;
   width: 100%;
 }
 

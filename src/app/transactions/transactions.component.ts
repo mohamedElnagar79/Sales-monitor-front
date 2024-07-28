@@ -49,6 +49,7 @@ export class TransactionsComponent {
         (data: any) => {
           // console.log('data ===>', data.data.sales.rows);
           this.sales = data.data.invoices.rows;
+          console.log("sales ",this.sales)
           this.salesCount = data.data.invoices.count;
           console.log('heooo');
           this.dailyExpense = data.data.dailyExpense.rows;
