@@ -11,14 +11,9 @@ export class TransactionsService {
 
   private apiUrl = environment.apiUrl;
 
-  calcDailySales(
-    p: number,
-    date: string,
-    searchTerm?: string
-  ): Observable<any[]> {
+  calcDailySales(date: string, searchTerm?: string): Observable<any[]> {
     const token = localStorage.getItem('token');
-    let params = new HttpParams().set('page', p);
-    params = params.set('date', date);
+    let params = new HttpParams().set('date', date);
     if (searchTerm) {
       params = params.set('search', searchTerm);
     }
