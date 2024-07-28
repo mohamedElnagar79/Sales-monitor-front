@@ -26,7 +26,19 @@ $primaryColor: #0d6efd;
   .table {
     width: 100%;
     background-color: transparent;
-    margin: 1rem 0;
+    // margin: 1rem 0;
+  }
+  .orders-table {
+    thead tr td {
+      background-color: #cecece;
+      width: 40%;
+      padding: 5px 10px;
+    }
+    tbody tr td {
+      width: 40%;
+      background-color: #f2f2f2;
+      padding: 5px 10px;
+    }
   }
   pagination-controls {
     display: flex;
@@ -48,8 +60,8 @@ $primaryColor: #0d6efd;
 }
 
 .table-container {
-  height: 500px;
-  overflow: hidden;
+  height: auto;
+  overflow: auto;
   width: 100%;
 }
 
@@ -63,4 +75,45 @@ $primaryColor: #0d6efd;
 }
 .active {
   color: $primaryColor !important;
+}
+.accordion-btn {
+  padding-top: 25px !important;
+  padding-bottom: 25px !important;
+  --bs-accordion-btn-focus-box-shadow: none;
+}
+
+.tabs-data {
+  height: 60vh;
+  overflow-y: scroll;
+  scrollbar-width: thin;
+  scrollbar-color: #888 #f2f2f2;
+  text-transform: capitalize;
+  margin: 10px 0 20px 0;
+  .invoice-card:first-child {
+    margin-top: 0 !important;
+  }
+}
+
+.tabs-data::-webkit-scrollbar {
+  width: 12px; /* For WebKit browsers */
+}
+
+.tabs-data::-webkit-scrollbar-track {
+  background: #f2f2f2;
+}
+
+.tabs-data::-webkit-scrollbar-thumb {
+  background-color: #888;
+  border-radius: 6px;
+  border: 3px solid #f2f2f2;
+}
+.expense-table {
+  tr td {
+    padding: 25px 0 !important;
+  }
+}
+.expenses-total {
+  display: flex;
+  justify-content: flex-end;
+  margin-right: 8px;
 }
