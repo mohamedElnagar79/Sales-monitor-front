@@ -399,6 +399,7 @@ export class SalesComponent {
       console.log('heloo from condition====');
       this.invoice.remainder = 0;
       this.returns = this.TotalOfOldPaid - this.invoice.total;
+      // loop for updated invoice item is more strong
       this.TotalOfOldPaid -= this.returns;
       setTimeout(() => {
         this.toastr.warning(
@@ -495,7 +496,7 @@ export class SalesComponent {
           );
         }
       );
-      this.calcRemaider();
+      this.calcTotal();
       this.showPayment = true;
       this.invoice.amountPaid = 0;
       console.log('updatedinvoiceItems', this.updatedinvoiceItems);
