@@ -4,7 +4,7 @@ import { CommonModule, DatePipe } from '@angular/common';
 import { SalesService } from './sales.service';
 import { Sale } from '../models/sale';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import { Router, NavigationEnd } from '@angular/router';
+import { Router } from '@angular/router';
 
 import {
   faPlus,
@@ -217,6 +217,7 @@ export class SalesComponent {
       this.invoice.amountPaid <= this.invoice.remainder
     ) {
       this.TotalOfOldPaid += this.invoice.amountPaid;
+      console.log('total of old paid  paymentwhile add', this.TotalOfOldPaid);
       this.calcRemaider();
       this.invoicePayments.push({
         total: this.invoice.total,
@@ -244,7 +245,6 @@ export class SalesComponent {
 
   getOneInvoiceById(invoiceId: number): void {
     this.salesService.getOneInvoiceById(invoiceId).subscribe((data: any) => {
-      console.log('get data =====>  ', data); // Initialize filteredProducts
       this.clientObj.phone = data.data.phone;
       this.clientObj.name = data.data.clientName;
       this.clientObj.id = data.data.clientId;
@@ -262,23 +262,18 @@ export class SalesComponent {
     });
   }
   getInvoiceById(invoiceId: any): any {
-    console.log('get invoice is running');
     this.salesService.getInvoicePayments(invoiceId).subscribe((data: any) => {
       this.invoicePayments = [...data.data.payments];
       this.TotalOfOldPaid = data.data.totalOfOldPaid;
       this.returnesMoney = data.data.returnesMoney;
-      console.log('data.data.totalOfOldPaid', data.data.totalOfOldPaid);
-      console.log('TotalOfOldPaid ', this.TotalOfOldPaid);
+      console.log('TotalOfOldPaid from get invoice ', this.TotalOfOldPaid);
       this.calcRemaider();
     });
   }
   filterClientsByName(event: any): void {
-    console.log('event', event.target.value.toLowerCase());
-    console.log('clients   ', this.clients);
     this.filteredClients = this.clients.filter((client) =>
       client.name.toLowerCase().includes(event.target.value.toLowerCase())
     );
-    console.log('filteredClients  ', this.filteredClients);
     if (this.filteredClients.length > 0) {
       this.clientSelection?.nativeElement?.children?.classList?.add('active');
     } else {
@@ -288,12 +283,9 @@ export class SalesComponent {
     }
   }
   filterClientsByPhone(event: any): void {
-    console.log('event', event.target.value.toLowerCase());
-    console.log('clients   ', this.clients);
     this.filteredClients = this.clients.filter((client) =>
       client.phone.toLowerCase().includes(event.target.value.toLowerCase())
     );
-    console.log('filteredClients  ', this.filteredClients);
     if (this.filteredClients.length > 0) {
       this.phoneFlag = true;
       this.clientPhoneSelection?.nativeElement?.children?.classList?.add(
@@ -308,8 +300,6 @@ export class SalesComponent {
   }
 
   filterProducts(event: any, index: number): void {
-    console.log('eveent ', event.target.value, index);
-    console.log('this   ', this.invoiceItems[index]);
     this.invoiceItems[index].filteredProducts = this.products.filter(
       (product) =>
         product.name.toLowerCase().includes(event.target.value.toLowerCase())
@@ -326,17 +316,14 @@ export class SalesComponent {
     }
   }
   selectClient(client: Client): void {
-    console.log('client  ', client);
     this.filteredClients = [];
     this.phoneFlag = false;
     this.invoice.clientId = client.id;
     delete this.invoice.clientName;
     delete this.invoice.phone;
     this.clientName = client.name;
-    console.log('invoice   ', this.invoice);
     this.clientObj.name = client.name;
     this.clientObj.phone = client.phone;
-    console.log('clientObj  ', this.clientObj);
   }
 
   selectProduct(product: Product, i: number): void {
@@ -347,11 +334,6 @@ export class SalesComponent {
     const existingInvoiceItems = this.invoiceItems.findIndex(
       (item) => item.productId === product.id
     );
-    console.log('from select  ProductItems  ', this.ProductItems);
-    console.log('from select  invoiceItems ', this.invoiceItems);
-    console.log('from select  existingItemIndex ', existingItemIndex);
-    console.log('from select  existingInvoiceItems ', existingInvoiceItems);
-    console.log('iii ', i);
     if (
       existingItemIndex >= 0 ||
       (existingInvoiceItems >= 0 && existingInvoiceItems != i)
@@ -359,11 +341,9 @@ export class SalesComponent {
       this.invoiceItems[i].productName = '';
       alert('you have already add his before!');
     } else {
-      console.log('hoooooooooooooooooooooo');
       this.invoiceItems[i].productName = product.name;
       this.invoiceItems[i].productId = product.id;
       this.invoiceItems[i].piecePrice = product.price;
-      console.log('clicked', product, 'index', i);
       this.invoiceItems[i].filteredProducts = [];
       this.calcTotal();
     }
@@ -377,8 +357,6 @@ export class SalesComponent {
         // item.quantity != 0 ||
         item.productName != ''
       ) {
-        console.log('from select  invoiceItems ', this.invoiceItems);
-
         item.total = item.piecePrice * item.quantity;
         this.invoice.total += item.total;
       } else {
@@ -389,18 +367,23 @@ export class SalesComponent {
   }
   calcRemaider(): void {
     console.log('calc is running');
-    console.log('this.total ---- ', this.invoice.total);
-    console.log('this.TotalOfOldPaid ---- ', this.TotalOfOldPaid);
+    console.log('this.invoive.total ---- ', this.invoice.total);
+    console.log(
+      'this.TotalOfOldPaid in calc after add payment ---- ',
+      this.TotalOfOldPaid
+    );
     if (
       this.isUpdate &&
       this.updatedinvoiceItems.length > 0 &&
       this.invoice.total - this.TotalOfOldPaid < 0
     ) {
-      console.log('heloo from condition====');
+      // console.log('heloo from condition====', this.updatedinvoiceItems);
+      for (const item of this.updatedinvoiceItems) {
+      }
       this.invoice.remainder = 0;
       this.returns = this.TotalOfOldPaid - this.invoice.total;
       // loop for updated invoice item is more strong
-      this.TotalOfOldPaid -= this.returns;
+      // this.TotalOfOldPaid -= this.returns;
       setTimeout(() => {
         this.toastr.warning(
           `${this.clientObj.name} will take  ${this.returns} EGP`
@@ -415,11 +398,8 @@ export class SalesComponent {
       this.invoice.remainder = this.isUpdate
         ? this.invoice.total - this.TotalOfOldPaid
         : this.invoice.total - +this.invoice.amountPaid;
-      console.log('heloo TotalOfOldPaid', this.TotalOfOldPaid);
-      console.log('heloo remainder', this.invoice.remainder);
     }
     if (this.invoice.remainder < 0 || isNaN(this.invoice.remainder)) {
-      console.log('invalidddddd noww ', this.invoice.remainder);
       // setTimeout(() => {
       //   this.toastr.warning('enter valid amount!'),
       //     '',
@@ -435,7 +415,6 @@ export class SalesComponent {
 
     // Check if the array has only the default object and remove it
     if (lastItem?.piecePrice === '0.00 EGP' || lastItem?.quantity === 0) {
-      console.log('lastItem ', this.invoiceItems[0]);
       if (this.invoiceItems[0].productName !== '') {
         this.invoiceItems?.pop();
       }
@@ -463,8 +442,6 @@ export class SalesComponent {
         'Please complete the current item before adding a new one.'
       );
     }
-    console.log('ProductItems:', this.ProductItems);
-    console.log('InvoiceItems:', this.invoiceItems);
   }
 
   onSubmit(sellForm: any): void {
@@ -480,7 +457,6 @@ export class SalesComponent {
         }
       }
       this.invoice.newInvoiceItems = [...this.invoiceItems];
-      console.log('this.invoice', this.invoice);
       this.updatedinvoiceItems = this.invoice.newInvoiceItems.filter(
         (item: any) => {
           // Find matching item in invoice_items_data
@@ -499,15 +475,17 @@ export class SalesComponent {
       this.calcTotal();
       this.showPayment = true;
       this.invoice.amountPaid = 0;
-      console.log('updatedinvoiceItems', this.updatedinvoiceItems);
       this.updatedInvoice.updatedinvoiceItems = [...this.updatedinvoiceItems];
     }
   }
   showReviewSection(): void {
-    console.log('heloo');
     this.showPayment = false;
     this.showReview = true;
-    console.log('update amount paid', this.TotalOfOldPaid, this.returnesMoney);
+    // decrease returns
+    // this.TotalOfOldPaid =
+    //   this.invoice.total - this.invoice.amountPaid == this.returns
+    //     ? this.TotalOfOldPaid
+    //     : this.TotalOfOldPaid - this.returns;
     this.invoice.amountPaid = this.isUpdate
       ? this.TotalOfOldPaid
       : this.invoice.amountPaid;
@@ -515,9 +493,6 @@ export class SalesComponent {
     this.updatedInvoice.invoice = this.invoice;
     this.updatedInvoice.clientId = this.invoice.clientId;
     this.updatedInvoice.invoiceId = this.invoiceId;
-
-    console.log('invoice_items_data==> ', this.invoice_items_data);
-    console.log('invoice.newInvoiceItems==> ', this.invoice.newInvoiceItems);
   }
   showUpdateSection(): void {
     this.showReview = false;
@@ -598,9 +573,7 @@ export class SalesComponent {
     if (this.isUpdate) {
       this.salesService.updateInvoice(this.updatedInvoice).subscribe(
         (data: any) => {
-          console.log('data ', data);
           // this.resetForm();
-
           setTimeout(() => {
             this.toastr.success('Invoice Updated successfully!'),
               '',
@@ -632,10 +605,8 @@ export class SalesComponent {
       this.salesService.sellProduct(this.invoice).subscribe(
         (data: any) => {
           // this.count = data.data.count;
-          console.log('data ', data);
           this.resetForm();
           this.showReview = false;
-          console.log('print ', print);
           setTimeout(() => {
             this.toastr.success('Invoice created successfully!'),
               '',
