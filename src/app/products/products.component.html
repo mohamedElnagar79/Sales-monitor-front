@@ -27,7 +27,7 @@
           <th>No.</th>
           <th>Name</th>
           <!-- <th>Price</th> -->
-          <th>Sold Price</th>
+          <th>Price</th>
           <th>Stock</th>
           <th>description</th>
           <th>Last Update</th>
@@ -46,7 +46,7 @@
           <td>{{ i + startIndex }}</td>
           <td>{{ product.name }}</td>
           <!-- <td>{{ product.price }}</td> -->
-          <td>{{ product.soldPrice }}</td>
+          <td>{{ product.soldPrice | number : "1.0-0" }} EGP</td>
           <td>{{ product.stock }}</td>
           <td>{{ product.description }}</td>
           <td>{{ product.updatedAt }}</td>
