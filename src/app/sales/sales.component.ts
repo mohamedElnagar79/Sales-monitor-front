@@ -372,6 +372,9 @@ export class SalesComponent {
       'this.TotalOfOldPaid in calc after add payment ---- ',
       this.TotalOfOldPaid
     );
+    if (this.invoice.amountPaid > this.invoice.total && !this.isUpdate) {
+      this.invoice.amountPaid = this.invoice.total;
+    }
     if (
       this.isUpdate &&
       this.updatedinvoiceItems.length > 0 &&

@@ -194,7 +194,6 @@
           [(ngModel)]="invoice.amountPaid"
           name="amountPaid"
           (keyup)="calcRemaider()"
-          [max]="invoice.total"
           [disabled]="invoice.remainder == 0 && isUpdate"
           required
         />
