@@ -161,7 +161,7 @@ export class SalesComponent {
     const id: any = this.route.snapshot.paramMap.get('id');
     this.titleMessage = id ? 'Update Invoice' : this.titleMessage;
     if (id) {
-      this.getInvoiceById(id);
+      this.getInvoicePayments(id);
       this.getOneInvoiceById(id);
       this.isUpdate = true;
     }
@@ -249,6 +249,8 @@ export class SalesComponent {
       this.clientObj.name = data.data.clientName;
       this.clientObj.id = data.data.clientId;
       this.invoiceId = data.data.id;
+      console.log('data   ', data.data);
+      this.invoice.remainder = data.data.remainingBalance;
       this.invoiceItems = data.data.invoice_items;
       this.invoiceItems = data.data.invoice_items;
       // this.invoice.newInvoiceItems = data.data.invoice_items;
@@ -261,12 +263,11 @@ export class SalesComponent {
       this.calcTotal();
     });
   }
-  getInvoiceById(invoiceId: any): any {
+  getInvoicePayments(invoiceId: any): any {
     this.salesService.getInvoicePayments(invoiceId).subscribe((data: any) => {
       this.invoicePayments = [...data.data.payments];
       this.TotalOfOldPaid = data.data.totalOfOldPaid;
       this.returnesMoney = data.data.returnesMoney;
-      console.log('TotalOfOldPaid from get invoice ', this.TotalOfOldPaid);
       this.calcRemaider();
     });
   }
@@ -366,31 +367,44 @@ export class SalesComponent {
     this.calcRemaider();
   }
   calcRemaider(): void {
-    console.log('calc is running');
-    console.log('this.invoive.total ---- ', this.invoice.total);
-    console.log(
-      'this.TotalOfOldPaid in calc after add payment ---- ',
-      this.TotalOfOldPaid
-    );
+    console.log('calc clicked ', this.invoice);
     if (this.invoice.amountPaid > this.invoice.total && !this.isUpdate) {
+      //handel max value
       this.invoice.amountPaid = this.invoice.total;
+    }
+    if (
+      // handel if user has return any thing and have paid more than total
+      this.isUpdate &&
+      this.updatedinvoiceItems.length > 0 &&
+      this.invoice.total - this.TotalOfOldPaid < 0
+    ) {
+      console.log('h1====');
+      this.invoice.remainder = 0;
     }
     if (
       this.isUpdate &&
       this.updatedinvoiceItems.length > 0 &&
       this.invoice.total - this.TotalOfOldPaid < 0
     ) {
-      this.invoice.remainder = 0;
-      // this.returns = this.TotalOfOldPaid - this.invoice.total;
-      // loop for updated invoice item is more strong
-      // this.TotalOfOldPaid -= this.returns;
-    } else {
-      console.log('total from calc ', this.invoice.total);
-      console.log('totalof old from calc ', this.TotalOfOldPaid);
-      this.invoice.remainder = this.isUpdate
-        ? this.TotalOfOldPaid - this.invoice.total
-        : this.invoice.total - +this.invoice.amountPaid;
+      console.log('h2====');
+      // handel if user has return any thing and have not paid all money
+      this.invoice.remainder = this.invoice.total - this.TotalOfOldPaid;
     }
+    if (this.isUpdate && this.updatedInvoice.length == 0) {
+      console.log('h3    ===');
+      this.invoice.remainder = this.invoice.remainder;
+    }
+    if (!this.isUpdate) {
+      console.log('h4===== ');
+      this.invoice.remainder = this.invoice.total - this.invoice.amountPaid;
+    } else {
+      console.log('elseeee ', this.invoice.remainder);
+      // this.invoice.remainder = this.invoice.remainder;
+      this.invoice.remainder = this.invoice.total - this.TotalOfOldPaid;
+    }
+    // this.invoice.remainder = this.isUpdate
+    //     ? this.TotalOfOldPaid - this.invoice.total
+    //     : this.invoice.total - +this.invoice.amountPaid; //while creat invoice
     if (this.invoice.remainder < 0 || isNaN(this.invoice.remainder)) {
       // setTimeout(() => {
       //   this.toastr.warning('enter valid amount!'),
@@ -474,6 +488,7 @@ export class SalesComponent {
     this.returns = 0;
     this.showPayment = false;
     this.showReview = true;
+    this.calcRemaider();
     if (
       this.isUpdate &&
       this.updatedinvoiceItems.length > 0 &&

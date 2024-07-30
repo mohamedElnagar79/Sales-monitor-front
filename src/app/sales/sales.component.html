@@ -193,11 +193,10 @@
           class="form-control"
           [(ngModel)]="invoice.amountPaid"
           name="amountPaid"
-          (keyup)="calcRemaider()"
-          [disabled]="invoice.remainder == 0 && isUpdate"
           required
         />
       </div>
+      <!-- [disabled]="invoice.remainder == 0 && isUpdate" -->
       <div class="mb-3 col-4">
         <label for="salePrice" class="form-label">Remaining</label>
         <input
@@ -209,7 +208,7 @@
           disabled
         />
       </div>
-      <div *ngIf="isUpdate && invoice.remainder > 0" class="new-client mt-3">
+      <div *ngIf="isUpdate" class="new-client mt-3">
         <button class="save-payment-btn" (click)="addPayment()" type="button">
           Save
         </button>
