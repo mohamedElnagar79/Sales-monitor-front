@@ -382,8 +382,10 @@ export class SalesComponent {
       // loop for updated invoice item is more strong
       // this.TotalOfOldPaid -= this.returns;
     } else {
+      console.log('total from calc ', this.invoice.total);
+      console.log('totalof old from calc ', this.TotalOfOldPaid);
       this.invoice.remainder = this.isUpdate
-        ? this.invoice.total - this.TotalOfOldPaid
+        ? this.TotalOfOldPaid - this.invoice.total
         : this.invoice.total - +this.invoice.amountPaid;
     }
     if (this.invoice.remainder < 0 || isNaN(this.invoice.remainder)) {
@@ -466,6 +468,7 @@ export class SalesComponent {
     }
   }
   showReviewSection(): void {
+    this.returns = 0;
     this.showPayment = false;
     this.showReview = true;
     if (
@@ -495,7 +498,13 @@ export class SalesComponent {
     //   this.invoice.total - this.invoice.amountPaid == this.returns
     //     ? this.TotalOfOldPaid
     //     : this.TotalOfOldPaid - this.returns;
-    this.invoice.amountPaid = this.invoice.amountPaid;
+    console.log(
+      'this.totalofamount-returns  --',
+      this.TotalOfOldPaid - this.returns
+    );
+    this.invoice.amountPaid = this.isUpdate
+      ? this.TotalOfOldPaid - this.returns
+      : this.invoice.amountPaid;
     this.updatedInvoice.newPayments = [...this.newPayments];
     this.updatedInvoice.invoice = this.invoice;
     this.updatedInvoice.clientId = this.invoice.clientId;

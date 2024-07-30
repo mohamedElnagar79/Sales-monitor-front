@@ -21,6 +21,7 @@
               name="name"
               [(ngModel)]="clientObj.name"
               (keyup)="filterClientsByName($event)"
+              [disabled]="isUpdate"
               required
             />
             <ul
@@ -51,6 +52,7 @@
               name="phone"
               [(ngModel)]="clientObj.phone"
               (keyup)="filterClientsByPhone($event)"
+              [disabled]="isUpdate"
               required
             />
             <ul
@@ -193,6 +195,7 @@
           name="amountPaid"
           (keyup)="calcRemaider()"
           [max]="invoice.total"
+          [disabled]="invoice.remainder == 0 && isUpdate"
           required
         />
       </div>
