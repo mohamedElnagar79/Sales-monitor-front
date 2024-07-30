@@ -377,23 +377,10 @@ export class SalesComponent {
       this.updatedinvoiceItems.length > 0 &&
       this.invoice.total - this.TotalOfOldPaid < 0
     ) {
-      // console.log('heloo from condition====', this.updatedinvoiceItems);
-      for (const item of this.updatedinvoiceItems) {
-      }
       this.invoice.remainder = 0;
-      this.returns = this.TotalOfOldPaid - this.invoice.total;
+      // this.returns = this.TotalOfOldPaid - this.invoice.total;
       // loop for updated invoice item is more strong
       // this.TotalOfOldPaid -= this.returns;
-      setTimeout(() => {
-        this.toastr.warning(
-          `${this.clientObj.name} will take  ${this.returns} EGP`
-        ),
-          '',
-          {
-            timeOut: 9000,
-            positionClass: 'toast-top-center',
-          };
-      }, 0);
     } else {
       this.invoice.remainder = this.isUpdate
         ? this.invoice.total - this.TotalOfOldPaid
@@ -481,14 +468,34 @@ export class SalesComponent {
   showReviewSection(): void {
     this.showPayment = false;
     this.showReview = true;
+    if (
+      this.isUpdate &&
+      this.updatedinvoiceItems.length > 0 &&
+      this.invoice.total - this.TotalOfOldPaid < 0
+    ) {
+      this.invoice.remainder = 0;
+      this.returns = this.TotalOfOldPaid - this.invoice.total;
+
+      this.invoice.amountPaid = this.TotalOfOldPaid - this.returns;
+      // loop for updated invoice item is more strong
+      // this.TotalOfOldPaid -= this.returns;
+      setTimeout(() => {
+        this.toastr.warning(
+          `${this.clientObj.name} will take  ${this.returns} EGP`
+        ),
+          '',
+          {
+            timeOut: 9000,
+            positionClass: 'toast-top-center',
+          };
+      }, 0);
+    }
     // decrease returns
     // this.TotalOfOldPaid =
     //   this.invoice.total - this.invoice.amountPaid == this.returns
     //     ? this.TotalOfOldPaid
     //     : this.TotalOfOldPaid - this.returns;
-    this.invoice.amountPaid = this.isUpdate
-      ? this.TotalOfOldPaid
-      : this.invoice.amountPaid;
+    this.invoice.amountPaid = this.invoice.amountPaid;
     this.updatedInvoice.newPayments = [...this.newPayments];
     this.updatedInvoice.invoice = this.invoice;
     this.updatedInvoice.clientId = this.invoice.clientId;
