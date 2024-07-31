@@ -76,6 +76,8 @@ export class SalesComponent {
   TotalOfOldPaid: number = 0;
   returnesMoney: number = 0;
   p: number = 1;
+  originalRemainder = 0;
+  originalPaid = 0;
   count: number = 1;
   invoiceId: number = 0;
   titleMessage: string = 'Add new Order';
@@ -250,6 +252,8 @@ export class SalesComponent {
       this.clientObj.id = data.data.clientId;
       this.invoiceId = data.data.id;
       console.log('data   ', data.data);
+      this.originalRemainder = data.data.remainingBalance;
+      this.originalPaid = data.data.amountPaid;
       this.invoice.remainder = data.data.remainingBalance;
       this.invoiceItems = data.data.invoice_items;
       this.invoiceItems = data.data.invoice_items;
@@ -367,7 +371,7 @@ export class SalesComponent {
     this.calcRemaider();
   }
   calcRemaider(): void {
-    console.log('calc clicked ', this.invoice);
+    console.log('calc clicked ', this.invoice.amountPaid);
     if (this.invoice.amountPaid > this.invoice.total && !this.isUpdate) {
       //handel max value
       this.invoice.amountPaid = this.invoice.total;
@@ -388,8 +392,10 @@ export class SalesComponent {
       this.isUpdate &&
       this.updatedinvoiceItems.length == 0
     ) {
-      console.log('h00');
-      this.invoice.remainder = this.invoice.total - this.TotalOfOldPaid;
+      this.invoice.remainder =
+        this.originalRemainder != 0
+          ? this.invoice.total - this.TotalOfOldPaid
+          : this.invoice.remainder;
     }
     if (
       this.isUpdate &&
@@ -501,12 +507,42 @@ export class SalesComponent {
     this.showPayment = false;
     this.showReview = true;
     this.calcRemaider();
+
+    // decrease returns
+    // this.TotalOfOldPaid =
+    //   this.invoice.total - this.invoice.amountPaid == this.returns
+    //     ? this.TotalOfOldPaid
+    //     : this.TotalOfOldPaid - this.returns;
+    console.log(
+      'this.totalofamount-returns  --',
+      this.TotalOfOldPaid - this.returns
+    );
+    if (
+      this.isUpdate &&
+      this.invoice.amountPaid != this.originalPaid &&
+      this.invoice.amountPaid != 0
+    ) {
+      console.log('helooo');
+      this.invoice.amountPaid = this.TotalOfOldPaid - this.returns;
+    }
+    if (this.isUpdate && this.invoice.remainder == 0) {
+      this.invoice.amountPaid = this.invoice.total;
+    }
+    if (this.isUpdate && this.invoice.remainder != 0) {
+      this.invoice.amountPaid = this.TotalOfOldPaid;
+    }
+    // console.log('this.originalPaid  ', this.originalPaid);
+    // this.invoice.amountPaid = this.isUpdate
+    //   ? this.originalPaid - this.returns
+    //   : this.invoice.amountPaid;
     if (
       this.isUpdate &&
       this.updatedinvoiceItems.length > 0 &&
       this.invoice.total - this.TotalOfOldPaid < 0
     ) {
       this.invoice.remainder = 0;
+      console.log('this.TotalOfOldPaid ', this.TotalOfOldPaid);
+      console.log('this.invoice.total ', this.invoice.total);
       this.returns = this.TotalOfOldPaid - this.invoice.total;
 
       this.invoice.amountPaid = this.TotalOfOldPaid - this.returns;
@@ -523,18 +559,6 @@ export class SalesComponent {
           };
       }, 0);
     }
-    // decrease returns
-    // this.TotalOfOldPaid =
-    //   this.invoice.total - this.invoice.amountPaid == this.returns
-    //     ? this.TotalOfOldPaid
-    //     : this.TotalOfOldPaid - this.returns;
-    console.log(
-      'this.totalofamount-returns  --',
-      this.TotalOfOldPaid - this.returns
-    );
-    this.invoice.amountPaid = this.isUpdate
-      ? this.TotalOfOldPaid - this.returns
-      : this.invoice.amountPaid;
     this.updatedInvoice.newPayments = [...this.newPayments];
     this.updatedInvoice.invoice = this.invoice;
     this.updatedInvoice.clientId = this.invoice.clientId;
