@@ -192,6 +192,7 @@
           autocomplete="off"
           class="form-control"
           [(ngModel)]="invoice.amountPaid"
+          [disabled]="invoice.remainder == 0"
           name="amountPaid"
           required
         />
@@ -208,7 +209,7 @@
           disabled
         />
       </div>
-      <div *ngIf="isUpdate" class="new-client mt-3">
+      <div *ngIf="isUpdate && invoice.remainder != 0" class="new-client mt-3">
         <button class="save-payment-btn" (click)="addPayment()" type="button">
           Save
         </button>
@@ -264,7 +265,7 @@
       </div>
       <div style="width: 50%">
         <div class="right-review">
-          <button (click)="this.showReview = false" class="closeReviewBtn">
+          <button (click)="backToPayment()" class="closeReviewBtn">
             <fa-icon [icon]="faClose"></fa-icon>
           </button>
         </div>
