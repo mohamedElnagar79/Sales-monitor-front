@@ -396,27 +396,11 @@ export class SalesComponent {
       this.invoice.remainder > 0 &&
       this.updatedinvoiceItems.length > 0
     ) {
-      // user have remainder and update items
-      // console.log('total of paid --', this.TotalOfOldPaid);
-      // console.log('invoice total -- ', this.invoice.total);
-      // console.log('invoice total -- ', this.invoice.remainder);
-      // console.log('remainder ', this.invoice.total - this.TotalOfOldPaid);
-      // console.log('heloooo this is ok');
       this.invoice.remainder =
         this.invoice.total - this.TotalOfOldPaid > 0
           ? this.invoice.total - this.TotalOfOldPaid
           : 0;
     }
-    // if (
-    //   this.isUpdate &&
-    //   this.updatedinvoiceItems.length > 0 &&
-    //   this.invoice.total - this.TotalOfOldPaid < 0
-    // ) {
-    //   // dublivated with h1
-    //   console.log('h2====');
-    //   // handel if user has return any thing and have not paid all money
-    //   this.invoice.remainder = this.invoice.total - this.TotalOfOldPaid;
-    // }
     if (this.isUpdate && this.updatedInvoice.length == 0) {
       console.log('h3    ===');
       this.invoice.remainder = this.invoice.remainder;
