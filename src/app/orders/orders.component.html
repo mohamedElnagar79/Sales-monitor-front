@@ -36,7 +36,7 @@
           <div>
             <h6 class="mb-4">
               :<span class="ms-3"
-                ><b>{{ invoice.total }}</b> EGP</span
+                ><b>{{ invoice.total | number : "1.0-0" }}</b> EGP</span
               >
               <button
                 class="circle-right mx-1"
@@ -47,7 +47,7 @@
             </h6>
             <h6>
               :<span class="ms-3">
-                <b>{{ invoice.remainingBalance }}</b></span
+                <b>{{ invoice.remainingBalance | number : "1.0-0" }}</b></span
               >
               EGP
             </h6>
