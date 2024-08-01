@@ -26,7 +26,7 @@ export class OrdersComponent {
   searchDate: any = this.today.toISOString().split('T')[0];
   formattedDate: any = '';
   invoices: any = [];
-  search: any = '';
+  searchPhone: any;
   faPen = faPen;
   faTrash = faTrash;
   faPlus = faPlus;
@@ -85,9 +85,9 @@ export class OrdersComponent {
   //   }
   // }
 
-  getInvoices(date?: any): void {
-    console.log('date from dunc ===> ', date);
-    this.ordersService.getInvoices(date).subscribe(
+  getInvoices(date?: any, phone?: any): void {
+    console.log('start ===> ', date);
+    this.ordersService.getInvoices(date, phone).subscribe(
       (data: any) => {
         this.invoices = data.data;
       },

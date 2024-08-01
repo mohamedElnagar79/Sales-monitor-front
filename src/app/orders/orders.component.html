@@ -2,7 +2,14 @@
   <h3 class="mt-5">order List</h3>
   <div class="sales-head mt-3">
     <div>
-      <input type="text" class="search" [(ngModel)]="search" name="search" />
+      <input
+        type="number"
+        class="search"
+        [(ngModel)]="searchPhone"
+        name="search"
+        autocomplete="off"
+        (keyup)="getInvoices(undefined, searchPhone)"
+      />
     </div>
     <div>
       <input
