@@ -33,7 +33,7 @@
         <tr *ngFor="let item of invoiceItems; let i = index">
           <td>{{ item.productName }}</td>
           <td>
-            <b>{{ item.piecePrice }} </b> EGP
+            <b>{{ item.piecePrice | number : "1.0-0" }} </b> EGP
           </td>
           <td>{{ item.quantity }}</td>
           <td>{{ item.createdAt }}</td>

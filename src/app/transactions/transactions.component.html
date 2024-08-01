@@ -143,11 +143,8 @@
       <h1 *ngIf="dailyExpense.length == 0" class="empty-data">
         There Is No Expenses
       </h1>
-      <div class="tabs-data">
-        <div
-          class="table-container table-responsive"
-          *ngIf="dailyExpense.length > 0"
-        >
+      <div class="tabs-data" *ngIf="dailyExpense.length > 0">
+        <div class="table-container table-responsive">
           <table class="table fixed-height table-responsive expense-table">
             <thead>
               <tr>

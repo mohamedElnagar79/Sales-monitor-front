@@ -15,6 +15,7 @@ import { Outgoing } from '../models/outgoing';
 })
 export class OutgoingComponent {
   @ViewChild('closeModal') closeModalRef!: ElementRef;
+  @ViewChild('closeAddModal') closeAddModalRef!: ElementRef;
   @ViewChild('deleteModal') deleteModalRef!: ElementRef;
   outgoing: any = [];
   newOutgoing: Outgoing = {
@@ -83,6 +84,7 @@ export class OutgoingComponent {
         this.newOutgoing.amount = 0;
         this.newOutgoing.description = ' ';
         this.getOutgoing(1);
+        this.closeAddModalRef.nativeElement.click();
       },
       (error) => {
         console.error('Error while adding outgoing', error);
