@@ -4,15 +4,17 @@ import { CommonModule } from '@angular/common';
 import { NgxPaginationModule } from 'ngx-pagination';
 import { FormsModule } from '@angular/forms';
 import { DatePipe } from '@angular/common';
-
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { faPhone } from '@fortawesome/free-solid-svg-icons';
 @Component({
   selector: 'app-transactions',
   standalone: true,
-  imports: [CommonModule, NgxPaginationModule, FormsModule],
+  imports: [CommonModule, NgxPaginationModule, FormsModule, FontAwesomeModule],
   templateUrl: './transactions.component.html',
   styleUrl: './transactions.component.scss',
 })
 export class TransactionsComponent {
+  faPhone = faPhone;
   sales: any = [];
   dailyExpense: any = [];
   invoicePayments: any = [];

@@ -8,6 +8,8 @@ import {
   faTrash,
   faPlus,
   faChevronRight,
+  faPhone,
+  faPerson,
 } from '@fortawesome/free-solid-svg-icons';
 import { Router } from '@angular/router';
 import { DatePipe } from '@angular/common';
@@ -28,7 +30,9 @@ export class OrdersComponent {
   invoices: any = [];
   searchPhone: any;
   faPen = faPen;
+  faPerson = faPerson;
   faTrash = faTrash;
+  faPhone = faPhone;
   faPlus = faPlus;
   faChevronRight = faChevronRight;
   maxQuantity: number = 1;

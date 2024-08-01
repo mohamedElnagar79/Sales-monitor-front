@@ -20,7 +20,13 @@ $itemColor: #f2f2f2;
     margin-top: 0 !important;
   }
 }
+.client-info {
+  font-size: 17px;
 
+  .clientPhone {
+    margin-left: 1rem;
+  }
+}
 .contain-invoices::-webkit-scrollbar {
   width: 12px; /* For WebKit browsers */
 }

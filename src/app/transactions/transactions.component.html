@@ -87,7 +87,11 @@
                 [attr.aria-controls]="'collapse' + invoice.id"
               >
                 <span class="my-0">{{ invoice.client.name }}</span>
-                <span class="my-0 ms-3">{{ invoice.client.phone }}</span>
+
+                <span class="my-0 ms-3 clientPhone"
+                  ><fa-icon [icon]="faPhone" class="mx-1"></fa-icon>
+                  {{ invoice.client.phone }}</span
+                >
               </button>
             </h2>
             <div

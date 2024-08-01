@@ -2,12 +2,15 @@
   <h3 class="mt-5">order List</h3>
   <div class="sales-head mt-3">
     <div>
+      <!-- <label for="searchPhone"> </label> -->
       <input
         type="number"
         class="search"
+        id="searchPhone"
         [(ngModel)]="searchPhone"
         name="search"
         autocomplete="off"
+        placeholder="search by phone"
         (keyup)="getInvoices(undefined, searchPhone)"
       />
     </div>
@@ -29,9 +32,13 @@
     <div *ngFor="let invoice of invoices; let i = index">
       <div class="invoice-card">
         <div>
-          <h5 class="mb-4">
+          <h5 class="mb-4 client-info">
             {{ invoice.clientName }}
             <span>({{ invoice.itemCount }} items)</span>
+            <span class="clientPhone">
+              <fa-icon [icon]="faPhone" class="mx-1"></fa-icon>
+              {{ invoice.clientPhone }}</span
+            >
           </h5>
           <p>{{ invoice.createdAt }}</p>
         </div>
