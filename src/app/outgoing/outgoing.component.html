@@ -1,14 +1,6 @@
 <div class="container mt-5 px-5">
   <div class="outgoing-head mt-3">
-    <!-- <input
-      type="text"
-      class="search-input"
-      [(ngModel)]="search"
-      name="search"
-      (keyup)="outgoing(p, search)"
-    /> -->
     <h2>my outgoing</h2>
-
     <button
       class="btn btn-toggle-form mb-2"
       data-bs-toggle="modal"
@@ -45,7 +37,7 @@
           <td>{{ outItem.expenseName }}</td>
           <td class="desc">{{ outItem.description }}</td>
           <td>{{ outItem.reasone }}</td>
-          <td>{{ outItem.amount | number : "1.0-0" }}</td>
+          <td>{{ outItem.amount | number : "1.0-0" }} EGP</td>
           <td>{{ outItem.updatedAt }}</td>
           <td>
             <div class="table-cotrollers">
@@ -195,6 +187,7 @@
                 Add outgoing
               </button>
               <button
+                #closeAddModal
                 type="button"
                 class="btn btn-secondary form-control"
                 data-bs-dismiss="modal"
