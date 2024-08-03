@@ -28,7 +28,14 @@
       </button> -->
     </div>
   </div>
-  <div class="contain-invoices my-5" id="invoiceContainer">
+  <div *ngIf="invoices.length == 0" class="no-orders">
+    <h3>there is no orders</h3>
+  </div>
+  <div
+    class="contain-invoices my-5"
+    id="invoiceContainer"
+    *ngIf="invoices.length > 0"
+  >
     <div *ngFor="let invoice of invoices; let i = index">
       <div class="invoice-card">
         <div>
