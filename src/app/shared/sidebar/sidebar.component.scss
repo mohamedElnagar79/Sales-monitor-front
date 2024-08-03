@@ -38,6 +38,18 @@ ul {
   background-color: $primaryColor;
   font-weight: 800;
 }
+.dropdown-btn {
+  span {
+    font-size: 15px;
+    margin-left: 8px;
+  }
+  &:hover {
+    color: #000;
+  }
+}
+.dropdown-item:hover {
+  cursor: pointer;
+}
 
 /* Large Devices, Wide Screens */
 @media only screen and (max-width: 1199px) {

@@ -24,6 +24,7 @@ export class SidebarComponent {
   isOpen: boolean = false; // Flag to track sidebar visibility
   faPen = faPen;
   faCoins = faCoins;
+  name: any = '';
   faUsers = faUsers;
   faHome = faHome;
   faCartArrowDown = faCartArrowDown;
@@ -43,7 +44,7 @@ export class SidebarComponent {
 
   ngOnInit(): void {
     const role = localStorage.getItem('role');
-    console.log('role ', role);
+    this.name = localStorage.getItem('name');
     this.isAdmin = role === 'admin' ? true : false;
     this.router.events.subscribe((event) => {
       if (event instanceof NavigationEnd) {
