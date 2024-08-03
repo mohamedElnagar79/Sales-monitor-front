@@ -72,7 +72,7 @@
       <h1 class="empty-data" *ngIf="sales.length == 0">There Is No orders</h1>
       <!-- start of accordion -->
       <div class="accordion accordion-flush" id="accordionFlushExample">
-        <div class="tabs-data">
+        <div class="tabs-data" *ngIf="sales.length > 0">
           <div
             *ngFor="let invoice of sales; let i = index"
             class="accordion-item"
@@ -188,11 +188,8 @@
     <h1 *ngIf="invoicePayments.length == 0" class="empty-data">
       There Is No old Payment
     </h1>
-    <div class="tabs-data">
-      <div
-        class="table-container table-responsive"
-        *ngIf="invoicePayments.length > 0"
-      >
+    <div class="tabs-data" *ngIf="invoicePayments.length > 0">
+      <div class="table-container table-responsive">
         <table class="table fixed-height table-responsive expense-table">
           <thead>
             <tr>
