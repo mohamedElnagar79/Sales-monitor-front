@@ -487,7 +487,6 @@ export class SalesComponent {
           const existingItem = this.invoice_items_data.find(
             (invoiceItem: any) => invoiceItem.id === item.id // Use 'invoiceItem' here
           );
-
           // Check if price or quantity changed (assuming 'piecePrice' is the correct key)
           return (
             existingItem &&

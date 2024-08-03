@@ -4,7 +4,7 @@
     <h3>
       total
       <span class="total-money"
-        >{{ totalExistMoney | number : "1.0-0" }} EGP</span
+        >{{ totalExistMoney | number : "1.0-2" }} EGP</span
       >
     </h3>
   </div>
@@ -123,7 +123,7 @@
                         <!-- <td>{{ i + invoice_startIndex }}</td> -->
                         <td>{{ invoiceItem.product.name }}</td>
                         <td>
-                          {{ invoiceItem.piecePrice | number : "1.0-0" }} EGP
+                          {{ invoiceItem.piecePrice | number : "1.0-2" }} EGP
                         </td>
                         <td>{{ invoiceItem.quantity }}</td>
                       </tr>
@@ -163,14 +163,14 @@
                 <!-- <td>{{ i + expense_startIndex }}</td> -->
                 <td>{{ expenseItem.expenseName }}</td>
                 <td>{{ expenseItem.description }}</td>
-                <td>{{ expenseItem.amount | number : "1.0-0" }} EGP</td>
+                <td>{{ expenseItem.amount | number : "1.0-2" }} EGP</td>
               </tr>
               <tr>
                 <!-- <td></td> -->
                 <td></td>
                 <td class="expenses-total">Total</td>
                 <td>
-                  <b> {{ totalDailyExpense | number : "1.0-0" }} EGP</b>
+                  <b> {{ totalDailyExpense | number : "1.0-2" }} EGP</b>
                 </td>
               </tr>
             </tbody>
@@ -206,8 +206,8 @@
             <tr *ngFor="let invoicePayment of invoicePayments; let i = index">
               <!-- <td>{{ i + expense_startIndex }}</td> -->
               <td>{{ invoicePayment.client.name }}</td>
-              <td>{{ invoicePayment.amountPaid | number : "1.0-0" }} EGP</td>
-              <td>{{ invoicePayment.remaining | number : "1.0-0" }} EGP</td>
+              <td>{{ invoicePayment.amountPaid | number : "1.0-2" }} EGP</td>
+              <td>{{ invoicePayment.remaining | number : "1.0-2" }} EGP</td>
             </tr>
           </tbody>
         </table>
