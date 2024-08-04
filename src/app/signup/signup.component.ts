@@ -3,6 +3,7 @@ import { FormsModule } from '@angular/forms';
 import { User } from '../models/user.model';
 import { SignupService } from './signup.service';
 import { CommonModule } from '@angular/common'; // Import CommonModule
+import { ToastrService } from '../shared/toastr.service';
 
 @Component({
   selector: 'app-signup',
@@ -17,7 +18,10 @@ export class SignupComponent {
   password: string = '';
 
   errorMessage: string = '';
-  constructor(private SignupService: SignupService) {}
+  constructor(
+    private SignupService: SignupService,
+    private toastr: ToastrService
+  ) {}
   onSubmit(signupForm: any): void {
     let user: User = {
       name: this.name,
@@ -25,12 +29,19 @@ export class SignupComponent {
       password: this.password,
     };
     if (signupForm.valid) {
-      console.log('user   here  ', user);
       this.SignupService.createUser(user).subscribe(
         (response) => {
-          // Handle successful login response
-          console.log('Login successful:', response);
-          // this.router.navigate(['/products']);
+          setTimeout(() => {
+            this.toastr.success('user created successfully'),
+              '',
+              {
+                timeOut: 2000,
+                positionClass: 'toast-top-center',
+              };
+          }, 0);
+          this.name = '';
+          this.email = '';
+          this.password = '';
         },
         (error) => {
           // Handle login error
