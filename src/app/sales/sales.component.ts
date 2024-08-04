@@ -577,6 +577,17 @@ export class SalesComponent {
     this.showReview = false;
     this.calcRemaider();
   }
+  validateQuantity(item: any): void {
+    if (this.isUpdate) {
+      const currentItem = this.invoice_items_data.find(
+        (invoiceItem: any) => invoiceItem.id === item.id // Use 'invoiceItem' here
+      );
+      item.quantity =
+        item.quantity > currentItem.quantity
+          ? currentItem.quantity
+          : item.quantity;
+    }
+  }
   printReview(): void {
     const reviewSectionElement = this.reviewSection.nativeElement;
     const clonedReviewSection = reviewSectionElement.cloneNode(true); // Clone with styles
@@ -705,6 +716,6 @@ export class SalesComponent {
   isAdmin(): boolean {
     const role: any = localStorage.getItem('role');
 
-    return role == 'user' ? true : false; // Replace 'userRole' with your user role variable
+    return role == 'admin' ? true : false; // Replace 'userRole' with your user role variable
   }
 }
