@@ -58,7 +58,7 @@ label {
   background-color: #f9f9f9;
   padding: 2rem 2rem 1rem 2rem;
   border-radius: 0;
-  width: 50%;
+  width: 52%;
   margin: 0 auto;
 
   .new-client,
@@ -203,4 +203,47 @@ label {
   width: 100%;
   /* Center horizontally and vertically */
   transform: translate(-50%, -50%);
+}
+
+// start of media
+
+@media only screen and (max-width: 1400) {
+  // .sales-form {
+  //   width: 55% !important;
+  // }
+}
+@media only screen and (max-width: 1199px) {
+  .sales-form {
+    width: 66% !important;
+  }
+}
+@media only screen and (max-width: 1135px) {
+  .sales-form {
+    width: 85% !important;
+  }
+}
+/* Medium Devices, Desktops */
+@media only screen and (max-width: 991px) {
+  .sales-form {
+    width: 100% !important;
+  }
+}
+
+/* Small Devices, Tablets */
+@media only screen and (max-width: 767px) {
+}
+/* Extra Small Devices, Phones */
+@media only screen and (max-width: 575px) {
+}
+
+/* Extra Small Devices, Phones */
+@media only screen and (max-width: 479px) {
+}
+
+/* Extra Small Devices, Phones */
+@media only screen and (max-width: 360px) {
+}
+
+/* Custom, iPhone Retina */
+@media only screen and (max-width: 319px) {
 }

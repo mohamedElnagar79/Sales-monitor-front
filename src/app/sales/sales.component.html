@@ -91,7 +91,7 @@
           <div class="items">
             <div class="row" *ngFor="let item of invoiceItems; let i = index">
               <!-- select product -->
-              <div class="mb-3 col-6">
+              <div class="mb-3 col-lg-6 col-sm-12">
                 <label for="product" class="form-label">Select Product</label>
                 <div class="product-selection" #productSelection>
                   <div class="product-search-wrapper">
@@ -121,7 +121,7 @@
                 </div>
               </div>
               <!-- select piecePrice -->
-              <div class="mb-3 col-3">
+              <div class="mb-3 col-lg-4 col-sm-12">
                 <label for="piecePrice" class="form-label">Price</label>
                 <input
                   type="text"
@@ -135,7 +135,7 @@
                 />
               </div>
               <!-- select quantity -->
-              <div class="mb-3 col-3">
+              <div class="mb-3 col-lg-2 col-sm-12">
                 <label for="quantity" class="form-label">Qty</label>
                 <input
                   type="number"
