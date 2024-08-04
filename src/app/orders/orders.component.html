@@ -2,7 +2,17 @@
   <h3 class="mt-5">order List</h3>
   <div class="sales-head mt-3">
     <div>
-      <input type="text" class="search" [(ngModel)]="search" name="search" />
+      <!-- <label for="searchPhone"> </label> -->
+      <input
+        type="number"
+        class="search"
+        id="searchPhone"
+        [(ngModel)]="searchPhone"
+        name="search"
+        autocomplete="off"
+        placeholder="search by phone"
+        (keyup)="getInvoices(undefined, searchPhone)"
+      />
     </div>
     <div>
       <input
@@ -18,13 +28,24 @@
       </button> -->
     </div>
   </div>
-  <div class="contain-invoices my-5" id="invoiceContainer">
+  <div *ngIf="invoices.length == 0" class="no-orders">
+    <h3>there is no orders</h3>
+  </div>
+  <div
+    class="contain-invoices my-5"
+    id="invoiceContainer"
+    *ngIf="invoices.length > 0"
+  >
     <div *ngFor="let invoice of invoices; let i = index">
       <div class="invoice-card">
         <div>
-          <h5 class="mb-4">
+          <h5 class="mb-4 client-info">
             {{ invoice.clientName }}
             <span>({{ invoice.itemCount }} items)</span>
+            <span class="clientPhone">
+              <fa-icon [icon]="faPhone" class="mx-1"></fa-icon>
+              {{ invoice.clientPhone }}</span
+            >
           </h5>
           <p>{{ invoice.createdAt }}</p>
         </div>
@@ -36,7 +57,7 @@
           <div>
             <h6 class="mb-4">
               :<span class="ms-3"
-                ><b>{{ invoice.total | number : "1.0-0" }}</b> EGP</span
+                ><b>{{ invoice.total | number : "1.0-2" }}</b> EGP</span
               >
               <button
                 class="circle-right mx-1"
@@ -47,7 +68,7 @@
             </h6>
             <h6>
               :<span class="ms-3">
-                <b>{{ invoice.remainingBalance | number : "1.0-0" }}</b></span
+                <b>{{ invoice.remainingBalance | number : "1.0-2" }}</b></span
               >
               EGP
             </h6>

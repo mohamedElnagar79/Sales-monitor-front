@@ -80,6 +80,10 @@ $primaryColor: #0d6efd;
   padding-top: 25px !important;
   padding-bottom: 25px !important;
   --bs-accordion-btn-focus-box-shadow: none;
+  text-transform: capitalize;
+  .clientPhone {
+    font-size: 17px;
+  }
 }
 
 .tabs-data {
@@ -89,6 +93,7 @@ $primaryColor: #0d6efd;
   scrollbar-color: #888 #f2f2f2;
   text-transform: capitalize;
   margin: 10px 0 20px 0;
+  font-size: 16px;
   .invoice-card:first-child {
     margin-top: 0 !important;
   }

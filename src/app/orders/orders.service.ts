@@ -12,12 +12,15 @@ export class OrdersService {
   private apiUrl = environment.apiUrl;
   // private apiUrl = 'http://localhost:10000/';
 
-  getInvoices(date?: string): Observable<any[]> {
+  getInvoices(date?: string, phone?: any): Observable<any[]> {
     console.log('date from service', date);
     const token = localStorage.getItem('token');
     let params;
     if (date) {
       params = new HttpParams().set('date', date);
+    }
+    if (phone) {
+      params = new HttpParams().set('phone', phone);
     }
     if (token) {
       const headers = new HttpHeaders({

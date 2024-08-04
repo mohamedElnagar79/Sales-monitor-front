@@ -50,9 +50,9 @@ export const routes: Routes = [
     component: LoginComponent,
   },
   {
-    path: 'signup',
+    path: 'new-user',
     component: SignupComponent,
-    canActivate: [TokenGuard],
+    canActivate: [TokenGuard, AdminGuard],
   },
   {
     path: 'customers',
