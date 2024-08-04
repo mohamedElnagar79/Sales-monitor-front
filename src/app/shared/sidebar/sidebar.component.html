@@ -104,7 +104,7 @@
         <li><a class="dropdown-item" href="#">Something else here</a></li>
       </ul>
     </div> -->
-    <div class="dropdown">
+    <div class="dropdown mb-4">
       <button
         class="btn dropdown-toggle dropdown-btn text-dark border-0"
         type="button"
@@ -122,11 +122,25 @@
         <span>{{ name }}</span>
       </button>
       <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-        <li><a class="dropdown-item">Profile</a></li>
-        <li><a class="dropdown-item">New User</a></li>
-        <li><a class="dropdown-item">Log Out</a></li>
+        <li>
+          <a class="dropdown-item">
+            <fa-icon [icon]="faUser" class="me-2"></fa-icon>
+            Profile</a
+          >
+        </li>
+        <li (click)="navigateTo('new-user')" *ngIf="isAdmin">
+          <a class="dropdown-item">
+            <fa-icon [icon]="faUserPlus" class="me-2"></fa-icon>
+            New User</a
+          >
+        </li>
+        <li (click)="signout()">
+          <a class="dropdown-item">
+            <fa-icon [icon]="faSignOut" class="me-2"></fa-icon>
+            Log Out</a
+          >
+        </li>
       </ul>
-       
     </div>
   </div>
 </div>

@@ -10,6 +10,9 @@ import {
   faMoneyCheckDollar,
   faChartLine,
   faCoins,
+  faUser,
+  faSignOut,
+  faUserPlus,
 } from '@fortawesome/free-solid-svg-icons';
 import { Router, NavigationEnd } from '@angular/router';
 
@@ -22,9 +25,12 @@ import { Router, NavigationEnd } from '@angular/router';
 })
 export class SidebarComponent {
   isOpen: boolean = false; // Flag to track sidebar visibility
+  name: any = '';
   faPen = faPen;
   faCoins = faCoins;
-  name: any = '';
+  faUserPlus = faUserPlus;
+  faUser = faUser;
+  faSignOut = faSignOut;
   faUsers = faUsers;
   faHome = faHome;
   faCartArrowDown = faCartArrowDown;
@@ -40,6 +46,10 @@ export class SidebarComponent {
 
   navigateTo(path: string): void {
     this.router.navigate([path]);
+  }
+  signout(): void {
+    localStorage.clear();
+    this.router.navigate(['/login']);
   }
 
   ngOnInit(): void {
