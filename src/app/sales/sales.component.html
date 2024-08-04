@@ -131,7 +131,7 @@
                   name="piecePrice{{ i }}"
                   (keyup)="calcTotal()"
                   required
-                  [disabled]="isAdmin()"
+                  [disabled]="!isAdmin()"
                 />
               </div>
               <!-- select quantity -->
@@ -143,6 +143,7 @@
                   class="form-control"
                   [(ngModel)]="item.quantity"
                   name="quantity{{ i }}"
+                  (keyup)="validateQuantity(item)"
                   min="1"
                   required
                 />
@@ -280,7 +281,7 @@
     style="
       background-color: #f9f9f9;
       padding: 0 2rem 0.5rem 2rem;
-      width: 50%;
+      width: 52%;
       margin: 0 auto;
     "
   >
