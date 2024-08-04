@@ -47,16 +47,14 @@ h6 {
 }
 
 // Login and signup page styles
-.login-container,
-.signup-container {
+.login-container {
   display: flex;
   justify-content: center;
   align-items: center;
   height: 100vh;
   background-color: $light-gray;
 
-  .login-box,
-  .signup-box {
+  .login-box {
     background-color: $white;
     padding: 2rem;
     border-radius: 8px;
