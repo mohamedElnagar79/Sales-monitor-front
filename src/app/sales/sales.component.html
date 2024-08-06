@@ -193,6 +193,7 @@
           id="amountPaid"
           autocomplete="off"
           class="form-control"
+          (keyup)="validateAmountPaid()"
           [(ngModel)]="invoice.amountPaid"
           [disabled]="invoice.remainder == 0"
           name="amountPaid"

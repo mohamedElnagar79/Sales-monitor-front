@@ -585,6 +585,13 @@ export class SalesComponent {
     this.showReview = false;
     this.calcRemaider();
   }
+  validateAmountPaid(): void {
+    if (!this.isUpdate) {
+      if (this.invoice.amountPaid > this.invoice.total) {
+        this.invoice.amountPaid = this.invoice.total;
+      }
+    }
+  }
   validateQuantity(item: any): void {
     if (this.isUpdate) {
       const currentItem = this.invoice_items_data.find(
