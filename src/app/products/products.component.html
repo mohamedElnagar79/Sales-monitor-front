@@ -41,11 +41,11 @@
         <tr>
           <th style="width: 5%">No.</th>
           <th style="width: 20%">Name</th>
-          <th style="width: 10%">Price</th>
-          <th style="width: 10%">Stock</th>
-          <th style="width: 25%">description</th>
-          <th style="width: 20%">Last Update</th>
-          <th style="width: 10%"></th>
+          <th style="width: 15%">Price</th>
+          <th style="width: 5%">Stock</th>
+          <th style="width: 20%">description</th>
+          <th style="width: 30%">Last Update</th>
+          <th style="width: 5%"></th>
         </tr>
       </thead>
       <tbody>
@@ -75,8 +75,8 @@
           </td>
           <td [ngClass]="{ min_stock: product.stock <= product.min_stock }">
             <span title="{{ product.description }}">
-              {{ product.description | slice : 0 : 25
-              }}{{ product.description.length > 25 ? "..." : "" }}
+              {{ product.description | slice : 0 : 15
+              }}{{ product.description.length > 15 ? "..." : "" }}
             </span>
           </td>
           <td [ngClass]="{ min_stock: product.stock <= product.min_stock }">
