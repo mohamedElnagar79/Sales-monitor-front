@@ -76,8 +76,8 @@
           </td>
           <td [ngClass]="{ min_stock: product.stock <= product.min_stock }">
             <span title="{{ product.description }}">
-              {{ product.description | slice : 0 : 15
-              }}{{ product.description.length > 15 ? "..." : "" }}
+              {{ product.description | slice : 0 : 16
+              }}{{ product.description.length > 16 ? "..." : "" }}
             </span>
           </td>
           <td [ngClass]="{ min_stock: product.stock <= product.min_stock }">
