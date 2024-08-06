@@ -20,7 +20,10 @@
       <fa-icon [icon]="faPlus" class="me-1"></fa-icon> add new product
     </button>
   </div>
-  <div class="table-container table-responsive">
+  <div *ngIf="products.length == 0">
+    <h3 class="no-products">there is no products!</h3>
+  </div>
+  <div class="table-container table-responsive" *ngIf="products.length > 0">
     <table class="table fixed-height table-responsive">
       <thead>
         <tr>
@@ -73,6 +76,7 @@
     </table>
   </div>
   <pagination-controls
+    *ngIf="products.length > 0"
     (pageChange)="p = $event; getproducts(p, search)"
   ></pagination-controls>
 
@@ -156,7 +160,7 @@
               </button>
               <button
                 type="button"
-                class="btn btn-secondary form-control"
+                class="btn btn-outline-secondary form-control"
                 data-bs-dismiss="modal"
                 #closeModal
               >
@@ -245,7 +249,7 @@
               </button>
               <button
                 type="button"
-                class="btn btn-secondary form-control"
+                class="btn btn-outline-secondary form-control"
                 data-bs-dismiss="modal"
               >
                 Close
@@ -285,7 +289,7 @@
         <div class="modal-footer">
           <button
             type="button"
-            class="btn btn-secondary"
+            class="btn btn-outline-secondary form-control"
             data-bs-dismiss="modal"
             #deleteModal
           >

@@ -7,7 +7,7 @@
         <input
           type="email"
           id="email"
-          class="form-control"
+          class="form-control mt-2"
           placeholder="Enter your email"
           required
           name="email"
@@ -21,7 +21,7 @@
         <input
           type="password"
           id="password"
-          class="form-control"
+          class="form-control mt-2"
           placeholder="Enter your password"
           required
           name="password"
@@ -30,7 +30,7 @@
           #passwordRef="ngModel"
         />
       </div>
-      <button type="submit" class="btn btn-primary">Login</button>
+      <button type="submit" class="btn btn-primary mt-4">Login</button>
       <div class="errorMessage" *ngIf="errorMessage">
         {{ errorMessage }}
       </div>
