@@ -22,15 +22,16 @@
         <option value="out">Out of Stock</option>
       </select>
     </div>
-
-    <button
-      class="btn btn-toggle-form mb-2"
-      data-bs-toggle="modal"
-      data-bs-target="#addProductModal"
-    >
-      <!-- (click)="toggleForm()" -->
-      <fa-icon [icon]="faPlus" class="me-1"></fa-icon> add new product
-    </button>
+    <div>
+      <button
+        class="btn btn-toggle-form mb-2"
+        data-bs-toggle="modal"
+        data-bs-target="#addProductModal"
+      >
+        <!-- (click)="toggleForm()" -->
+        <fa-icon [icon]="faPlus" class="me-1"></fa-icon> add new product
+      </button>
+    </div>
   </div>
   <div *ngIf="products.length == 0">
     <h3 class="no-products">there is no products!</h3>
