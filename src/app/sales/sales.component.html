@@ -104,6 +104,7 @@
                       (keyup)="filterProducts($event, i)"
                       name="productId{{ i }}"
                       [(ngModel)]="item.productName"
+                      title="{{ item.description }}"
                     />
                     <ul
                       class="product-list"
