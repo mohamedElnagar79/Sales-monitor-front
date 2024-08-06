@@ -3,35 +3,50 @@
     <h2>my products</h2>
   </div>
   <div class="products-head mt-3">
-    <input
-      type="text"
-      class="search-input"
-      (keyup)="getproducts(1, search)"
-      [(ngModel)]="search"
-      name="search"
-    />
-
-    <button
-      class="btn btn-toggle-form mb-2"
-      data-bs-toggle="modal"
-      data-bs-target="#addProductModal"
-    >
-      <!-- (click)="toggleForm()" -->
-      <fa-icon [icon]="faPlus" class="me-1"></fa-icon> add new product
-    </button>
+    <div class="products-head">
+      <input
+        type="text"
+        class="search-input"
+        (keyup)="getproducts(1, search)"
+        [(ngModel)]="search"
+        name="search"
+      />
+      <select
+        class="form-select mb-3 stock-select"
+        aria-label="Large select example"
+        (change)="onStockChange($event)"
+      >
+        <option value="all">All Stocks</option>
+        <option value="min">Min Stock</option>
+        <option value="max">Max of Stock</option>
+        <option value="out">Out of Stock</option>
+      </select>
+    </div>
+    <div>
+      <button
+        class="btn btn-toggle-form mb-2"
+        data-bs-toggle="modal"
+        data-bs-target="#addProductModal"
+      >
+        <!-- (click)="toggleForm()" -->
+        <fa-icon [icon]="faPlus" class="me-1"></fa-icon> add new product
+      </button>
+    </div>
   </div>
-  <div class="table-container table-responsive">
+  <div *ngIf="products.length == 0">
+    <h3 class="no-products">there is no products!</h3>
+  </div>
+  <div class="table-container table-responsive" *ngIf="products.length > 0">
     <table class="table fixed-height table-responsive">
       <thead>
         <tr>
-          <th>No.</th>
-          <th>Name</th>
-          <!-- <th>Price</th> -->
-          <th>Price</th>
-          <th>Stock</th>
-          <th>description</th>
-          <th>Last Update</th>
-          <th></th>
+          <th style="width: 5%">No.</th>
+          <th style="width: 20%">Name</th>
+          <th style="width: 15%">Price</th>
+          <th style="width: 5%">Stock</th>
+          <th style="width: 20%">description</th>
+          <th style="width: 30%">Last Update</th>
+          <th style="width: 5%"></th>
         </tr>
       </thead>
       <tbody>
@@ -43,36 +58,57 @@
             let i = index
           "
         >
-          <td>{{ i + startIndex }}</td>
-          <td>{{ product.name }}</td>
+          <td [ngClass]="{ min_stock: product.stock <= product.min_stock }">
+            {{ i + startIndex }}
+          </td>
+          <td [ngClass]="{ min_stock: product.stock <= product.min_stock }">
+            <span title="{{ product.name }}">
+              {{ product.name | slice : 0 : 20
+              }}{{ product.name.length > 20 ? "..." : "" }}
+            </span>
+          </td>
           <!-- <td>{{ product.price }}</td> -->
-          <td>{{ product.soldPrice | number : "1.0-2" }} EGP</td>
-          <td>{{ product.stock }}</td>
-          <td>{{ product.description }}</td>
-          <td>{{ product.updatedAt }}</td>
-          <td class="table-cotrollers">
-            <button
-              class="btn btn-primary btn-sm me-3"
-              data-bs-toggle="modal"
-              data-bs-target="#updatedProductModal"
-              (click)="openUpdateForm(product)"
-            >
-              <fa-icon [icon]="faPen"></fa-icon>
-            </button>
-            <button
-              class="btn btn-danger btn-sm"
-              data-bs-toggle="modal"
-              data-bs-target="#deleteModal"
-              (click)="ActivateProductToDelete(product.id)"
-            >
-              <fa-icon [icon]="faTrash"></fa-icon>
-            </button>
+          <td [ngClass]="{ min_stock: product.stock <= product.min_stock }">
+            {{ product.soldPrice | number : "1.0-2" }} EGP
+          </td>
+          <td [ngClass]="{ min_stock: product.stock <= product.min_stock }">
+            {{ product.stock }}
+          </td>
+          <td [ngClass]="{ min_stock: product.stock <= product.min_stock }">
+            <span title="{{ product.description }}">
+              {{ product.description | slice : 0 : 16
+              }}{{ product.description.length > 16 ? "..." : "" }}
+            </span>
+          </td>
+          <td [ngClass]="{ min_stock: product.stock <= product.min_stock }">
+            {{ product.updatedAt }}
+          </td>
+          <td [ngClass]="{ min_stock: product.stock <= product.min_stock }">
+            <div class="table-cotrollers">
+              <button
+                class="btn btn-primary btn-sm me-3"
+                data-bs-toggle="modal"
+                data-bs-target="#updatedProductModal"
+                (click)="openUpdateForm(product)"
+              >
+                <fa-icon [icon]="faPen"></fa-icon>
+              </button>
+              <button
+                class="btn btn-danger btn-sm"
+                data-bs-toggle="modal"
+                data-bs-target="#deleteModal"
+                (click)="ActivateProductToDelete(product.id)"
+              >
+                <fa-icon [icon]="faTrash"></fa-icon>
+              </button>
+            </div>
           </td>
         </tr>
       </tbody>
     </table>
   </div>
   <pagination-controls
+    *ngIf="products.length > 0"
     (pageChange)="p = $event; getproducts(p, search)"
   ></pagination-controls>
 
@@ -156,7 +192,7 @@
               </button>
               <button
                 type="button"
-                class="btn btn-secondary form-control"
+                class="btn btn-outline-secondary form-control"
                 data-bs-dismiss="modal"
                 #closeModal
               >
@@ -217,15 +253,30 @@
             </div>
 
             <div class="form-group">
-              <label for="stock">Stock</label>
-              <input
-                type="number"
-                class="form-control"
-                id="stock"
-                [(ngModel)]="newProduct.stock"
-                name="stock"
-                required
-              />
+              <div class="row">
+                <div class="col-6">
+                  <label for="stock">Stock</label>
+                  <input
+                    type="number"
+                    class="form-control"
+                    id="stock"
+                    [(ngModel)]="newProduct.stock"
+                    name="stock"
+                    required
+                  />
+                </div>
+                <div class="col-6">
+                  <label for="stock">min stock</label>
+                  <input
+                    type="number"
+                    class="form-control"
+                    id="stock"
+                    [(ngModel)]="newProduct.min_stock"
+                    name="stock"
+                    required
+                  />
+                </div>
+              </div>
             </div>
             <div class="form-group">
               <label for="description">description</label>
@@ -245,7 +296,7 @@
               </button>
               <button
                 type="button"
-                class="btn btn-secondary form-control"
+                class="btn btn-outline-secondary form-control"
                 data-bs-dismiss="modal"
               >
                 Close
@@ -285,7 +336,7 @@
         <div class="modal-footer">
           <button
             type="button"
-            class="btn btn-secondary"
+            class="btn btn-outline-secondary"
             data-bs-dismiss="modal"
             #deleteModal
           >

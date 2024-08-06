@@ -10,7 +10,7 @@
       <fa-icon [icon]="faPlus" class="me-1"></fa-icon> add new outgoing
     </button>
   </div>
-  <h1 class="empty-data" *ngIf="outgoing.length == 0">There Is No Entries</h1>
+  <h1 class="empty-data" *ngIf="outgoing.length == 0">There Is No outgoing</h1>
   <div class="table-container table-responsive" *ngIf="outgoing.length > 0">
     <table class="table fixed-height table-responsive">
       <thead>
@@ -123,7 +123,7 @@
               </button>
               <button
                 type="button"
-                class="btn btn-secondary form-control"
+                class="btn btn-outline-secondary form-control"
                 data-bs-dismiss="modal"
                 #closeModal
               >
@@ -189,7 +189,7 @@
               <button
                 #closeAddModal
                 type="button"
-                class="btn btn-secondary form-control"
+                class="btn btn-outline-secondary form-control"
                 data-bs-dismiss="modal"
               >
                 Close
@@ -228,7 +228,7 @@
         <div class="modal-footer">
           <button
             type="button"
-            class="btn btn-secondary"
+            class="btn btn-outline-secondary form-control"
             data-bs-dismiss="modal"
             #deleteModal
           >

@@ -11,11 +11,26 @@ export class ProductsService {
   private apiUrl = environment.apiUrl;
   // private apiUrl = 'http://localhost:10000/';
   constructor(private http: HttpClient) {}
-  getAllProducts(p: number, searchTerm?: string): Observable<any[]> {
+  getAllProducts(
+    p: number,
+    searchTerm?: string,
+    min_stock?: boolean,
+    max_stock?: boolean,
+    out_of_stock?: boolean
+  ): Observable<any[]> {
     const token = localStorage.getItem('token');
     let params = new HttpParams().set('page', p);
     if (searchTerm) {
       params = params.set('search', searchTerm);
+    }
+    if (min_stock) {
+      params = params.set('min_stock', min_stock);
+    }
+    if (max_stock) {
+      params = params.set('max_of_stock', max_stock);
+    }
+    if (out_of_stock) {
+      params = params.set('out_of_stock', out_of_stock);
     }
     if (token) {
       const headers = new HttpHeaders({

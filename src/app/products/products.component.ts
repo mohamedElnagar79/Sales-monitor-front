@@ -36,6 +36,7 @@ export class ProductsComponent {
     price: 0,
     soldPrice: 0,
     stock: 1,
+    min_stock: 1,
     updatedAt: `${new Date()}`,
     createdAt: `${new Date()}`,
     description: ' ',
@@ -46,6 +47,7 @@ export class ProductsComponent {
     price: 0,
     soldPrice: 0,
     stock: 1,
+    min_stock: 1,
     updatedAt: `${new Date()}`,
     createdAt: `${new Date()}`,
     description: ' ',
@@ -70,6 +72,7 @@ export class ProductsComponent {
     this.updatedProduct.price = product?.price;
     this.updatedProduct.soldPrice = product?.soldPrice;
     this.updatedProduct.stock = product?.stock;
+    this.updatedProduct.min_stock = product?.min_stock;
     this.updatedProduct.description = product?.description;
     // window.scroll({
     //   top: 0,
@@ -78,8 +81,21 @@ export class ProductsComponent {
     // });
   }
 
-  getproducts(pageNumber: number, searchTerm?: any): void {
-    this.ProductsService.getAllProducts(pageNumber, searchTerm).subscribe(
+  getproducts(
+    pageNumber: number,
+    searchTerm?: any,
+    min_stock?: boolean,
+    max_stock?: boolean,
+    out_of_stock?: boolean
+  ): void {
+    console.log('fun run');
+    this.ProductsService.getAllProducts(
+      pageNumber,
+      searchTerm,
+      min_stock,
+      max_stock,
+      out_of_stock
+    ).subscribe(
       (data: any) => {
         this.count = data.data.count;
         this.products = data.data.rows;
@@ -90,6 +106,28 @@ export class ProductsComponent {
       }
     );
   }
+  onStockChange(event: Event): void {
+    const selectElement = event.target as HTMLSelectElement;
+    const value = selectElement.value;
+
+    switch (value) {
+      case 'all':
+        this.getproducts(1);
+        break;
+      case 'min':
+        this.getproducts(1, undefined, true);
+        break;
+      case 'max':
+        this.getproducts(1, undefined, undefined, true);
+        break;
+      case 'out':
+        this.getproducts(1, undefined, undefined, undefined, true);
+        break;
+      default:
+        this.getproducts(1);
+    }
+  }
+
   addProduct(): void {
     this.ProductsService.addProduct(this.newProduct).subscribe(
       (product: Product) => {
@@ -101,6 +139,7 @@ export class ProductsComponent {
           price: 0,
           soldPrice: 0,
           stock: 0,
+          min_stock: 0,
           updatedAt: `${new Date()}`,
           createdAt: `${new Date()}`,
           description: '',
