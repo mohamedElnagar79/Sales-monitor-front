@@ -221,15 +221,30 @@
             </div>
 
             <div class="form-group">
-              <label for="stock">Stock</label>
-              <input
-                type="number"
-                class="form-control"
-                id="stock"
-                [(ngModel)]="newProduct.stock"
-                name="stock"
-                required
-              />
+              <div class="row">
+                <div class="col-6">
+                  <label for="stock">Stock</label>
+                  <input
+                    type="number"
+                    class="form-control"
+                    id="stock"
+                    [(ngModel)]="newProduct.stock"
+                    name="stock"
+                    required
+                  />
+                </div>
+                <div class="col-6">
+                  <label for="stock">min stock</label>
+                  <input
+                    type="number"
+                    class="form-control"
+                    id="stock"
+                    [(ngModel)]="newProduct.min_stock"
+                    name="stock"
+                    required
+                  />
+                </div>
+              </div>
             </div>
             <div class="form-group">
               <label for="description">description</label>

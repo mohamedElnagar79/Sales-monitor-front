@@ -36,6 +36,7 @@ export class ProductsComponent {
     price: 0,
     soldPrice: 0,
     stock: 1,
+    min_stock: 1,
     updatedAt: `${new Date()}`,
     createdAt: `${new Date()}`,
     description: ' ',
@@ -46,6 +47,7 @@ export class ProductsComponent {
     price: 0,
     soldPrice: 0,
     stock: 1,
+    min_stock: 1,
     updatedAt: `${new Date()}`,
     createdAt: `${new Date()}`,
     description: ' ',
@@ -70,6 +72,7 @@ export class ProductsComponent {
     this.updatedProduct.price = product?.price;
     this.updatedProduct.soldPrice = product?.soldPrice;
     this.updatedProduct.stock = product?.stock;
+    this.updatedProduct.min_stock = product?.min_stock;
     this.updatedProduct.description = product?.description;
     // window.scroll({
     //   top: 0,
@@ -101,6 +104,7 @@ export class ProductsComponent {
           price: 0,
           soldPrice: 0,
           stock: 0,
+          min_stock: 0,
           updatedAt: `${new Date()}`,
           createdAt: `${new Date()}`,
           description: '',

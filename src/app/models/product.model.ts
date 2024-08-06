@@ -3,6 +3,7 @@ export interface Product {
   price: number;
   soldPrice: number;
   stock: number;
+  min_stock: number;
   createdAt: string;
   updatedAt: string;
   id: number;
