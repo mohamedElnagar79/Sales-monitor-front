@@ -18,6 +18,7 @@ interface Product {
   id: number;
   name: string;
   price: number;
+  description: string;
 }
 
 interface InvoiceItem {
@@ -27,6 +28,7 @@ interface InvoiceItem {
   productName?: string;
   filteredProducts?: any;
   total?: number;
+  description?: string;
 }
 interface Invoice {
   invoiceId?: number;
@@ -127,6 +129,7 @@ export class SalesComponent {
       productName: '',
       total: 0,
       filteredProducts: [],
+      description: '',
     },
   ];
   ProductItems: InvoiceItem[] = [];
@@ -306,9 +309,14 @@ export class SalesComponent {
 
   filterProducts(event: any, index: number): void {
     this.invoiceItems[index].filteredProducts = this.products.filter(
-      (product) =>
-        product.name.toLowerCase().includes(event.target.value.toLowerCase())
+      (product) => {
+        this.invoiceItems[index].description = product.description;
+        return product.name
+          .toLowerCase()
+          .includes(event.target.value.toLowerCase());
+      }
     );
+
     if (this.invoiceItems[index].filteredProducts.length > 0) {
       // Add 'active' class to the corresponding product selection element
       this.productSelection?.nativeElement?.children[index]?.classList?.add(
