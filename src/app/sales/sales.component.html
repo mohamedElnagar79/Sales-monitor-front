@@ -127,6 +127,7 @@
                 <label for="piecePrice" class="form-label">Price</label>
                 <input
                   type="text"
+                  autocomplete="off"
                   id="piecePrice{{ i }}"
                   class="form-control"
                   [(ngModel)]="item.piecePrice"
@@ -148,6 +149,7 @@
                   (keyup)="validateQuantity(item)"
                   min="1"
                   required
+                  autocomplete="off"
                 />
               </div>
             </div>
@@ -184,6 +186,7 @@
           class="form-control"
           [(ngModel)]="invoice.total"
           name="total"
+          autocomplete="off"
           disabled
         />
       </div>
@@ -474,6 +477,7 @@
                 id="name"
                 name="name"
                 [(ngModel)]="newClient.name"
+                autocomplete="off"
                 required
               />
             </div>
@@ -487,6 +491,7 @@
                 minlength="11"
                 [maxLength]="11"
                 [(ngModel)]="newClient.phone"
+                autocomplete="off"
                 required
               />
             </div>
