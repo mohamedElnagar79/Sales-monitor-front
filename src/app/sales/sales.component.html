@@ -105,6 +105,7 @@
                       name="productId{{ i }}"
                       [(ngModel)]="item.productName"
                       title="{{ item.description }}"
+                      [disabled]="isUpdate"
                     />
                     <ul
                       class="product-list"
