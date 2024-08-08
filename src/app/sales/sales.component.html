@@ -1,5 +1,5 @@
 <div class="mt-5 px-5">
-  <h2 *ngIf="!showReview" class="page-title">{{ titleMessage }}</h2>
+  <h2 class="page-title">{{ titleMessage }}</h2>
   <!-- (ngSubmit)="onSubmit()" -->
   <form
     *ngIf="!showReview && !showPayment"
@@ -204,7 +204,6 @@
           required
         />
       </div>
-      <!-- [disabled]="invoice.remainder == 0 && isUpdate" -->
       <div class="mb-3 col-4">
         <label for="salePrice" class="form-label">Remaining</label>
         <input
@@ -263,14 +262,16 @@
 
   <!-- show review section -->
   <div *ngIf="showReview && !showPayment" class="review-section">
-    <div style="display: flex; flex-wrap: wrap; justify-content: space-between">
-      <div style="width: 50%">
+    <div
+      style="display: flex; flex-wrap: no-wrap; justify-content: space-between"
+    >
+      <div style="width: 50%" class="review-width">
         <button (click)="showPaymentSection()" class="back">
           <fa-icon [icon]="faChevronLeft" class="me-1" click></fa-icon>
         </button>
         <span class="payment-head">Invoice #</span>
       </div>
-      <div style="width: 50%">
+      <div style="width: 50%" class="review-width">
         <div class="right-review">
           <button (click)="backToPayment()" class="closeReviewBtn">
             <fa-icon [icon]="faClose"></fa-icon>
@@ -287,49 +288,60 @@
     style="
       background-color: #f9f9f9;
       padding: 0 2rem 0.5rem 2rem;
-      width: 52%;
+      width: 60%;
       margin: 0 auto;
     "
+    class="review-width"
   >
     <div
       style="
         display: flex;
-        flex-wrap: wrap;
+        flex-wrap: no-wrap;
         justify-content: space-between;
         font-size: 15px;
       "
     >
-      <div style="width: 50%">
+      <div style="width: 60%" class="review-width">
         <h5 style="font-size: 15px">{{ getFormattedDate() }}</h5>
       </div>
     </div>
     <!-- end of sec row -->
     <hr />
-    <div style="display: flex; flex-wrap: wrap; justify-content: space-between">
-      <div style="width: 50%">
+    <div
+      style="display: flex; flex-wrap: nowrap; justify-content: space-between"
+    >
+      <div style="width: 50%" class="review-width">
         <h5 style="font-size: 14px; text-transform: capitalize">client name</h5>
       </div>
-      <div style="width: 50%">
+      <div style="width: 50%" class="review-width">
         <div style="display: flex; justify-content: flex-end">
           <h5 style="font-size: 16px; text-transform: capitalize">
             {{ clientName }}
           </h5>
         </div>
       </div>
-      <div style="width: 50%">
+    </div>
+    <div
+      style="display: flex; flex-wrap: nowrap; justify-content: space-between"
+    >
+      <div style="width: 50%" class="review-width">
         <h5 style="font-size: 14px; text-transform: capitalize">seller name</h5>
       </div>
-      <div style="width: 50%">
+      <div style="width: 50%" class="review-width">
         <div style="display: flex; justify-content: flex-end">
           <h5 style="font-size: 16px; text-transform: capitalize">
             {{ sellerName }}
           </h5>
         </div>
       </div>
-      <div style="width: 50%">
+    </div>
+    <div
+      style="display: flex; flex-wrap: nowrap; justify-content: space-between"
+    >
+      <div style="width: 50%" class="review-width">
         <h5 style="font-size: 14px; text-transform: capitalize">Date</h5>
       </div>
-      <div style="width: 50%">
+      <div style="width: 50%" class="review-width">
         <div style="display: flex; justify-content: flex-end">
           <h5 style="font-size: 16px; text-transform: capitalize">
             {{ getFormattedDate() }}
@@ -337,9 +349,8 @@
         </div>
       </div>
     </div>
-    <!-- end of felex -->
     <div style="padding: 2rem 0 0.5rem 0; width: 100%">
-      <table style="width: 100%">
+      <table style="width: 100%" class="review-width table-res center-table">
         <thead>
           <tr style="border: 1px solid #cecece">
             <td
@@ -443,7 +454,7 @@
   </div>
   <!-- end of printing page -->
 
-  <div *ngIf="showReview" class="review-cotrollers">
+  <div *ngIf="showReview" class="review-cotrollers review-width">
     <button class="btn btn-primary me-3 my-2" (click)="SaveInvoice()">
       Save
     </button>

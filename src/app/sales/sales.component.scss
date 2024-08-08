@@ -51,6 +51,9 @@ label {
     margin-bottom: 15px;
   }
 }
+.center-table {
+  margin: 0 auto !important;
+}
 
 .sales-form,
 .payment-form,
@@ -58,7 +61,7 @@ label {
   background-color: #f9f9f9;
   padding: 2rem 2rem 1rem 2rem;
   border-radius: 0;
-  width: 52%;
+  width: 60%;
   margin: 0 auto;
 
   .new-client,
@@ -183,7 +186,7 @@ label {
   margin-bottom: 2rem;
   padding: 0 2rem 2rem;
 
-  width: 52%;
+  width: 60%;
   button {
     width: 100%;
     font-size: 16px;
@@ -208,29 +211,62 @@ label {
 // start of media
 
 @media only screen and (max-width: 1400) {
-  // .sales-form {
-  //   width: 55% !important;
-  // }
+  .review-width {
+    width: 80% !important;
+  }
 }
 @media only screen and (max-width: 1199px) {
-  .sales-form {
+  .sales-form,
+  .payment-form,
+  .review-section,
+  .review-width {
     width: 66% !important;
+  }
+  .center-table {
+    width: 100% !important;
   }
 }
 @media only screen and (max-width: 1135px) {
-  .sales-form {
+  .sales-form,
+  .payment-form,
+  .review-section,
+  .review-width {
     width: 85% !important;
+  }
+  .center-table {
+    width: 100% !important;
   }
 }
 /* Medium Devices, Desktops */
 @media only screen and (max-width: 991px) {
-  .sales-form {
+  .sales-form,
+  .payment-form,
+  .review-section,
+  .review-width {
     width: 100% !important;
+  }
+  .table-res {
+    width: 100% !important;
+    overflow: scroll;
+    max-width: 767px;
+    font-size: 14px !important;
+    td p b {
+      font-size: 14px !important;
+    }
   }
 }
 
 /* Small Devices, Tablets */
 @media only screen and (max-width: 767px) {
+  .table-res {
+    width: 100% !important;
+    overflow: scroll;
+    max-width: 767px;
+    font-size: 14px !important;
+    td p b {
+      font-size: 14px !important;
+    }
+  }
 }
 /* Extra Small Devices, Phones */
 @media only screen and (max-width: 575px) {
