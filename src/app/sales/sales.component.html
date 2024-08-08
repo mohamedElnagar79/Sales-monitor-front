@@ -257,7 +257,7 @@
           </tbody>
         </table>
         <h6 *ngIf="returnesMoney > 0" class="returns">
-          Returns Money: <b>{{ returnesMoney }} </b>EGP
+          Returns Money: <b>{{ returnesMoney | number : "1.0-2" }} </b>EGP
         </h6>
       </div>
       <div class="my-3 col-12">
