@@ -21,6 +21,7 @@
               name="name"
               [(ngModel)]="clientObj.name"
               (keyup)="filterClientsByName($event)"
+              (focus)="filterClientsByName($event)"
               [disabled]="isUpdate"
               required
             />
@@ -52,6 +53,7 @@
               name="phone"
               [(ngModel)]="clientObj.phone"
               (keyup)="filterClientsByPhone($event)"
+              (focus)="filterClientsByPhone($event)"
               [disabled]="isUpdate"
               required
             />
@@ -102,6 +104,7 @@
                       class="form-control product-search"
                       placeholder="Select Product"
                       (keyup)="filterProducts($event, i)"
+                      (focus)="filterProducts($event, i)"
                       name="productId{{ i }}"
                       [(ngModel)]="item.productName"
                       title="{{ item.description }}"

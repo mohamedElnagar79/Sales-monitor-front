@@ -279,6 +279,7 @@ export class SalesComponent {
     });
   }
   filterClientsByName(event: any): void {
+    console.log('event ', event);
     this.filteredClients = this.clients.filter((client) =>
       client.name.toLowerCase().includes(event.target.value.toLowerCase())
     );
