@@ -1,5 +1,5 @@
 <div class="mt-5 px-5">
-  <h2 *ngIf="!showReview" class="page-title">{{ titleMessage }}</h2>
+  <h2 class="page-title">{{ titleMessage }}</h2>
   <!-- (ngSubmit)="onSubmit()" -->
   <form
     *ngIf="!showReview && !showPayment"
@@ -21,6 +21,7 @@
               name="name"
               [(ngModel)]="clientObj.name"
               (keyup)="filterClientsByName($event)"
+              (focus)="filterClientsByName($event)"
               [disabled]="isUpdate"
               required
             />
@@ -45,13 +46,14 @@
         <div class="client-selection" #clientPhoneSelection>
           <div class="client-search-wrapper">
             <input
-              type="text"
+              type="number"
               autocomplete="off"
               id="phone"
               class="form-control client-search"
               name="phone"
               [(ngModel)]="clientObj.phone"
               (keyup)="filterClientsByPhone($event)"
+              (focus)="filterClientsByPhone($event)"
               [disabled]="isUpdate"
               required
             />
@@ -87,9 +89,12 @@
       </div>
       <!-- product items -->
       <div class="mb-3 col-12">
-        <div class="items-container">
+        <div class="items-container visble-data">
           <div class="items">
-            <div class="row" *ngFor="let item of invoiceItems; let i = index">
+            <div
+              class="row visble-data"
+              *ngFor="let item of invoiceItems; let i = index"
+            >
               <!-- select product -->
               <div class="mb-3 col-lg-6 col-sm-12">
                 <label for="product" class="form-label">Select Product</label>
@@ -102,9 +107,11 @@
                       class="form-control product-search"
                       placeholder="Select Product"
                       (keyup)="filterProducts($event, i)"
+                      (focus)="filterProducts($event, i)"
                       name="productId{{ i }}"
                       [(ngModel)]="item.productName"
                       title="{{ item.description }}"
+                      [disabled]="isUpdate"
                     />
                     <ul
                       class="product-list"
@@ -126,6 +133,7 @@
                 <label for="piecePrice" class="form-label">Price</label>
                 <input
                   type="text"
+                  autocomplete="off"
                   id="piecePrice{{ i }}"
                   class="form-control"
                   [(ngModel)]="item.piecePrice"
@@ -147,6 +155,7 @@
                   (keyup)="validateQuantity(item)"
                   min="1"
                   required
+                  autocomplete="off"
                 />
               </div>
             </div>
@@ -183,6 +192,7 @@
           class="form-control"
           [(ngModel)]="invoice.total"
           name="total"
+          autocomplete="off"
           disabled
         />
       </div>
@@ -193,13 +203,13 @@
           id="amountPaid"
           autocomplete="off"
           class="form-control"
+          (keyup)="validateAmountPaid()"
           [(ngModel)]="invoice.amountPaid"
           [disabled]="invoice.remainder == 0"
           name="amountPaid"
           required
         />
       </div>
-      <!-- [disabled]="invoice.remainder == 0 && isUpdate" -->
       <div class="mb-3 col-4">
         <label for="salePrice" class="form-label">Remaining</label>
         <input
@@ -247,7 +257,7 @@
           </tbody>
         </table>
         <h6 *ngIf="returnesMoney > 0" class="returns">
-          Returns Money: <b>{{ returnesMoney }} </b>EGP
+          Returns Money: <b>{{ returnesMoney | number : "1.0-2" }} </b>EGP
         </h6>
       </div>
       <div class="my-3 col-12">
@@ -258,14 +268,16 @@
 
   <!-- show review section -->
   <div *ngIf="showReview && !showPayment" class="review-section">
-    <div style="display: flex; flex-wrap: wrap; justify-content: space-between">
-      <div style="width: 50%">
+    <div
+      style="display: flex; flex-wrap: no-wrap; justify-content: space-between"
+    >
+      <div style="width: 50%" class="review-width">
         <button (click)="showPaymentSection()" class="back">
           <fa-icon [icon]="faChevronLeft" class="me-1" click></fa-icon>
         </button>
         <span class="payment-head">Invoice #</span>
       </div>
-      <div style="width: 50%">
+      <div style="width: 50%" class="review-width">
         <div class="right-review">
           <button (click)="backToPayment()" class="closeReviewBtn">
             <fa-icon [icon]="faClose"></fa-icon>
@@ -282,49 +294,60 @@
     style="
       background-color: #f9f9f9;
       padding: 0 2rem 0.5rem 2rem;
-      width: 52%;
+      width: 60%;
       margin: 0 auto;
     "
+    class="review-width"
   >
     <div
       style="
         display: flex;
-        flex-wrap: wrap;
+        flex-wrap: no-wrap;
         justify-content: space-between;
         font-size: 15px;
       "
     >
-      <div style="width: 50%">
+      <div style="width: 60%" class="review-width">
         <h5 style="font-size: 15px">{{ getFormattedDate() }}</h5>
       </div>
     </div>
     <!-- end of sec row -->
     <hr />
-    <div style="display: flex; flex-wrap: wrap; justify-content: space-between">
-      <div style="width: 50%">
+    <div
+      style="display: flex; flex-wrap: nowrap; justify-content: space-between"
+    >
+      <div style="width: 50%" class="review-width">
         <h5 style="font-size: 14px; text-transform: capitalize">client name</h5>
       </div>
-      <div style="width: 50%">
+      <div style="width: 50%" class="review-width">
         <div style="display: flex; justify-content: flex-end">
           <h5 style="font-size: 16px; text-transform: capitalize">
             {{ clientName }}
           </h5>
         </div>
       </div>
-      <div style="width: 50%">
+    </div>
+    <div
+      style="display: flex; flex-wrap: nowrap; justify-content: space-between"
+    >
+      <div style="width: 50%" class="review-width">
         <h5 style="font-size: 14px; text-transform: capitalize">seller name</h5>
       </div>
-      <div style="width: 50%">
+      <div style="width: 50%" class="review-width">
         <div style="display: flex; justify-content: flex-end">
           <h5 style="font-size: 16px; text-transform: capitalize">
             {{ sellerName }}
           </h5>
         </div>
       </div>
-      <div style="width: 50%">
+    </div>
+    <div
+      style="display: flex; flex-wrap: nowrap; justify-content: space-between"
+    >
+      <div style="width: 50%" class="review-width">
         <h5 style="font-size: 14px; text-transform: capitalize">Date</h5>
       </div>
-      <div style="width: 50%">
+      <div style="width: 50%" class="review-width">
         <div style="display: flex; justify-content: flex-end">
           <h5 style="font-size: 16px; text-transform: capitalize">
             {{ getFormattedDate() }}
@@ -332,9 +355,8 @@
         </div>
       </div>
     </div>
-    <!-- end of felex -->
-    <div style="padding: 2rem 0 0.5rem 0; width: 100%">
-      <table style="width: 100%">
+    <div style="padding: 1rem 0 0.5rem 0; width: 100%">
+      <table style="width: 100%" class="review-width table-res center-table">
         <thead>
           <tr style="border: 1px solid #cecece">
             <td
@@ -438,7 +460,7 @@
   </div>
   <!-- end of printing page -->
 
-  <div *ngIf="showReview" class="review-cotrollers">
+  <div *ngIf="showReview" class="review-cotrollers review-width">
     <button class="btn btn-primary me-3 my-2" (click)="SaveInvoice()">
       Save
     </button>
@@ -472,6 +494,7 @@
                 id="name"
                 name="name"
                 [(ngModel)]="newClient.name"
+                autocomplete="off"
                 required
               />
             </div>
@@ -485,6 +508,7 @@
                 minlength="11"
                 [maxLength]="11"
                 [(ngModel)]="newClient.phone"
+                autocomplete="off"
                 required
               />
             </div>

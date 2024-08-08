@@ -1,5 +1,7 @@
 $primaryColor: #0d6efd;
 .sidebar {
+  display: grid;
+  grid-template-rows: auto 1fr;
   background-color: #f9f9f9 !important;
   color: #000;
   height: 100%;
@@ -47,6 +49,9 @@ ul {
   &:hover {
     color: #000;
   }
+}
+.dropdown {
+  grid-row: 2;
 }
 .dropdown-item:hover {
   cursor: pointer;

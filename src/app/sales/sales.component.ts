@@ -279,6 +279,7 @@ export class SalesComponent {
     });
   }
   filterClientsByName(event: any): void {
+    console.log('event ', event);
     this.filteredClients = this.clients.filter((client) =>
       client.name.toLowerCase().includes(event.target.value.toLowerCase())
     );
@@ -308,6 +309,8 @@ export class SalesComponent {
   }
 
   filterProducts(event: any, index: number): void {
+    console.log('windoeww ', window.location);
+
     this.invoiceItems[index].filteredProducts = this.products.filter(
       (product) => {
         this.invoiceItems[index].description = product.description;
@@ -584,6 +587,13 @@ export class SalesComponent {
     this.invoice.amountPaid = 0;
     this.showReview = false;
     this.calcRemaider();
+  }
+  validateAmountPaid(): void {
+    if (!this.isUpdate) {
+      if (this.invoice.amountPaid > this.invoice.total) {
+        this.invoice.amountPaid = this.invoice.total;
+      }
+    }
   }
   validateQuantity(item: any): void {
     if (this.isUpdate) {
