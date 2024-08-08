@@ -46,7 +46,7 @@
         <div class="client-selection" #clientPhoneSelection>
           <div class="client-search-wrapper">
             <input
-              type="text"
+              type="number"
               autocomplete="off"
               id="phone"
               class="form-control client-search"
@@ -89,9 +89,12 @@
       </div>
       <!-- product items -->
       <div class="mb-3 col-12">
-        <div class="items-container">
+        <div class="items-container visble-data">
           <div class="items">
-            <div class="row" *ngFor="let item of invoiceItems; let i = index">
+            <div
+              class="row visble-data"
+              *ngFor="let item of invoiceItems; let i = index"
+            >
               <!-- select product -->
               <div class="mb-3 col-lg-6 col-sm-12">
                 <label for="product" class="form-label">Select Product</label>
@@ -352,7 +355,7 @@
         </div>
       </div>
     </div>
-    <div style="padding: 2rem 0 0.5rem 0; width: 100%">
+    <div style="padding: 1rem 0 0.5rem 0; width: 100%">
       <table style="width: 100%" class="review-width table-res center-table">
         <thead>
           <tr style="border: 1px solid #cecece">

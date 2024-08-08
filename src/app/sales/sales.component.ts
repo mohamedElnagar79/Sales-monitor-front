@@ -309,6 +309,8 @@ export class SalesComponent {
   }
 
   filterProducts(event: any, index: number): void {
+    console.log('windoeww ', window.location);
+
     this.invoiceItems[index].filteredProducts = this.products.filter(
       (product) => {
         this.invoiceItems[index].description = product.description;
