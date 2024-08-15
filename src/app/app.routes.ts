@@ -13,6 +13,7 @@ import { AdminGuard } from './guards/admin.guard';
 import { TransactionsComponent } from './transactions/transactions.component';
 import { OutgoingComponent } from './outgoing/outgoing.component';
 import { InvoiceItemsComponent } from './invoice-items/invoice-items.component';
+import { ProfileComponent } from './profile/profile.component';
 
 export const routes: Routes = [
   {
@@ -29,6 +30,11 @@ export const routes: Routes = [
     path: 'outgoing',
     canActivate: [TokenGuard],
     component: OutgoingComponent,
+  },
+  {
+    path: 'profile',
+    canActivate: [TokenGuard],
+    component: ProfileComponent,
   },
   {
     path: 'sales',
