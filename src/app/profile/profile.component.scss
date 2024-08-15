@@ -1,0 +1,25 @@
+.nav,
+.tab-content {
+  border: 1px solid #dee2e6;
+  padding: 15px;
+
+  .tab-pane {
+    padding: 15px;
+  }
+  .nav-item {
+    .active {
+      border: 1px solid #c6c8cb !important;
+      border-radius: 0;
+      background-color: #e9e9e9 !important;
+    }
+    .nav-link {
+      color: #000;
+      //   margin-bottom: 5px;
+      border: 1px solid #dee2e6;
+      border-radius: 0;
+      &:hover {
+        cursor: pointer;
+      }
+    }
+  }
+}
