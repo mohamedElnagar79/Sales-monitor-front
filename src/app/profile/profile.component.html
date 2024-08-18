@@ -1,6 +1,6 @@
 <div class="mt-5 px-5">
   <div class="row w-100">
-    <div class="col-3">
+    <div class="col-md-3 col-sm-12">
       <ul class="nav flex-column nav-tabs">
         <li class="nav-item">
           <a class="nav-link active" data-bs-toggle="tab" href="#home">
@@ -20,19 +20,90 @@
         </li>
       </ul>
     </div>
-    <div class="col-9">
+    <div class="col-md-9 col-sm-12">
       <div class="tab-content">
-        <div class="tab-pane active" id="home">update profile</div>
+        <div class="tab-pane active" id="home">
+          <div class="contain-personal-info">
+            <div class="personal title">
+              <h6>Personal Information</h6>
+            </div>
+            <div class="personal-info">
+              <div class="row">
+                <div class="col-6">
+                  <div class="info-data">
+                    <div>
+                      <img
+                        class="image-responsive"
+                        src="../../../assets/1665905529695.jpg"
+                        [alt]="user.name"
+                      />
+                      <!-- <fa-icon
+                        [icon]="faPen"
+                        class="edit-icon"
+                        (click)="onImageChange($event)"
+                      ></fa-icon> -->
+                      <input
+                        type="file"
+                        id="imageUpload"
+                        style="display: none"
+                        (change)="onImageChange($event)"
+                      />
+                    </div>
+                    <div class="ms-4 pt-5">
+                      <h6>{{ user.name }}</h6>
+                      <p class="user-role">{{ user.role }}</p>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-6"></div>
+              </div>
+            </div>
+            <div class="info-form">
+              <form name="update-info">
+                <div class="form-group mt-3">
+                  <label for="name">User Name</label>
+                  <input
+                    type="text"
+                    id="name"
+                    class="form-control"
+                    required
+                    name="name"
+                    autocomplete="off"
+                    standalone="true"
+                    [(ngModel)]="updatedUser.name"
+                  />
+                </div>
+                <div class="form-group mt-3">
+                  <label for="email">Email</label>
+                  <input
+                    type="text"
+                    id="email"
+                    class="form-control"
+                    required
+                    name="email"
+                    standalone="true"
+                    [(ngModel)]="updatedUser.email"
+                  />
+                </div>
+                <div class="contain-confirm">
+                  <button type="submit" class="btn btn-primary mt-3">
+                    Confirm
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
         <div class="tab-pane" id="profile">
-          <h5>change password</h5>
-          <form>
+          <h6>change password</h6>
+          <form name="update-password">
             <div class="form-group mt-3">
               <label for="oldPassword">Old Password</label>
               <input
                 type="password"
                 id="oldPassword"
                 class="form-control"
-                placeholder="Enter old password"
+                placeholder="old password"
                 required
                 name="oldPassword"
                 autocomplete="off"
@@ -45,7 +116,7 @@
                 type="password"
                 id="newPassword"
                 class="form-control"
-                placeholder="Enter old password"
+                placeholder="new password"
                 required
                 name="newPassword"
                 autocomplete="off"
@@ -58,15 +129,18 @@
                 type="password"
                 id="confirmPassword"
                 class="form-control"
-                placeholder="Enter confirm Password"
+                placeholder="confirm Password"
                 required
                 name="confirmPassword"
                 autocomplete="off"
                 standalone="true"
               />
             </div>
-
-            <button type="submit" class="btn btn-primary mt-3">Confirm</button>
+            <div class="contain-confirm">
+              <button type="submit" class="btn btn-primary mt-3">
+                Confirm
+              </button>
+            </div>
           </form>
         </div>
         <div class="tab-pane" id="messages">manage access</div>
