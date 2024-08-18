@@ -22,4 +22,33 @@
       }
     }
   }
+  .info-data {
+    display: flex;
+    margin: 1rem 0;
+    .image-responsive {
+      width: 150px;
+      border-radius: 50%;
+    }
+    .user-role {
+      color: #0d6efd;
+    }
+    .edit-icon {
+      position: absolute;
+      top: 38%;
+      right: 49%;
+      cursor: pointer;
+      color: #fff;
+      background-color: #0d6efd;
+      padding: 6px;
+      border-radius: 50%;
+    }
+  }
+  .contain-confirm {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 1rem;
+    button {
+      width: 20%;
+    }
+  }
 }
