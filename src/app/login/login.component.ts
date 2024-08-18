@@ -27,11 +27,9 @@ export class LoginComponent {
           const token = response.data.token;
           const role = response.data.user.role;
           const name = response.data.user.name;
-          const id = response.data.user.id;
           localStorage.setItem('name', name);
           localStorage.setItem('token', token);
           localStorage.setItem('role', role);
-          localStorage.setItem('id', id);
           if (role == 'admin') {
             this.router.navigate(['/products']);
           } else {
