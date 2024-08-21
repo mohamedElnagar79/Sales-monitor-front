@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, ElementRef, ViewChild } from '@angular/core';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import {
   faUser,
@@ -9,6 +9,7 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import { ProfileService } from './profile.service';
 import { FormsModule } from '@angular/forms';
+import { ToastrService } from '../shared/toastr.service';
 @Component({
   selector: 'app-profile',
   standalone: true,
@@ -17,6 +18,7 @@ import { FormsModule } from '@angular/forms';
   styleUrl: './profile.component.scss',
 })
 export class ProfileComponent {
+  @ViewChild('changeAvatar') changeAvatarRef!: ElementRef;
   faUser = faUser;
   faGear = faGear;
   faPen = faPen;
@@ -26,24 +28,100 @@ export class ProfileComponent {
     name: '',
     email: '',
     role: '',
+    avatar: '',
   };
   updatedUser: any = {
     name: '',
     email: '',
+    avatar: '',
+    file_name: '',
   };
-
-  onImageChange(event?: any) {
-    console.log('eeeee');
-    const file = event?.target?.files[0];
-    const reader = new FileReader();
-    reader.onload = (e: any) => {
-      this.imageUrl = e.target?.result;
-    };
-    reader.readAsDataURL(file);
-  }
-  constructor(private profileService: ProfileService) {}
+  passwordObj: any = {
+    oldPassword: '',
+    newPassword: '',
+    confirmPassword: '',
+  };
+  constructor(
+    private profileService: ProfileService,
+    private toastr: ToastrService
+  ) {}
 
   ngOnInit(): void {
+    this.getUserInfo(); //init user data
+  }
+  onImageChange(event?: any) {
+    this.changeAvatarRef.nativeElement.click();
+    let selectedFile, base64Image: any;
+    if (event.target.files) {
+      selectedFile = event.target?.files[0];
+    }
+    if (selectedFile) {
+      const reader = new FileReader();
+      reader.onload = (e: any) => {
+        this.imageUrl = e.target.result;
+        base64Image = e.target.result;
+        this.updatedUser.avatar = e.target.result;
+        this.updatedUser.file_name = event.target.value.split('\\').pop();
+      };
+      console.log('Filename:', event.target.value.split('\\').pop());
+      reader.readAsDataURL(selectedFile);
+    } else {
+      console.log('there is no selected file');
+    }
+  }
+  validateProfileInput() {
+    console.log('clicked ');
+  }
+  updateMyProfile(): void {
+    if (
+      this.updatedUser.avatar != this.user.avatar ||
+      this.updatedUser.name != this.user.name ||
+      this.updatedUser.email != this.user.email
+    ) {
+      if (this.updatedUser.avatar == this.user.avatar) {
+        // avatar is not changed
+        delete this.updatedUser.avatar;
+      }
+      this.validateProfileInput();
+      console.log('updated user ===> ', this.updatedUser);
+      console.log('user ===> ', this.user);
+
+      this.profileService.UpdateUserProfile(this.updatedUser).subscribe(
+        (data: any) => {
+          setTimeout(() => {
+            this.toastr.success('profile updated succefully'),
+              '',
+              {
+                timeOut: 5000,
+                positionClass: 'toast-top-center',
+              };
+          }, 0);
+        },
+        (error) => {
+          console.log('errororroro ', error);
+          setTimeout(() => {
+            this.toastr.error(error),
+              '',
+              {
+                timeOut: 5000,
+                positionClass: 'toast-top-center',
+              };
+          }, 0);
+        }
+      );
+    } else {
+      setTimeout(() => {
+        this.toastr.warning('you does not change any thing '),
+          '',
+          {
+            timeOut: 5000,
+            positionClass: 'toast-top-center',
+          };
+      }, 0);
+    }
+  }
+
+  getUserInfo(): void {
     this.profileService.getUserInfo().subscribe(
       (data: any) => {
         this.user = { ...data.data };
@@ -53,5 +131,38 @@ export class ProfileComponent {
         console.log(error);
       }
     );
+  }
+
+  updatePassword(passwordObj: any): void {
+    console.log('hello');
+    if (passwordObj.newPassword != passwordObj.confirmPassword) {
+      setTimeout(() => {
+        this.toastr.error('new Password not equal to confirm password'),
+          '',
+          {
+            timeOut: 5000,
+            positionClass: 'toast-top-center',
+          };
+      }, 0);
+    }
+    if (passwordObj.newPassword && passwordObj.oldPassword) {
+      this.profileService.UpdatePassword(passwordObj).subscribe(
+        (data: any) => {
+          console.log('updated ', passwordObj);
+        },
+        (error) => {
+          console.log(error);
+        }
+      );
+    } else {
+      setTimeout(() => {
+        this.toastr.error('complete form please'),
+          '',
+          {
+            timeOut: 5000,
+            positionClass: 'toast-top-center',
+          };
+      }, 0);
+    }
   }
 }

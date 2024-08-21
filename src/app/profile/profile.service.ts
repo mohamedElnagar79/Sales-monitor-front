@@ -23,4 +23,34 @@ export class ProfileService {
       throw new Error('Authorization token not found');
     }
   }
+  UpdatePassword(Password: any): Observable<any> {
+    const token = localStorage.getItem('token');
+    if (token) {
+      const headers = new HttpHeaders({
+        Authorization: `Bearer ${token}`,
+      });
+      return this.http.put<any>(
+        this.apiUrl + `update-user-password/`,
+        Password,
+        {
+          headers,
+        }
+      );
+    } else {
+      throw new Error('Authorization token not found');
+    }
+  }
+  UpdateUserProfile(user: any): Observable<any> {
+    const token = localStorage.getItem('token');
+    if (token) {
+      const headers = new HttpHeaders({
+        Authorization: `Bearer ${token}`,
+      });
+      return this.http.put<any>(this.apiUrl + `update-user-profile`, user, {
+        headers,
+      });
+    } else {
+      throw new Error('Authorization token not found');
+    }
+  }
 }

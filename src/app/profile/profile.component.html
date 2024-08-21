@@ -31,21 +31,22 @@
               <div class="row">
                 <div class="col-6">
                   <div class="info-data">
-                    <div>
+                    <div class="avatar-box">
                       <img
                         class="image-responsive"
-                        src="../../../assets/1665905529695.jpg"
+                        [src]="updatedUser.avatar"
                         [alt]="user.name"
                       />
-                      <!-- <fa-icon
+                      <fa-icon
                         [icon]="faPen"
                         class="edit-icon"
                         (click)="onImageChange($event)"
-                      ></fa-icon> -->
+                      ></fa-icon>
                       <input
                         type="file"
                         id="imageUpload"
                         style="display: none"
+                        #changeAvatar
                         (change)="onImageChange($event)"
                       />
                     </div>
@@ -86,7 +87,11 @@
                   />
                 </div>
                 <div class="contain-confirm">
-                  <button type="submit" class="btn btn-primary mt-3">
+                  <button
+                    type="submit"
+                    class="btn btn-primary mt-3"
+                    (click)="updateMyProfile()"
+                  >
                     Confirm
                   </button>
                 </div>
@@ -108,6 +113,7 @@
                 name="oldPassword"
                 autocomplete="off"
                 standalone="true"
+                [(ngModel)]="passwordObj.oldPassword"
               />
             </div>
             <div class="form-group mt-3">
@@ -121,6 +127,7 @@
                 name="newPassword"
                 autocomplete="off"
                 standalone="true"
+                [(ngModel)]="passwordObj.newPassword"
               />
             </div>
             <div class="form-group mt-3">
@@ -134,10 +141,15 @@
                 name="confirmPassword"
                 autocomplete="off"
                 standalone="true"
+                [(ngModel)]="passwordObj.confirmPassword"
               />
             </div>
             <div class="contain-confirm">
-              <button type="submit" class="btn btn-primary mt-3">
+              <button
+                type="submit"
+                class="btn btn-primary mt-3"
+                (click)="updatePassword(passwordObj)"
+              >
                 Confirm
               </button>
             </div>
