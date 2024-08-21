@@ -81,13 +81,13 @@
         aria-expanded="false"
       >
         <img
-          src="../../../assets/1665905529695.jpg"
+          [src]="user.avatar"
           alt="hugenerd"
           width="40"
           height="40"
           class="rounded-circle"
         />
-        <span>{{ name }}</span>
+        <span>{{ user.name }}</span>
       </button>
       <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
         <li>
