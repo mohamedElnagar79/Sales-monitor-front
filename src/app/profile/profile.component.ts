@@ -72,7 +72,8 @@ export class ProfileComponent {
   validateProfileInput() {
     console.log('clicked ');
   }
-  updateMyProfile(): void {
+  updateMyProfile(userObj: any): void {
+    const updatedObj = { ...userObj };
     if (
       this.updatedUser.avatar != this.user.avatar ||
       this.updatedUser.name != this.user.name ||
@@ -80,35 +81,36 @@ export class ProfileComponent {
     ) {
       if (this.updatedUser.avatar == this.user.avatar) {
         // avatar is not changed
-        delete this.updatedUser.avatar;
+        delete updatedObj.avatar;
       }
       this.validateProfileInput();
       console.log('updated user ===> ', this.updatedUser);
       console.log('user ===> ', this.user);
+      console.log('updatedObj ===> ', updatedObj);
 
-      this.profileService.UpdateUserProfile(this.updatedUser).subscribe(
-        (data: any) => {
-          setTimeout(() => {
-            this.toastr.success('profile updated succefully'),
-              '',
-              {
-                timeOut: 5000,
-                positionClass: 'toast-top-center',
-              };
-          }, 0);
-        },
-        (error) => {
-          console.log('errororroro ', error);
-          setTimeout(() => {
-            this.toastr.error(error),
-              '',
-              {
-                timeOut: 5000,
-                positionClass: 'toast-top-center',
-              };
-          }, 0);
-        }
-      );
+      // this.profileService.UpdateUserProfile(updatedObj).subscribe(
+      //   (data: any) => {
+      //     setTimeout(() => {
+      //       this.toastr.success('profile updated succefully'),
+      //         '',
+      //         {
+      //           timeOut: 5000,
+      //           positionClass: 'toast-top-center',
+      //         };
+      //     }, 0);
+      //   },
+      //   (error) => {
+      //     console.log('errororroro ', error);
+      //     setTimeout(() => {
+      //       this.toastr.error(error),
+      //         '',
+      //         {
+      //           timeOut: 5000,
+      //           positionClass: 'toast-top-center',
+      //         };
+      //     }, 0);
+      //   }
+      // );
     } else {
       setTimeout(() => {
         this.toastr.warning('you does not change any thing '),
