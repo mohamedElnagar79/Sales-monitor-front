@@ -14,6 +14,7 @@ import {
   faSignOut,
   faUserPlus,
 } from '@fortawesome/free-solid-svg-icons';
+
 import { Router, NavigationEnd } from '@angular/router';
 import { ProfileService } from '../../profile/profile.service';
 
