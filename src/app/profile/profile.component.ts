@@ -88,29 +88,29 @@ export class ProfileComponent {
       console.log('user ===> ', this.user);
       console.log('updatedObj ===> ', updatedObj);
 
-      // this.profileService.UpdateUserProfile(updatedObj).subscribe(
-      //   (data: any) => {
-      //     setTimeout(() => {
-      //       this.toastr.success('profile updated succefully'),
-      //         '',
-      //         {
-      //           timeOut: 5000,
-      //           positionClass: 'toast-top-center',
-      //         };
-      //     }, 0);
-      //   },
-      //   (error) => {
-      //     console.log('errororroro ', error);
-      //     setTimeout(() => {
-      //       this.toastr.error(error),
-      //         '',
-      //         {
-      //           timeOut: 5000,
-      //           positionClass: 'toast-top-center',
-      //         };
-      //     }, 0);
-      //   }
-      // );
+      this.profileService.UpdateUserProfile(updatedObj).subscribe(
+        (data: any) => {
+          setTimeout(() => {
+            this.toastr.success('profile updated succefully'),
+              '',
+              {
+                timeOut: 5000,
+                positionClass: 'toast-top-center',
+              };
+          }, 0);
+        },
+        (error) => {
+          console.log('errororroro ', error);
+          setTimeout(() => {
+            this.toastr.error(error.error.message),
+              '',
+              {
+                timeOut: 5000,
+                positionClass: 'toast-top-center',
+              };
+          }, 0);
+        }
+      );
     } else {
       setTimeout(() => {
         this.toastr.warning('you does not change any thing '),
