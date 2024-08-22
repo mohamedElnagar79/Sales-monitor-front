@@ -22,4 +22,46 @@
       }
     }
   }
+  .info-data {
+    display: flex;
+    margin: 1rem 0;
+    .image-responsive {
+      width: 155px;
+      height: 155px;
+      border-radius: 50%;
+      border: 2px solid #fff;
+      box-shadow: 0 0 3px rgba(0, 0, 0, 0.2);
+      overflow: hidden;
+      object-fit: contain;
+    }
+    .user-role {
+      color: #0d6efd;
+    }
+    .avatar-box {
+      position: relative;
+      .edit-icon {
+        position: absolute;
+        top: 68%;
+        z-index: 99;
+        right: 0%;
+        cursor: pointer;
+        color: #fff;
+        background-color: #0d6efd;
+        height: 30px;
+        width: 30px;
+        line-height: 30px;
+        border-radius: 50%;
+        text-align: center;
+        font-size: 14px;
+      }
+    }
+  }
+  .contain-confirm {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 1rem;
+    button {
+      width: 20%;
+    }
+  }
 }
