@@ -1,5 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
+import { ProfileService } from '../../profile/profile.service';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import {
   faPen,
@@ -16,7 +17,6 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 
 import { Router, NavigationEnd } from '@angular/router';
-import { ProfileService } from '../../profile/profile.service';
 
 @Component({
   selector: 'app-sidebar',
@@ -41,7 +41,11 @@ export class SidebarComponent {
   faMoneyCheckDollar = faMoneyCheckDollar;
   faChartLine = faChartLine;
   isAdmin: boolean = false;
-
+  currentQuote: any = {
+    name: 'ccc',
+    email: '',
+    avatar: '',
+  };
   user: any = {
     name: '',
     email: '',
@@ -83,6 +87,10 @@ export class SidebarComponent {
       }
     });
 
-    // console.log('this.currentRoute ', this.currentRoute);
+    // Subscribe the currentQuote property of quote service to get real time value
+    this.profileService.currentUser.subscribe(
+      // update the component's property
+      (quote) => (this.currentQuote.name = quote.name)
+    );
   }
 }

@@ -96,6 +96,14 @@
                   </button>
                 </div>
               </form>
+              <div>
+                <input
+                  type="text"
+                  [(ngModel)]="quote.name"
+                  placeholder="Write new quote"
+                />
+                <button (click)="submitHandler()">Submit</button>
+              </div>
             </div>
           </div>
         </div>

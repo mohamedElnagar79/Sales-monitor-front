@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { environment } from '../../environments/environment';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { Observable, BehaviorSubject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -52,5 +52,21 @@ export class ProfileService {
     } else {
       throw new Error('Authorization token not found');
     }
+  }
+
+  // declare and initialize the quote property
+  // which will be a BehaviorSubject
+  user = new BehaviorSubject({
+    name: '',
+    avatar: '',
+    email: '',
+  });
+  // expose the BehaviorSubject as an Observable
+  currentUser = this.user.asObservable();
+
+  // function to update the value of the BehaviorSubject
+  updateCurrentUser(newUser: any) {
+    console.log('hhhhh ,', newUser);
+    this.user.next(newUser);
   }
 }

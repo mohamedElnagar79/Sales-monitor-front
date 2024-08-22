@@ -30,6 +30,11 @@ export class ProfileComponent {
     role: '',
     avatar: '',
   };
+  quote: any = {
+    name: '',
+    email: '',
+    avatar: '',
+  };
   updatedUser: any = {
     name: '',
     email: '',
@@ -121,6 +126,12 @@ export class ProfileComponent {
           };
       }, 0);
     }
+  }
+
+  // function to update the quote in the service
+  submitHandler() {
+    this.profileService.updateCurrentUser(this.quote);
+    this.quote = { name: '', email: '', avatar: '' };
   }
 
   getUserInfo(): void {
