@@ -113,7 +113,7 @@
                 name="oldPassword"
                 autocomplete="off"
                 standalone="true"
-                [(ngModel)]="passwordObj.oldPassword"
+                [(ngModel)]="passwordObj.originalPassword"
               />
             </div>
             <div class="form-group mt-3">
@@ -128,7 +128,11 @@
                 autocomplete="off"
                 standalone="true"
                 [(ngModel)]="passwordObj.newPassword"
+                (keyup)="calculatePasswordStrength(passwordObj.newPassword)"
               />
+              <p class="text-danger" *ngIf="errorMessage != ''">
+                {{ errorMessage }}
+              </p>
             </div>
             <div class="form-group mt-3">
               <label for="confirmPassword">Confirm Password</label>
@@ -141,8 +145,12 @@
                 name="confirmPassword"
                 autocomplete="off"
                 standalone="true"
+                (keyup)="validateConfirmPassword(passwordObj.confirmPassword)"
                 [(ngModel)]="passwordObj.confirmPassword"
               />
+              <p class="text-danger" *ngIf="confirmErrorMessage != ''">
+                {{ confirmErrorMessage }}
+              </p>
             </div>
             <div class="contain-confirm">
               <button

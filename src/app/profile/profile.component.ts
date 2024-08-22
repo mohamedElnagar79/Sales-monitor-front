@@ -30,6 +30,8 @@ export class ProfileComponent {
     role: '',
     avatar: '',
   };
+  errorMessage: string = '';
+  confirmErrorMessage: string = '';
   quote: any = {
     name: '',
     email: '',
@@ -42,7 +44,7 @@ export class ProfileComponent {
     file_name: '',
   };
   passwordObj: any = {
-    oldPassword: '',
+    originalPassword: '',
     newPassword: '',
     confirmPassword: '',
   };
@@ -79,6 +81,45 @@ export class ProfileComponent {
       console.log('there is no selected file');
     }
   }
+
+  calculatePasswordStrength(password: string): void {
+    let strength = 0;
+    console.log('clicked====>', password);
+    // Check for uppercase, lowercase, numbers, and special characters
+    if (
+      /[A-Z]/.test(password) &&
+      /[a-z]/.test(password) &&
+      /\d/.test(password) &&
+      /[!@#$%^&*()_+{}\[\]:;<>,.?\/|-]/.test(password)
+    ) {
+      strength += 4;
+    }
+
+    // Check for length
+    console.log('passwwww ', password);
+    if (password.length >= 8) {
+      strength += 2;
+    }
+
+    // Check for common patterns (you can add more checks)
+    if (!/^(123456|password|qwerty|asdfg)$/.test(password)) {
+      strength += 1;
+    }
+    if (strength < 7) {
+      this.errorMessage =
+        'Password is too weak password must contain at least 8 characters, 1 number, 1 lowercase, uppercase character and a symbol';
+    } else this.errorMessage = '';
+  }
+  validateConfirmPassword(password: string): void {
+    if (password != '') {
+      console.log('func run nowwwww  ');
+      if (password != this.passwordObj.newPassword) {
+        this.confirmErrorMessage =
+          'confirm password does not equal to new password ';
+      } else this.confirmErrorMessage = '';
+    }
+  }
+
   validateProfileInput() {
     console.log('clicked ');
   }
@@ -108,6 +149,8 @@ export class ProfileComponent {
                 positionClass: 'toast-top-center',
               };
           }, 0);
+          console.log('helooooooooooooooooo');
+          this.user = { ...this.updatedUser };
           this.profileService.updateCurrentUser({ ...this.updatedUser });
         },
         (error) => {
@@ -149,26 +192,34 @@ export class ProfileComponent {
   }
 
   updatePassword(passwordObj: any): void {
-    console.log('hello');
-    if (passwordObj.newPassword != passwordObj.confirmPassword) {
-      setTimeout(() => {
-        this.toastr.error('new Password not equal to confirm password'),
-          '',
-          {
-            timeOut: 5000,
-            positionClass: 'toast-top-center',
-          };
-      }, 0);
-    }
-    if (passwordObj.newPassword && passwordObj.oldPassword) {
+    if (passwordObj.newPassword && passwordObj.originalPassword) {
       this.profileService.UpdatePassword(passwordObj).subscribe(
         (data: any) => {
-          console.log('updated ', passwordObj);
+          setTimeout(() => {
+            this.toastr.success('password updated successfully'),
+              '',
+              {
+                timeOut: 5000,
+                positionClass: 'toast-top-center',
+              };
+          }, 0);
         },
         (error) => {
-          console.log(error);
+          setTimeout(() => {
+            this.toastr.error(error.error.message),
+              '',
+              {
+                timeOut: 5000,
+                positionClass: 'toast-top-center',
+              };
+          }, 0);
         }
       );
+      this.passwordObj = {
+        originalPassword: '',
+        newPassword: '',
+        confirmPassword: '',
+      };
     } else {
       setTimeout(() => {
         this.toastr.error('complete form please'),
