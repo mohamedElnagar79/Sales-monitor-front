@@ -81,17 +81,17 @@
         aria-expanded="false"
       >
         <img
-          src="../../../assets/1665905529695.jpg"
+          [src]="user.avatar"
           alt="hugenerd"
           width="40"
           height="40"
           class="rounded-circle"
         />
-        <span>{{ name }}</span>
+        <span>{{ user.name }}</span>
       </button>
       <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
         <li>
-          <a class="dropdown-item">
+          <a class="dropdown-item" (click)="navigateTo('profile')">
             <fa-icon [icon]="faUser" class="me-2"></fa-icon>
             Profile</a
           >

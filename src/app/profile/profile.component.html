@@ -1,0 +1,170 @@
+<div class="mt-5 px-5">
+  <div class="row w-100">
+    <div class="col-md-3 col-sm-12">
+      <ul class="nav flex-column nav-tabs">
+        <li class="nav-item">
+          <a class="nav-link active" data-bs-toggle="tab" href="#home">
+            <fa-icon [icon]="faUser"></fa-icon>
+            Profile</a
+          >
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" data-bs-toggle="tab" href="#profile">
+            <fa-icon [icon]="faLock"></fa-icon> Security</a
+          >
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" data-bs-toggle="tab" href="#messages">
+            <fa-icon [icon]="faGear"></fa-icon> Manage Access
+          </a>
+        </li>
+      </ul>
+    </div>
+    <div class="col-md-9 col-sm-12">
+      <div class="tab-content">
+        <div class="tab-pane active" id="home">
+          <div class="contain-personal-info">
+            <div class="personal title">
+              <h6>Personal Information</h6>
+            </div>
+            <div class="personal-info">
+              <div class="row">
+                <div class="col-6">
+                  <div class="info-data">
+                    <div class="avatar-box">
+                      <img
+                        class="image-responsive"
+                        [src]="updatedUser.avatar"
+                        [alt]="user.name"
+                      />
+                      <fa-icon
+                        [icon]="faPen"
+                        class="edit-icon"
+                        (click)="onImageChange($event)"
+                      ></fa-icon>
+                      <input
+                        type="file"
+                        id="imageUpload"
+                        style="display: none"
+                        #changeAvatar
+                        (change)="onImageChange($event)"
+                      />
+                    </div>
+                    <div class="ms-4 pt-5">
+                      <h6>{{ user.name }}</h6>
+                      <p class="user-role">{{ user.role }}</p>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-6"></div>
+              </div>
+            </div>
+            <div class="info-form">
+              <form name="update-info">
+                <div class="form-group mt-3">
+                  <label for="name">User Name</label>
+                  <input
+                    type="text"
+                    id="name"
+                    class="form-control"
+                    required
+                    name="name"
+                    autocomplete="off"
+                    standalone="true"
+                    [(ngModel)]="updatedUser.name"
+                  />
+                </div>
+                <div class="form-group mt-3">
+                  <label for="email">Email</label>
+                  <input
+                    type="text"
+                    id="email"
+                    class="form-control"
+                    required
+                    name="email"
+                    standalone="true"
+                    [(ngModel)]="updatedUser.email"
+                  />
+                </div>
+                <div class="contain-confirm">
+                  <button
+                    type="submit"
+                    class="btn btn-primary mt-3"
+                    (click)="updateMyProfile(updatedUser)"
+                  >
+                    Confirm
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+        <div class="tab-pane" id="profile">
+          <h6>change password</h6>
+          <form name="update-password">
+            <div class="form-group mt-3">
+              <label for="oldPassword">Old Password</label>
+              <input
+                type="password"
+                id="oldPassword"
+                class="form-control"
+                placeholder="old password"
+                required
+                name="oldPassword"
+                autocomplete="off"
+                standalone="true"
+                [(ngModel)]="passwordObj.originalPassword"
+              />
+            </div>
+            <div class="form-group mt-3">
+              <label for="newPassword">New Password</label>
+              <input
+                type="password"
+                id="newPassword"
+                class="form-control"
+                placeholder="new password"
+                required
+                name="newPassword"
+                autocomplete="off"
+                standalone="true"
+                [(ngModel)]="passwordObj.newPassword"
+                (keyup)="calculatePasswordStrength(passwordObj.newPassword)"
+              />
+              <p class="text-danger" *ngIf="errorMessage != ''">
+                {{ errorMessage }}
+              </p>
+            </div>
+            <div class="form-group mt-3">
+              <label for="confirmPassword">Confirm Password</label>
+              <input
+                type="password"
+                id="confirmPassword"
+                class="form-control"
+                placeholder="confirm Password"
+                required
+                name="confirmPassword"
+                autocomplete="off"
+                standalone="true"
+                (keyup)="validateConfirmPassword(passwordObj.confirmPassword)"
+                [(ngModel)]="passwordObj.confirmPassword"
+              />
+              <p class="text-danger" *ngIf="confirmErrorMessage != ''">
+                {{ confirmErrorMessage }}
+              </p>
+            </div>
+            <div class="contain-confirm">
+              <button
+                type="submit"
+                class="btn btn-primary mt-3"
+                (click)="updatePassword(passwordObj)"
+              >
+                Confirm
+              </button>
+            </div>
+          </form>
+        </div>
+        <div class="tab-pane" id="messages">manage access</div>
+      </div>
+    </div>
+  </div>
+</div>
