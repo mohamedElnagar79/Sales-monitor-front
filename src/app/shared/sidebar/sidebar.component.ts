@@ -41,11 +41,7 @@ export class SidebarComponent {
   faMoneyCheckDollar = faMoneyCheckDollar;
   faChartLine = faChartLine;
   isAdmin: boolean = false;
-  currentQuote: any = {
-    name: 'ccc',
-    email: '',
-    avatar: '',
-  };
+
   user: any = {
     name: '',
     email: '',
@@ -57,7 +53,10 @@ export class SidebarComponent {
   toggleSidebar() {
     this.isOpen = !this.isOpen;
   }
-
+  submitHandler() {
+    this.profileService.updateCurrentUser(this.user);
+    // this.user = { name: '', email: '', avatar: '' };
+  }
   navigateTo(path: string): void {
     this.router.navigate([path]);
   }
@@ -90,7 +89,7 @@ export class SidebarComponent {
     // Subscribe the currentQuote property of quote service to get real time value
     this.profileService.currentUser.subscribe(
       // update the component's property
-      (quote) => (this.currentQuote.name = quote.name)
+      (user) => (this.user = user)
     );
   }
 }

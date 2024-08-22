@@ -67,8 +67,13 @@ export class ProfileComponent {
         base64Image = e.target.result;
         this.updatedUser.avatar = e.target.result;
         this.updatedUser.file_name = event.target.value.split('\\').pop();
+        this.updatedUser.file_name = this.updatedUser.file_name.replace(
+          /\.[^/]+$/,
+          ''
+        );
       };
       console.log('Filename:', event.target.value.split('\\').pop());
+      console.log('Filename2 ', event.target.value.replace(/\.[^/]+$/, ''));
       reader.readAsDataURL(selectedFile);
     } else {
       console.log('there is no selected file');
@@ -103,6 +108,7 @@ export class ProfileComponent {
                 positionClass: 'toast-top-center',
               };
           }, 0);
+          this.profileService.updateCurrentUser({ ...this.updatedUser });
         },
         (error) => {
           console.log('errororroro ', error);
@@ -129,10 +135,6 @@ export class ProfileComponent {
   }
 
   // function to update the quote in the service
-  submitHandler() {
-    this.profileService.updateCurrentUser(this.quote);
-    this.quote = { name: '', email: '', avatar: '' };
-  }
 
   getUserInfo(): void {
     this.profileService.getUserInfo().subscribe(
