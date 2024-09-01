@@ -171,6 +171,17 @@
               />
             </div>
             <div class="form-group">
+              <label for="stock">min stock</label>
+              <input
+                type="number"
+                class="form-control"
+                id="minStock"
+                [(ngModel)]="updatedProduct.min_stock"
+                name="min_stock"
+                required
+              />
+            </div>
+            <div class="form-group">
               <label for="description">description</label>
               <textarea
                 class="form-control"
