@@ -1,5 +1,9 @@
 .nav,
 .tab-content {
+  h5 {
+    text-decoration: underline;
+    text-transform: capitalize;
+  }
   border: 1px solid #dee2e6;
   padding: 15px;
 

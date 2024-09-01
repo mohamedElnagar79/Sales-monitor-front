@@ -6,6 +6,7 @@ import {
   faGear,
   faLock,
   faPen,
+  faTrash,
 } from '@fortawesome/free-solid-svg-icons';
 import { ProfileService } from './profile.service';
 import { FormsModule } from '@angular/forms';
@@ -23,6 +24,7 @@ export class ProfileComponent {
   faGear = faGear;
   faPen = faPen;
   faLock = faLock;
+  faTrash = faTrash;
   imageUrl = '../../../assets/1665905529695.jpg';
   user: any = {
     name: '',
@@ -30,6 +32,7 @@ export class ProfileComponent {
     role: '',
     avatar: '',
   };
+  users: any = [];
   errorMessage: string = '';
   confirmErrorMessage: string = '';
   quote: any = {
@@ -55,6 +58,7 @@ export class ProfileComponent {
 
   ngOnInit(): void {
     this.getUserInfo(); //init user data
+    this.getAllUsers();
   }
   onImageChange(event?: any) {
     this.changeAvatarRef.nativeElement.click();
@@ -184,6 +188,17 @@ export class ProfileComponent {
       (data: any) => {
         this.user = { ...data.data };
         this.updatedUser = { ...data.data };
+      },
+      (error) => {
+        console.log(error);
+      }
+    );
+  }
+  getAllUsers(): void {
+    this.profileService.getAllUsers().subscribe(
+      (data: any) => {
+        this.users = [...data.data];
+        console.log('users  ', this.users);
       },
       (error) => {
         console.log(error);
