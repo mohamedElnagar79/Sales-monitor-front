@@ -20,6 +20,8 @@ import { ToastrService } from '../shared/toastr.service';
 })
 export class ProfileComponent {
   @ViewChild('changeAvatar') changeAvatarRef!: ElementRef;
+  @ViewChild('closeModal') closeModalRef!: ElementRef;
+
   faUser = faUser;
   faGear = faGear;
   faPen = faPen;
@@ -49,6 +51,7 @@ export class ProfileComponent {
     file_name: '',
   };
   updatedEmployee: any = {
+    userId: 0,
     name: '',
     email: '',
     role: 'user',
@@ -93,26 +96,43 @@ export class ProfileComponent {
     }
   }
   openUpdateForm(userObj: any): void {
-    this.updatedEmployee.id = userObj?.id;
+    this.updatedEmployee.userId = userObj?.id;
     this.updatedEmployee.name = userObj?.name;
     this.updatedEmployee.email = userObj?.email;
     this.updatedEmployee.role = userObj?.role;
   }
+  updateRole(event: any) {
+    this.updatedEmployee.role = event.target?.value;
+  }
 
   updateOneEmployee(updatedEmployee: any): void {
-    // this.profileService.updateproduct(updatedProduct).subscribe(
-    //   (product: Product) => {
-    //     this.getproducts(this.p);
-    //     this.updateForm = 'closed';
-    //     this.closeModalRef.nativeElement.click();
-    //   },
-    //   (error) => {
-    //     console.error('Error adding product:', error.error.error.path);
-    //     // if (error.error.error.path == 'name') {
-    //     // }
-    //     alert(error.error.message);
-    //   }
-    // );
+    console.log('updated employee ===>>> ', updatedEmployee);
+    this.profileService.UpdateUserProfile(updatedEmployee).subscribe(
+      (data: any) => {
+        this.getAllUsers();
+        this.closeModalRef.nativeElement.click();
+        setTimeout(() => {
+          this.toastr.success(
+            `emplyeee ${updatedEmployee.name} updated succefully`
+          ),
+            '',
+            {
+              timeOut: 5000,
+              positionClass: 'toast-top-center',
+            };
+        }, 0);
+      },
+      (error) => {
+        setTimeout(() => {
+          this.toastr.error(error.error.message),
+            '',
+            {
+              timeOut: 5000,
+              positionClass: 'toast-top-center',
+            };
+        }, 0);
+      }
+    );
   }
 
   calculatePasswordStrength(password: string): void {
@@ -167,11 +187,6 @@ export class ProfileComponent {
         // avatar is not changed
         delete updatedObj.avatar;
       }
-      this.validateProfileInput();
-      console.log('updated user ===> ', this.updatedUser);
-      console.log('user ===> ', this.user);
-      console.log('updatedObj ===> ', updatedObj);
-
       this.profileService.UpdateUserProfile(updatedObj).subscribe(
         (data: any) => {
           setTimeout(() => {
