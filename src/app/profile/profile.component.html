@@ -13,7 +13,7 @@
             <fa-icon [icon]="faLock"></fa-icon> Security</a
           >
         </li>
-        <li class="nav-item">
+        <li class="nav-item" *ngIf="isAdmin">
           <a class="nav-link" data-bs-toggle="tab" href="#messages">
             <fa-icon [icon]="faGear"></fa-icon> Manage Access
           </a>
@@ -163,7 +163,7 @@
             </div>
           </form>
         </div>
-        <div class="tab-pane" id="messages">
+        <div class="tab-pane" id="messages" *ngIf="isAdmin">
           <h5>manage access</h5>
           <div
             class="table-container table-responsive"
@@ -179,40 +179,105 @@
                 </tr>
               </thead>
               <tbody>
-                <tr *ngFor="let user of users">
-                  <td>{{ user.email }}</td>
+                <tr *ngFor="let userObj of users">
+                  <td>{{ userObj.email }}</td>
                   <td>
-                    <span title="{{ user.name }}">
-                      {{ user.name }}
+                    <span title="{{ userObj.name }}">
+                      {{ userObj.name }}
                     </span>
                   </td>
                   <td>
-                    {{ user.role }}
+                    {{ userObj.role }}
                   </td>
                   <td>
                     <div class="table-cotrollers">
                       <button
                         class="btn btn-primary btn-sm me-3"
                         data-bs-toggle="modal"
-                        data-bs-target="#updatedProductModal"
+                        data-bs-target="#updatedEmployeeModal"
+                        (click)="openUpdateForm(userObj)"
                       >
-                        <!-- (click)="openUpdateForm(product)" -->
                         <fa-icon [icon]="faPen"></fa-icon>
                       </button>
-                      <button
+                      <!-- <button
                         class="btn btn-danger btn-sm"
                         data-bs-toggle="modal"
                         data-bs-target="#deleteModal"
                       >
-                        <!-- (click)="ActivateProductToDelete(product.id)" -->
                         <fa-icon [icon]="faTrash"></fa-icon>
-                      </button>
+                      </button> -->
                     </div>
                   </td>
                 </tr>
               </tbody>
             </table>
           </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- update employee Modal -->
+  <div
+    class="modal fade"
+    id="updatedEmployeeModal"
+    tabindex="-1"
+    aria-labelledby="updatedEmployeeModal"
+    aria-hidden="true"
+  >
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="update-employee-form">
+          <h4 class="mb-3">Update Employee</h4>
+          <form (ngSubmit)="updateOneEmployee(updatedEmployee)">
+            <div class="form-group">
+              <label for="employeeName">Name</label>
+              <input
+                type="text"
+                class="form-control"
+                id="employeeName"
+                [(ngModel)]="updatedEmployee.name"
+                name="employeeName"
+                required
+              />
+            </div>
+            <div class="form-group">
+              <label for="employeeEmail">Email</label>
+              <input
+                type="text"
+                class="form-control"
+                id="employeeEmail"
+                [(ngModel)]="updatedEmployee.email"
+                name="employeeEmail"
+                required
+              />
+            </div>
+            <div class="form-group">
+              <label for="employeeRole">Role</label>
+              <input
+                type="text"
+                class="form-control"
+                id="employeeRole"
+                [(ngModel)]="updatedEmployee.role"
+                name="employeeRole"
+                required
+              />
+            </div>
+
+            <div class="form-group">
+              <button type="submit" class="btn btn-primary form-control my-3">
+                update Employee
+              </button>
+              <button
+                type="button"
+                class="btn btn-outline-secondary form-control mt-1"
+                data-bs-dismiss="modal"
+                #closeModal
+              >
+                Close
+              </button>
+            </div>
+          </form>
         </div>
       </div>
     </div>

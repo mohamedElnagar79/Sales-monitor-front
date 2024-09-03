@@ -25,6 +25,7 @@ export class ProfileComponent {
   faPen = faPen;
   faLock = faLock;
   faTrash = faTrash;
+  isAdmin: boolean = false;
   imageUrl = '../../../assets/1665905529695.jpg';
   user: any = {
     name: '',
@@ -33,6 +34,7 @@ export class ProfileComponent {
     avatar: '',
   };
   users: any = [];
+
   errorMessage: string = '';
   confirmErrorMessage: string = '';
   quote: any = {
@@ -45,6 +47,11 @@ export class ProfileComponent {
     email: '',
     avatar: '',
     file_name: '',
+  };
+  updatedEmployee: any = {
+    name: '',
+    email: '',
+    role: 'user',
   };
   passwordObj: any = {
     originalPassword: '',
@@ -84,6 +91,28 @@ export class ProfileComponent {
     } else {
       console.log('there is no selected file');
     }
+  }
+  openUpdateForm(userObj: any): void {
+    this.updatedEmployee.id = userObj?.id;
+    this.updatedEmployee.name = userObj?.name;
+    this.updatedEmployee.email = userObj?.email;
+    this.updatedEmployee.role = userObj?.role;
+  }
+
+  updateOneEmployee(updatedEmployee: any): void {
+    // this.profileService.updateproduct(updatedProduct).subscribe(
+    //   (product: Product) => {
+    //     this.getproducts(this.p);
+    //     this.updateForm = 'closed';
+    //     this.closeModalRef.nativeElement.click();
+    //   },
+    //   (error) => {
+    //     console.error('Error adding product:', error.error.error.path);
+    //     // if (error.error.error.path == 'name') {
+    //     // }
+    //     alert(error.error.message);
+    //   }
+    // );
   }
 
   calculatePasswordStrength(password: string): void {
@@ -188,6 +217,7 @@ export class ProfileComponent {
       (data: any) => {
         this.user = { ...data.data };
         this.updatedUser = { ...data.data };
+        this.isAdmin = data.data.role === 'admin' ? true : false;
       },
       (error) => {
         console.log(error);
