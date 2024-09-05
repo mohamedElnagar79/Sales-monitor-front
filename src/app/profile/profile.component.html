@@ -165,6 +165,9 @@
         </div>
         <div class="tab-pane" id="messages" *ngIf="isAdmin">
           <h5>manage access</h5>
+          <h6 *ngIf="users.length == 0" class="no-employee">
+            No employees added
+          </h6>
           <div
             class="table-container table-responsive"
             *ngIf="users.length > 0"
