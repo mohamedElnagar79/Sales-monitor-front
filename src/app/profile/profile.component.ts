@@ -235,7 +235,7 @@ export class ProfileComponent {
         this.isAdmin = data.data.role === 'admin' ? true : false;
       },
       (error) => {
-        console.log(error);
+        console.log('error   > > ', error.status);
       }
     );
   }
