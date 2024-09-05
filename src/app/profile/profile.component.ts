@@ -6,6 +6,7 @@ import {
   faGear,
   faLock,
   faPen,
+  faTrash,
 } from '@fortawesome/free-solid-svg-icons';
 import { ProfileService } from './profile.service';
 import { FormsModule } from '@angular/forms';
@@ -19,10 +20,14 @@ import { ToastrService } from '../shared/toastr.service';
 })
 export class ProfileComponent {
   @ViewChild('changeAvatar') changeAvatarRef!: ElementRef;
+  @ViewChild('closeModal') closeModalRef!: ElementRef;
+
   faUser = faUser;
   faGear = faGear;
   faPen = faPen;
   faLock = faLock;
+  faTrash = faTrash;
+  isAdmin: boolean = false;
   imageUrl = '../../../assets/1665905529695.jpg';
   user: any = {
     name: '',
@@ -30,6 +35,8 @@ export class ProfileComponent {
     role: '',
     avatar: '',
   };
+  users: any = [];
+
   errorMessage: string = '';
   confirmErrorMessage: string = '';
   quote: any = {
@@ -43,6 +50,12 @@ export class ProfileComponent {
     avatar: '',
     file_name: '',
   };
+  updatedEmployee: any = {
+    userId: 0,
+    name: '',
+    email: '',
+    role: 'user',
+  };
   passwordObj: any = {
     originalPassword: '',
     newPassword: '',
@@ -55,6 +68,7 @@ export class ProfileComponent {
 
   ngOnInit(): void {
     this.getUserInfo(); //init user data
+    this.getAllUsers();
   }
   onImageChange(event?: any) {
     this.changeAvatarRef.nativeElement.click();
@@ -80,6 +94,45 @@ export class ProfileComponent {
     } else {
       console.log('there is no selected file');
     }
+  }
+  openUpdateForm(userObj: any): void {
+    this.updatedEmployee.userId = userObj?.id;
+    this.updatedEmployee.name = userObj?.name;
+    this.updatedEmployee.email = userObj?.email;
+    this.updatedEmployee.role = userObj?.role;
+  }
+  updateRole(event: any) {
+    this.updatedEmployee.role = event.target?.value;
+  }
+
+  updateOneEmployee(updatedEmployee: any): void {
+    console.log('updated employee ===>>> ', updatedEmployee);
+    this.profileService.UpdateUserProfile(updatedEmployee).subscribe(
+      (data: any) => {
+        this.getAllUsers();
+        this.closeModalRef.nativeElement.click();
+        setTimeout(() => {
+          this.toastr.success(
+            `emplyeee ${updatedEmployee.name} updated succefully`
+          ),
+            '',
+            {
+              timeOut: 5000,
+              positionClass: 'toast-top-center',
+            };
+        }, 0);
+      },
+      (error) => {
+        setTimeout(() => {
+          this.toastr.error(error.error.message),
+            '',
+            {
+              timeOut: 5000,
+              positionClass: 'toast-top-center',
+            };
+        }, 0);
+      }
+    );
   }
 
   calculatePasswordStrength(password: string): void {
@@ -134,11 +187,6 @@ export class ProfileComponent {
         // avatar is not changed
         delete updatedObj.avatar;
       }
-      this.validateProfileInput();
-      console.log('updated user ===> ', this.updatedUser);
-      console.log('user ===> ', this.user);
-      console.log('updatedObj ===> ', updatedObj);
-
       this.profileService.UpdateUserProfile(updatedObj).subscribe(
         (data: any) => {
           setTimeout(() => {
@@ -184,6 +232,18 @@ export class ProfileComponent {
       (data: any) => {
         this.user = { ...data.data };
         this.updatedUser = { ...data.data };
+        this.isAdmin = data.data.role === 'admin' ? true : false;
+      },
+      (error) => {
+        console.log(error);
+      }
+    );
+  }
+  getAllUsers(): void {
+    this.profileService.getAllUsers().subscribe(
+      (data: any) => {
+        this.users = [...data.data];
+        console.log('users  ', this.users);
       },
       (error) => {
         console.log(error);

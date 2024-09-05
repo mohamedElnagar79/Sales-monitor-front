@@ -14,6 +14,8 @@ import {
   faUser,
   faSignOut,
   faUserPlus,
+  faCheck,
+  faXmark,
 } from '@fortawesome/free-solid-svg-icons';
 
 import { Router, NavigationEnd } from '@angular/router';
@@ -39,9 +41,9 @@ export class SidebarComponent {
   faCartArrowDown = faCartArrowDown;
   faStore = faStore;
   faMoneyCheckDollar = faMoneyCheckDollar;
+
   faChartLine = faChartLine;
   isAdmin: boolean = false;
-
   user: any = {
     name: '',
     email: '',

@@ -13,7 +13,7 @@
             <fa-icon [icon]="faLock"></fa-icon> Security</a
           >
         </li>
-        <li class="nav-item">
+        <li class="nav-item" *ngIf="isAdmin">
           <a class="nav-link" data-bs-toggle="tab" href="#messages">
             <fa-icon [icon]="faGear"></fa-icon> Manage Access
           </a>
@@ -25,7 +25,7 @@
         <div class="tab-pane active" id="home">
           <div class="contain-personal-info">
             <div class="personal title">
-              <h6>Personal Information</h6>
+              <h5>Personal Information</h5>
             </div>
             <div class="personal-info">
               <div class="row">
@@ -100,7 +100,7 @@
           </div>
         </div>
         <div class="tab-pane" id="profile">
-          <h6>change password</h6>
+          <h5>change password</h5>
           <form name="update-password">
             <div class="form-group mt-3">
               <label for="oldPassword">Old Password</label>
@@ -163,7 +163,132 @@
             </div>
           </form>
         </div>
-        <div class="tab-pane" id="messages">manage access</div>
+        <div class="tab-pane" id="messages" *ngIf="isAdmin">
+          <h5>manage access</h5>
+          <div
+            class="table-container table-responsive"
+            *ngIf="users.length > 0"
+          >
+            <table class="table fixed-height table-responsive mt-3">
+              <thead>
+                <tr>
+                  <th style="width: 15%">email</th>
+                  <th style="width: 20%">Name</th>
+                  <th style="width: 5%">role</th>
+                  <th style="width: 5%"></th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let userObj of users">
+                  <td>{{ userObj.email }}</td>
+                  <td>
+                    <span title="{{ userObj.name }}">
+                      {{ userObj.name }}
+                    </span>
+                  </td>
+                  <td>
+                    {{ userObj.role }}
+                  </td>
+                  <td>
+                    <div class="table-cotrollers">
+                      <button
+                        class="btn btn-primary btn-sm me-3"
+                        data-bs-toggle="modal"
+                        data-bs-target="#updatedEmployeeModal"
+                        (click)="openUpdateForm(userObj)"
+                      >
+                        <fa-icon [icon]="faPen"></fa-icon>
+                      </button>
+                      <!-- <button
+                        class="btn btn-danger btn-sm"
+                        data-bs-toggle="modal"
+                        data-bs-target="#deleteModal"
+                      >
+                        <fa-icon [icon]="faTrash"></fa-icon>
+                      </button> -->
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- update employee Modal -->
+  <div
+    class="modal fade"
+    id="updatedEmployeeModal"
+    tabindex="-1"
+    aria-labelledby="updatedEmployeeModal"
+    aria-hidden="true"
+  >
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="update-employee-form">
+          <h4 class="mb-3">Update Employee</h4>
+          <form (ngSubmit)="updateOneEmployee(updatedEmployee)">
+            <div class="form-group">
+              <label for="employeeName">Name</label>
+              <input
+                type="text"
+                class="form-control"
+                id="employeeName"
+                [(ngModel)]="updatedEmployee.name"
+                name="employeeName"
+                required
+              />
+            </div>
+            <div class="form-group">
+              <label for="employeeEmail">Email</label>
+              <input
+                type="text"
+                class="form-control"
+                id="employeeEmail"
+                [(ngModel)]="updatedEmployee.email"
+                name="employeeEmail"
+                required
+              />
+            </div>
+            <div class="form-group">
+              <label for="employeeRole">Role</label>
+              <select
+                class="form-select mb-3"
+                aria-label="Default select example"
+                (change)="updateRole($event)"
+              >
+                <option
+                  value="admin"
+                  [selected]="updatedEmployee.role == 'admin'"
+                >
+                  admin
+                </option>
+                <option
+                  value="user"
+                  [selected]="updatedEmployee.role == 'user'"
+                >
+                  user
+                </option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <button type="submit" class="btn btn-primary form-control my-3">
+                update Employee
+              </button>
+              <button
+                type="button"
+                class="btn btn-outline-secondary form-control mt-1"
+                data-bs-dismiss="modal"
+                #closeModal
+              >
+                Close
+              </button>
+            </div>
+          </form>
+        </div>
       </div>
     </div>
   </div>

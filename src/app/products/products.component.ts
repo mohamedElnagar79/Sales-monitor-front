@@ -157,7 +157,6 @@ export class ProductsComponent {
   updateOneProduct(updatedProduct: Product): void {
     this.ProductsService.updateproduct(updatedProduct).subscribe(
       (product: Product) => {
-        console.log('current page === ', this.p);
         this.getproducts(this.p);
         this.updateForm = 'closed';
         this.closeModalRef.nativeElement.click();
