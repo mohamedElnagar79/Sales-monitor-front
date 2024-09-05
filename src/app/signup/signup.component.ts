@@ -16,17 +16,21 @@ export class SignupComponent {
   name: string = '';
   email: string = '';
   password: string = '';
-
+  role: string = 'user';
   errorMessage: string = '';
   constructor(
     private SignupService: SignupService,
     private toastr: ToastrService
   ) {}
+  updateRole(event: any) {
+    this.role = event.target?.value;
+  }
   onSubmit(signupForm: any): void {
     let user: User = {
       name: this.name,
       email: this.email,
       password: this.password,
+      role: this.role,
     };
     if (signupForm.valid) {
       this.SignupService.createUser(user).subscribe(
@@ -42,9 +46,10 @@ export class SignupComponent {
           this.name = '';
           this.email = '';
           this.password = '';
+          this.role = 'user';
         },
         (error) => {
-          // Handle login error
+          // Handle register error
           this.errorMessage = error.error.message;
           console.log('errrrrr', this.errorMessage);
         }
