@@ -46,6 +46,7 @@ export class ProfileService {
       const headers = new HttpHeaders({
         Authorization: `Bearer ${token}`,
       });
+      console.log('user obj ===> ', user);
       return this.http.put<any>(this.apiUrl + `update-user-profile`, user, {
         headers,
       });
