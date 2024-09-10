@@ -49,4 +49,12 @@ export class LoginComponent {
       console.log('errrrrrrrrrrrrrrr');
     }
   }
+
+  ngOnInit(): void {
+    if (localStorage.getItem('role') == 'admin') {
+      this.router.navigate(['/products']);
+    } else if (localStorage.getItem('role') == 'user') {
+      this.router.navigate(['/sales']);
+    }
+  }
 }
