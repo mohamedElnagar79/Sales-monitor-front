@@ -19,11 +19,13 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 
 import { Router, NavigationEnd } from '@angular/router';
+import { LoaderComponent } from '../../loader/loader.component';
+import { ToastrService } from '../toastr.service';
 
 @Component({
   selector: 'app-sidebar',
   standalone: true,
-  imports: [CommonModule, FontAwesomeModule],
+  imports: [CommonModule, FontAwesomeModule, LoaderComponent],
   templateUrl: './sidebar.component.html',
   styleUrl: './sidebar.component.scss',
 })
@@ -41,6 +43,7 @@ export class SidebarComponent {
   faCartArrowDown = faCartArrowDown;
   faStore = faStore;
   faMoneyCheckDollar = faMoneyCheckDollar;
+  isLoading: boolean = true;
 
   faChartLine = faChartLine;
   isAdmin: boolean = false;
@@ -50,7 +53,11 @@ export class SidebarComponent {
     role: '',
     avatar: '',
   };
-  constructor(private router: Router, private profileService: ProfileService) {}
+  constructor(
+    private router: Router,
+    private profileService: ProfileService,
+    private toastr: ToastrService
+  ) {}
   currentRoute: string = '/products';
   toggleSidebar() {
     this.isOpen = !this.isOpen;
@@ -71,17 +78,45 @@ export class SidebarComponent {
       (data: any) => {
         this.user = { ...data.data };
         this.isAdmin = data.data.role === 'admin' ? true : false;
+        this.isLoading = false;
       },
       (error) => {
-        console.log(error);
+        if (error.status === 0) {
+          this.router.navigate(['error']);
+        } else if (error.status === 401) {
+          setTimeout(() => {
+            this.toastr.error(`Unauthorized access. Please log in again.`),
+              '',
+              {
+                timeOut: 10000,
+                positionClass: 'toast-top-center',
+              };
+            console.log('errrorororo');
+          }, 0);
+          this.router.navigate(['login']);
+          localStorage.clear();
+        } else if (error.status === 500) {
+          setTimeout(() => {
+            this.toastr.error(
+              `Internal server error. Please contact the administrator.`
+            ),
+              '',
+              {
+                timeOut: 10000,
+                positionClass: 'toast-top-center',
+              };
+          }, 0);
+        } else {
+          this.toastr.error(
+            'An error occurred while fetching products. Please try again later.'
+          );
+        }
+        console.log('status ===> ', error.status);
       }
     );
   }
   ngOnInit(): void {
     this.getUserInfo();
-    console.log('localStorage ', localStorage);
-    console.log(' avatarararar', localStorage.getItem('avatar'));
-    console.log('this.user.role ', this.user);
     this.router.events.subscribe((event) => {
       if (event instanceof NavigationEnd) {
         this.currentRoute = event.url;
