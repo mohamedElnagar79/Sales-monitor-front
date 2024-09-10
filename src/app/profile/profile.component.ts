@@ -12,6 +12,7 @@ import { ProfileService } from './profile.service';
 import { FormsModule } from '@angular/forms';
 import { ToastrService } from '../shared/toastr.service';
 import { LoaderComponent } from '../loader/loader.component';
+import { Router } from '@angular/router';
 @Component({
   selector: 'app-profile',
   standalone: true,
@@ -64,7 +65,8 @@ export class ProfileComponent {
   };
   constructor(
     private profileService: ProfileService,
-    private toastr: ToastrService
+    private toastr: ToastrService,
+    private router: Router
   ) {}
 
   ngOnInit(): void {
@@ -78,6 +80,7 @@ export class ProfileComponent {
       selectedFile = event.target?.files[0];
     }
     if (selectedFile) {
+      this.isLoading = true;
       const reader = new FileReader();
       reader.onload = (e: any) => {
         this.imageUrl = e.target.result;
@@ -89,9 +92,8 @@ export class ProfileComponent {
           ''
         );
       };
-      console.log('Filename:', event.target.value.split('\\').pop());
-      console.log('Filename2 ', event.target.value.replace(/\.[^/]+$/, ''));
       reader.readAsDataURL(selectedFile);
+      this.isLoading = false;
     } else {
       console.log('there is no selected file');
     }
@@ -107,7 +109,7 @@ export class ProfileComponent {
   }
 
   updateOneEmployee(updatedEmployee: any): void {
-    console.log('updated employee ===>>> ', updatedEmployee);
+    this.isLoading = true;
     this.profileService.UpdateUserProfile(updatedEmployee).subscribe(
       (data: any) => {
         this.getAllUsers();
@@ -122,16 +124,39 @@ export class ProfileComponent {
               positionClass: 'toast-top-center',
             };
         }, 0);
+        this.isLoading = false;
       },
       (error) => {
-        setTimeout(() => {
-          this.toastr.error(error.error.message),
-            '',
-            {
-              timeOut: 5000,
-              positionClass: 'toast-top-center',
-            };
-        }, 0);
+        this.isLoading = false;
+        if (error.status === 0) {
+          this.router.navigate(['error']);
+        } else if (error.status === 401) {
+          setTimeout(() => {
+            this.toastr.error(`Unauthorized access. Please log in again.`),
+              '',
+              {
+                timeOut: 10000,
+                positionClass: 'toast-top-center',
+              };
+          }, 0);
+          this.router.navigate(['login']);
+          localStorage.clear();
+        } else if (error.status === 500) {
+          setTimeout(() => {
+            this.toastr.error(
+              `Internal server error. Please contact the administrator.`
+            ),
+              '',
+              {
+                timeOut: 10000,
+                positionClass: 'toast-top-center',
+              };
+          }, 0);
+        } else {
+          this.toastr.error(
+            'An error occurred while update employee. Please try again later.'
+          );
+        }
       }
     );
   }
@@ -188,6 +213,7 @@ export class ProfileComponent {
         // avatar is not changed
         delete updatedObj.avatar;
       }
+      this.isLoading = true;
       this.profileService.UpdateUserProfile(updatedObj).subscribe(
         (data: any) => {
           setTimeout(() => {
@@ -198,20 +224,41 @@ export class ProfileComponent {
                 positionClass: 'toast-top-center',
               };
           }, 0);
-          console.log('helooooooooooooooooo');
           this.user = { ...this.updatedUser };
           this.profileService.updateCurrentUser({ ...this.updatedUser });
+          this.isLoading = false;
         },
         (error) => {
-          console.log('errororroro ', error);
-          setTimeout(() => {
-            this.toastr.error(error.error.message),
-              '',
-              {
-                timeOut: 5000,
-                positionClass: 'toast-top-center',
-              };
-          }, 0);
+          this.isLoading = false;
+          if (error.status === 0) {
+            this.router.navigate(['error']);
+          } else if (error.status === 401) {
+            setTimeout(() => {
+              this.toastr.error(`Unauthorized access. Please log in again.`),
+                '',
+                {
+                  timeOut: 10000,
+                  positionClass: 'toast-top-center',
+                };
+            }, 0);
+            this.router.navigate(['login']);
+            localStorage.clear();
+          } else if (error.status === 500) {
+            setTimeout(() => {
+              this.toastr.error(
+                `Internal server error. Please contact the administrator.`
+              ),
+                '',
+                {
+                  timeOut: 10000,
+                  positionClass: 'toast-top-center',
+                };
+            }, 0);
+          } else {
+            this.toastr.error(
+              'An error occurred while update your profile. Please try again later.'
+            );
+          }
         }
       );
     } else {
@@ -241,19 +288,51 @@ export class ProfileComponent {
     );
   }
   getAllUsers(): void {
+    this.isLoading = true;
     this.profileService.getAllUsers().subscribe(
       (data: any) => {
         this.users = [...data.data];
         console.log('users  ', this.users);
+        this.isLoading = false;
       },
       (error) => {
-        console.log(error);
+        this.isLoading = false;
+        if (error.status === 0) {
+          this.router.navigate(['error']);
+        } else if (error.status === 401) {
+          setTimeout(() => {
+            this.toastr.error(`Unauthorized access. Please log in again.`),
+              '',
+              {
+                timeOut: 10000,
+                positionClass: 'toast-top-center',
+              };
+          }, 0);
+          this.router.navigate(['login']);
+          localStorage.clear();
+        } else if (error.status === 500) {
+          setTimeout(() => {
+            this.toastr.error(
+              `Internal server error. Please contact the administrator.`
+            ),
+              '',
+              {
+                timeOut: 10000,
+                positionClass: 'toast-top-center',
+              };
+          }, 0);
+        } else {
+          this.toastr.error(
+            'An error occurred while fetching users. Please try again later.'
+          );
+        }
       }
     );
   }
 
   updatePassword(passwordObj: any): void {
     if (passwordObj.newPassword && passwordObj.originalPassword) {
+      this.isLoading = true;
       this.profileService.UpdatePassword(passwordObj).subscribe(
         (data: any) => {
           setTimeout(() => {
@@ -264,16 +343,39 @@ export class ProfileComponent {
                 positionClass: 'toast-top-center',
               };
           }, 0);
+          this.isLoading = false;
         },
         (error) => {
-          setTimeout(() => {
-            this.toastr.error(error.error.message),
-              '',
-              {
-                timeOut: 5000,
-                positionClass: 'toast-top-center',
-              };
-          }, 0);
+          this.isLoading = false;
+          if (error.status === 0) {
+            this.router.navigate(['error']);
+          } else if (error.status === 401) {
+            setTimeout(() => {
+              this.toastr.error(`Unauthorized access. Please log in again.`),
+                '',
+                {
+                  timeOut: 10000,
+                  positionClass: 'toast-top-center',
+                };
+            }, 0);
+            this.router.navigate(['login']);
+            localStorage.clear();
+          } else if (error.status === 500) {
+            setTimeout(() => {
+              this.toastr.error(
+                `Internal server error. Please contact the administrator.`
+              ),
+                '',
+                {
+                  timeOut: 10000,
+                  positionClass: 'toast-top-center',
+                };
+            }, 0);
+          } else {
+            this.toastr.error(
+              'An error occurred while updating your password. Please try again later.'
+            );
+          }
         }
       );
       this.passwordObj = {
