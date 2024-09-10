@@ -122,7 +122,16 @@ export class ProductsComponent {
         if (error.status === 0) {
           this.router.navigate(['error']);
         } else if (error.status === 401) {
-          this.toastr.error('Unauthorized access. Please log in again.');
+          setTimeout(() => {
+            this.toastr.error(`Unauthorized access. Please log in again.`),
+              '',
+              {
+                timeOut: 10000,
+                positionClass: 'toast-top-center',
+              };
+          }, 0);
+          this.router.navigate(['login']);
+          localStorage.clear();
         } else if (error.status === 500) {
           setTimeout(() => {
             this.toastr.error(
