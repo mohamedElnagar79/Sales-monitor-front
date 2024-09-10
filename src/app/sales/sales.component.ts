@@ -162,7 +162,8 @@ export class SalesComponent {
     private salesService: SalesService,
     private toastr: ToastrService,
     private route: ActivatedRoute,
-    private navigateRoute: Router
+    private navigateRoute: Router,
+    private router: Router
   ) {}
   ngOnInit(): void {
     const id: any = this.route.snapshot.paramMap.get('id');
@@ -213,11 +214,27 @@ export class SalesComponent {
   }
   loadProducts(search?: string): void {
     this.isLoading = true;
-    this.salesService.getproductsList(search).subscribe((data: any) => {
-      this.products = data.data;
-      this.filteredProducts = data.data; // Initialize filteredProducts
-      this.isLoading = false;
-    });
+    this.salesService.getproductsList(search).subscribe(
+      (data: any) => {
+        this.products = data.data;
+        this.filteredProducts = data.data; // Initialize filteredProducts
+        this.isLoading = false;
+      },
+      (error) => {
+        if ((error.status = 401)) {
+          setTimeout(() => {
+            this.toastr.error(`Unauthorized access. Please log in again.`),
+              '',
+              {
+                timeOut: 10000,
+                positionClass: 'toast-top-center',
+              };
+          }, 0);
+          this.router.navigate(['login']);
+          localStorage.clear();
+        }
+      }
+    );
   }
   trackByFn(index: number, item: InvoiceItem) {
     return item; // Or a unique identifier for each item
@@ -280,13 +297,29 @@ export class SalesComponent {
   }
   getInvoicePayments(invoiceId: any): any {
     this.isLoading = true;
-    this.salesService.getInvoicePayments(invoiceId).subscribe((data: any) => {
-      this.invoicePayments = [...data.data.payments];
-      this.TotalOfOldPaid = data.data.totalOfOldPaid;
-      this.returnesMoney = data.data.returnesMoney;
-      this.isLoading = false;
-      this.calcRemaider();
-    });
+    this.salesService.getInvoicePayments(invoiceId).subscribe(
+      (data: any) => {
+        this.invoicePayments = [...data.data.payments];
+        this.TotalOfOldPaid = data.data.totalOfOldPaid;
+        this.returnesMoney = data.data.returnesMoney;
+        this.isLoading = false;
+        this.calcRemaider();
+      },
+      (error) => {
+        if ((error.status = 401)) {
+          setTimeout(() => {
+            this.toastr.error(`Unauthorized access. Please log in again.`),
+              '',
+              {
+                timeOut: 10000,
+                positionClass: 'toast-top-center',
+              };
+          }, 0);
+          this.router.navigate(['login']);
+          localStorage.clear();
+        }
+      }
+    );
   }
   filterClientsByName(event: any): void {
     console.log('event ', event);
