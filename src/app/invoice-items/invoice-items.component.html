@@ -1,4 +1,5 @@
 <div class="mt-5 px-5">
+  <app-loader *ngIf="isLoading"></app-loader>
   <div>
     <button class="back" (click)="backToOrders()">
       <fa-icon [icon]="faChevronLeft" class="me-1"></fa-icon>
