@@ -13,11 +13,13 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import { Router } from '@angular/router';
 import { DatePipe } from '@angular/common';
+import { ToastrService } from '../shared/toastr.service';
+import { LoaderComponent } from '../loader/loader.component';
 
 @Component({
   selector: 'app-orders',
   standalone: true,
-  imports: [CommonModule, FormsModule, FontAwesomeModule],
+  imports: [CommonModule, FormsModule, FontAwesomeModule, LoaderComponent],
   templateUrl: './orders.component.html',
   styleUrl: './orders.component.scss',
 })
@@ -38,11 +40,12 @@ export class OrdersComponent {
   maxQuantity: number = 1;
   showReturnedCost: boolean = false;
   returnedCost: number = 0;
-
+  isLoading: boolean = true;
   constructor(
     private ordersService: OrdersService,
     private router: Router,
-    private datePipe: DatePipe
+    private datePipe: DatePipe,
+    private toastr: ToastrService
   ) {}
 
   ngOnInit(): void {
@@ -94,9 +97,39 @@ export class OrdersComponent {
     this.ordersService.getInvoices(date, phone).subscribe(
       (data: any) => {
         this.invoices = data.data;
+        this.isLoading = false;
       },
       (error) => {
-        console.error('Error fetching invoices:', error);
+        this.isLoading = false;
+        if (error.status === 0) {
+          this.router.navigate(['error']);
+        } else if (error.status === 401) {
+          setTimeout(() => {
+            this.toastr.error(`Unauthorized access. Please log in again.`),
+              '',
+              {
+                timeOut: 10000,
+                positionClass: 'toast-top-center',
+              };
+          }, 0);
+          this.router.navigate(['login']);
+          localStorage.clear();
+        } else if (error.status === 500) {
+          setTimeout(() => {
+            this.toastr.error(
+              `Internal server error. Please contact the administrator.`
+            ),
+              '',
+              {
+                timeOut: 10000,
+                positionClass: 'toast-top-center',
+              };
+          }, 0);
+        } else {
+          this.toastr.error(
+            'An error occurred while fetching invoice items. Please try again later.'
+          );
+        }
       }
     );
   }
