@@ -11,17 +11,18 @@ import {
 import { ProfileService } from './profile.service';
 import { FormsModule } from '@angular/forms';
 import { ToastrService } from '../shared/toastr.service';
+import { LoaderComponent } from '../loader/loader.component';
 @Component({
   selector: 'app-profile',
   standalone: true,
-  imports: [FontAwesomeModule, CommonModule, FormsModule],
+  imports: [FontAwesomeModule, CommonModule, FormsModule, LoaderComponent],
   templateUrl: './profile.component.html',
   styleUrl: './profile.component.scss',
 })
 export class ProfileComponent {
   @ViewChild('changeAvatar') changeAvatarRef!: ElementRef;
   @ViewChild('closeModal') closeModalRef!: ElementRef;
-
+  isLoading: boolean = true;
   faUser = faUser;
   faGear = faGear;
   faPen = faPen;
