@@ -1,1 +1,9 @@
-<p>error works!</p>
+<div class="error-message">
+  <h2>
+    Unable to connect to the server. Please check your network connection or
+    restart the server!
+    <button class="btn btn-primary btn-sm ms-3" (click)="navigateBack()">
+      <fa-icon [icon]="faRefresh"></fa-icon>
+    </button>
+  </h2>
+</div>
