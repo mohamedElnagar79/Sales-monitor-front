@@ -15,6 +15,7 @@ import {
 import { ToastrService } from '../shared/toastr.service';
 import { ActivatedRoute } from '@angular/router';
 import { LoaderComponent } from '../loader/loader.component';
+import { error } from 'console';
 interface Product {
   id: number;
   name: string;
@@ -206,22 +207,17 @@ export class SalesComponent {
   }
   loadClients(name?: string, phone?: string): void {
     this.isLoading = true;
-    this.salesService.getClientsList(name, phone).subscribe((data: any) => {
-      this.isLoading = false;
-      this.clients = data.data;
-      // this.filteredClients = data.data;
-    });
-  }
-  loadProducts(search?: string): void {
-    this.isLoading = true;
-    this.salesService.getproductsList(search).subscribe(
+    this.salesService.getClientsList(name, phone).subscribe(
       (data: any) => {
-        this.products = data.data;
-        this.filteredProducts = data.data; // Initialize filteredProducts
         this.isLoading = false;
+        this.clients = data.data;
+        // this.filteredClients = data.data;
       },
       (error) => {
-        if ((error.status = 401)) {
+        this.isLoading = false;
+        if (error.status === 0) {
+          this.router.navigate(['error']);
+        } else if (error.status === 401) {
           setTimeout(() => {
             this.toastr.error(`Unauthorized access. Please log in again.`),
               '',
@@ -232,6 +228,63 @@ export class SalesComponent {
           }, 0);
           this.router.navigate(['login']);
           localStorage.clear();
+        } else if (error.status === 500) {
+          setTimeout(() => {
+            this.toastr.error(
+              `Internal server error. Please contact the administrator.`
+            ),
+              '',
+              {
+                timeOut: 10000,
+                positionClass: 'toast-top-center',
+              };
+          }, 0);
+        } else {
+          this.toastr.error(
+            'An error occurred while fetching clients. Please try again later.'
+          );
+        }
+      }
+    );
+  }
+  loadProducts(search?: string): void {
+    this.isLoading = true;
+    this.salesService.getproductsList(search).subscribe(
+      (data: any) => {
+        this.products = data.data;
+        this.filteredProducts = data.data; // Initialize filteredProducts
+        this.isLoading = false;
+      },
+      (error) => {
+        this.isLoading = false;
+        if (error.status === 0) {
+          this.router.navigate(['error']);
+        } else if (error.status === 401) {
+          setTimeout(() => {
+            this.toastr.error(`Unauthorized access. Please log in again.`),
+              '',
+              {
+                timeOut: 10000,
+                positionClass: 'toast-top-center',
+              };
+          }, 0);
+          this.router.navigate(['login']);
+          localStorage.clear();
+        } else if (error.status === 500) {
+          setTimeout(() => {
+            this.toastr.error(
+              `Internal server error. Please contact the administrator.`
+            ),
+              '',
+              {
+                timeOut: 10000,
+                positionClass: 'toast-top-center',
+              };
+          }, 0);
+        } else {
+          this.toastr.error(
+            'An error occurred while fetching products. Please try again later.'
+          );
         }
       }
     );
@@ -273,27 +326,61 @@ export class SalesComponent {
 
   getOneInvoiceById(invoiceId: number): void {
     this.isLoading = true;
-    this.salesService.getOneInvoiceById(invoiceId).subscribe((data: any) => {
-      this.clientObj.phone = data.data.phone;
-      this.clientObj.name = data.data.clientName;
-      this.clientObj.id = data.data.clientId;
-      this.invoiceId = data.data.id;
-      console.log('data   ', data.data);
-      this.originalRemainder = data.data.remainingBalance;
-      this.originalPaid = data.data.amountPaid;
-      this.invoice.remainder = data.data.remainingBalance;
-      this.invoiceItems = data.data.invoice_items;
-      this.invoiceItems = data.data.invoice_items;
-      // this.invoice.newInvoiceItems = data.data.invoice_items;
-      for (const item of data.data.invoice_items) {
-        this.invoice_items_data.push({ ...item });
+    this.salesService.getOneInvoiceById(invoiceId).subscribe(
+      (data: any) => {
+        this.clientObj.phone = data.data.phone;
+        this.clientObj.name = data.data.clientName;
+        this.clientObj.id = data.data.clientId;
+        this.invoiceId = data.data.id;
+        console.log('data   ', data.data);
+        this.originalRemainder = data.data.remainingBalance;
+        this.originalPaid = data.data.amountPaid;
+        this.invoice.remainder = data.data.remainingBalance;
+        this.invoiceItems = data.data.invoice_items;
+        this.invoiceItems = data.data.invoice_items;
+        // this.invoice.newInvoiceItems = data.data.invoice_items;
+        for (const item of data.data.invoice_items) {
+          this.invoice_items_data.push({ ...item });
+        }
+        // this.invoice.amountPaid = data.data.amountPaid;
+        this.invoice.clientId = data.data.clientId;
+        this.invoice.invoiceId = data.data.id;
+        this.calcTotal();
+        this.isLoading = false;
+      },
+      (error) => {
+        this.isLoading = false;
+        if (error.status === 0) {
+          this.router.navigate(['error']);
+        } else if (error.status === 401) {
+          setTimeout(() => {
+            this.toastr.error(`Unauthorized access. Please log in again.`),
+              '',
+              {
+                timeOut: 10000,
+                positionClass: 'toast-top-center',
+              };
+          }, 0);
+          this.router.navigate(['login']);
+          localStorage.clear();
+        } else if (error.status === 500) {
+          setTimeout(() => {
+            this.toastr.error(
+              `Internal server error. Please contact the administrator.`
+            ),
+              '',
+              {
+                timeOut: 10000,
+                positionClass: 'toast-top-center',
+              };
+          }, 0);
+        } else {
+          this.toastr.error(
+            'An error occurred while fetching invoice data. Please try again later.'
+          );
+        }
       }
-      // this.invoice.amountPaid = data.data.amountPaid;
-      this.invoice.clientId = data.data.clientId;
-      this.invoice.invoiceId = data.data.id;
-      this.calcTotal();
-      this.isLoading = false;
-    });
+    );
   }
   getInvoicePayments(invoiceId: any): any {
     this.isLoading = true;
@@ -306,7 +393,10 @@ export class SalesComponent {
         this.calcRemaider();
       },
       (error) => {
-        if ((error.status = 401)) {
+        this.isLoading = false;
+        if (error.status === 0) {
+          this.router.navigate(['error']);
+        } else if (error.status === 401) {
           setTimeout(() => {
             this.toastr.error(`Unauthorized access. Please log in again.`),
               '',
@@ -317,6 +407,21 @@ export class SalesComponent {
           }, 0);
           this.router.navigate(['login']);
           localStorage.clear();
+        } else if (error.status === 500) {
+          setTimeout(() => {
+            this.toastr.error(
+              `Internal server error. Please contact the administrator.`
+            ),
+              '',
+              {
+                timeOut: 10000,
+                positionClass: 'toast-top-center',
+              };
+          }, 0);
+        } else {
+          this.toastr.error(
+            'An error occurred while fetching invoice payments. Please try again later.'
+          );
         }
       }
     );
@@ -747,8 +852,35 @@ export class SalesComponent {
         },
         (error) => {
           this.isLoading = false;
-          alert(`${error.error.message}`);
-          console.error('Error updating invoice:', error);
+          if (error.status === 0) {
+            this.router.navigate(['error']);
+          } else if (error.status === 401) {
+            setTimeout(() => {
+              this.toastr.error(`Unauthorized access. Please log in again.`),
+                '',
+                {
+                  timeOut: 10000,
+                  positionClass: 'toast-top-center',
+                };
+            }, 0);
+            this.router.navigate(['login']);
+            localStorage.clear();
+          } else if (error.status === 500) {
+            setTimeout(() => {
+              this.toastr.error(
+                `Internal server error. Please contact the administrator.`
+              ),
+                '',
+                {
+                  timeOut: 10000,
+                  positionClass: 'toast-top-center',
+                };
+            }, 0);
+          } else {
+            this.toastr.error(
+              'An error occurred while updating invoice. Please try again later.'
+            );
+          }
         }
       );
     } else {
@@ -774,8 +906,35 @@ export class SalesComponent {
         },
         (error) => {
           this.isLoading = false;
-          alert(`${error.error.message}`);
-          console.error('Error creating invoice:', error);
+          if (error.status === 0) {
+            this.router.navigate(['error']);
+          } else if (error.status === 401) {
+            setTimeout(() => {
+              this.toastr.error(`Unauthorized access. Please log in again.`),
+                '',
+                {
+                  timeOut: 10000,
+                  positionClass: 'toast-top-center',
+                };
+            }, 0);
+            this.router.navigate(['login']);
+            localStorage.clear();
+          } else if (error.status === 500) {
+            setTimeout(() => {
+              this.toastr.error(
+                `Internal server error. Please contact the administrator.`
+              ),
+                '',
+                {
+                  timeOut: 10000,
+                  positionClass: 'toast-top-center',
+                };
+            }, 0);
+          } else {
+            this.toastr.error(
+              'An error occurred creating invoice. Please try again later.'
+            );
+          }
         }
       );
     }
