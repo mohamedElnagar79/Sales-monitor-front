@@ -33,7 +33,8 @@ export class AppComponent {
     return (
       !!token &&
       !this._router.url.includes('/login') &&
-      !this._router.url.includes('/signup')
+      !this._router.url.includes('/signup') &&
+      !this._router.url.includes('/error')
     ); // Check both token and URL
   }
 }
