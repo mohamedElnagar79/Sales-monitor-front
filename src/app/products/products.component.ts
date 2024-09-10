@@ -7,17 +7,27 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { FormsModule } from '@angular/forms';
 
 import { faPen, faTrash, faPlus } from '@fortawesome/free-solid-svg-icons';
+import { Router } from '@angular/router';
+import { ToastrService } from '../shared/toastr.service';
+import { LoaderComponent } from '../loader/loader.component';
 
 @Component({
   selector: 'app-products',
   standalone: true,
-  imports: [CommonModule, NgxPaginationModule, FormsModule, FontAwesomeModule],
+  imports: [
+    CommonModule,
+    NgxPaginationModule,
+    FormsModule,
+    FontAwesomeModule,
+    LoaderComponent,
+  ],
   templateUrl: './products.component.html',
   styleUrls: ['./products.component.scss'],
 })
 export class ProductsComponent {
   @ViewChild('closeModal') closeModalRef!: ElementRef;
   @ViewChild('deleteModal') deleteModalRef!: ElementRef;
+  isLoading: boolean = true;
   search: any = '';
   activeId: number = 0;
   faPen = faPen;
@@ -53,7 +63,11 @@ export class ProductsComponent {
     description: ' ',
   };
 
-  constructor(private ProductsService: ProductsService) {}
+  constructor(
+    private ProductsService: ProductsService,
+    private router: Router,
+    private toastr: ToastrService
+  ) {}
 
   ngOnInit(): void {
     this.getproducts(this.p);
@@ -89,6 +103,7 @@ export class ProductsComponent {
     out_of_stock?: boolean
   ): void {
     console.log('fun run');
+    this.isLoading = true;
     this.ProductsService.getAllProducts(
       pageNumber,
       searchTerm,
@@ -97,11 +112,34 @@ export class ProductsComponent {
       out_of_stock
     ).subscribe(
       (data: any) => {
+        this.isLoading = false;
         this.count = data.data.count;
         this.products = data.data.rows;
         this.startIndex = this.p > 1 ? (this.p - 1) * 8 + 1 : 1;
       },
       (error) => {
+        this.isLoading = false;
+        if (error.status === 0) {
+          this.router.navigate(['error']);
+        } else if (error.status === 401) {
+          this.toastr.error('Unauthorized access. Please log in again.');
+        } else if (error.status === 500) {
+          setTimeout(() => {
+            this.toastr.error(
+              `Internal server error. Please contact the administrator.`
+            ),
+              '',
+              {
+                timeOut: 10000,
+                positionClass: 'toast-top-center',
+              };
+          }, 0);
+        } else {
+          this.toastr.error(
+            'An error occurred while fetching products. Please try again later.'
+          );
+        }
+
         console.error('Error fetching products:', error);
       }
     );
@@ -129,6 +167,7 @@ export class ProductsComponent {
   }
 
   addProduct(): void {
+    this.isLoading = true;
     this.ProductsService.addProduct(this.newProduct).subscribe(
       (product: Product) => {
         this.products.push(product);
@@ -145,6 +184,7 @@ export class ProductsComponent {
           description: '',
         };
         this.showForm = false;
+        this.isLoading = false;
       },
       (error) => {
         console.error('Error adding product:', error.error.error.path);
@@ -155,13 +195,16 @@ export class ProductsComponent {
     );
   }
   updateOneProduct(updatedProduct: Product): void {
+    this.isLoading = true;
     this.ProductsService.updateproduct(updatedProduct).subscribe(
       (product: Product) => {
+        this.isLoading = false;
         this.getproducts(this.p);
         this.updateForm = 'closed';
         this.closeModalRef.nativeElement.click();
       },
       (error) => {
+        this.isLoading = false;
         console.error('Error adding product:', error.error.error.path);
         // if (error.error.error.path == 'name') {
         // }
@@ -174,12 +217,15 @@ export class ProductsComponent {
     console.log('active ===> ', this.activeId);
   }
   deleteProduct(): void {
+    this.isLoading = true;
     this.ProductsService.deleteOneProduct(this.activeId).subscribe(
       (product: Product) => {
+        this.isLoading = false;
         this.getproducts(this.p);
         this.deleteModalRef.nativeElement.click();
       },
       (error) => {
+        this.isLoading = false;
         // console.error('Error deleting product:', error.error.error.path);
         // if (error.error.error.path == 'name') {
         // }
