@@ -23,6 +23,7 @@ export class LoginComponent {
     if (loginForm.valid) {
       this.LoginService.login(this.email, this.password).subscribe(
         (response: any) => {
+          console.log('successss');
           // Handle successful login response
           const token = response.data.token;
           const role = response.data.user.role;
