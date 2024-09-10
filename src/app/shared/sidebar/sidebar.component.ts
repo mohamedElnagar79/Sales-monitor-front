@@ -108,7 +108,7 @@ export class SidebarComponent {
           }, 0);
         } else {
           this.toastr.error(
-            'An error occurred while fetching products. Please try again later.'
+            'An error occurred while fetching user data. Please try again later.'
           );
         }
         console.log('status ===> ', error.status);
