@@ -14,6 +14,7 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import { ToastrService } from '../shared/toastr.service';
 import { ActivatedRoute } from '@angular/router';
+import { LoaderComponent } from '../loader/loader.component';
 interface Product {
   id: number;
   name: string;
@@ -50,7 +51,7 @@ interface Client {
 @Component({
   selector: 'app-sales',
   standalone: true,
-  imports: [CommonModule, FormsModule, FontAwesomeModule],
+  imports: [CommonModule, FormsModule, FontAwesomeModule, LoaderComponent],
 
   templateUrl: './sales.component.html',
   styleUrl: './sales.component.scss',
@@ -67,6 +68,7 @@ export class SalesComponent {
   sellerName: any = localStorage.getItem('name')
     ? localStorage.getItem('name')
     : 'computer World';
+  isLoading: boolean = true;
   clientName: string = 'client';
   faPlus = faPlus;
   faClose = faClose;
@@ -202,15 +204,19 @@ export class SalesComponent {
     }
   }
   loadClients(name?: string, phone?: string): void {
+    this.isLoading = true;
     this.salesService.getClientsList(name, phone).subscribe((data: any) => {
+      this.isLoading = false;
       this.clients = data.data;
       // this.filteredClients = data.data;
     });
   }
   loadProducts(search?: string): void {
+    this.isLoading = true;
     this.salesService.getproductsList(search).subscribe((data: any) => {
       this.products = data.data;
       this.filteredProducts = data.data; // Initialize filteredProducts
+      this.isLoading = false;
     });
   }
   trackByFn(index: number, item: InvoiceItem) {
@@ -249,6 +255,7 @@ export class SalesComponent {
   }
 
   getOneInvoiceById(invoiceId: number): void {
+    this.isLoading = true;
     this.salesService.getOneInvoiceById(invoiceId).subscribe((data: any) => {
       this.clientObj.phone = data.data.phone;
       this.clientObj.name = data.data.clientName;
@@ -268,13 +275,16 @@ export class SalesComponent {
       this.invoice.clientId = data.data.clientId;
       this.invoice.invoiceId = data.data.id;
       this.calcTotal();
+      this.isLoading = false;
     });
   }
   getInvoicePayments(invoiceId: any): any {
+    this.isLoading = true;
     this.salesService.getInvoicePayments(invoiceId).subscribe((data: any) => {
       this.invoicePayments = [...data.data.payments];
       this.TotalOfOldPaid = data.data.totalOfOldPaid;
       this.returnesMoney = data.data.returnesMoney;
+      this.isLoading = false;
       this.calcRemaider();
     });
   }
@@ -674,9 +684,11 @@ export class SalesComponent {
   }
   SaveInvoice(print?: boolean): void {
     if (this.isUpdate) {
+      this.isLoading = true;
       this.salesService.updateInvoice(this.updatedInvoice).subscribe(
         (data: any) => {
           // this.resetForm();
+
           setTimeout(() => {
             this.toastr.success('Invoice Updated successfully!'),
               '',
@@ -698,8 +710,10 @@ export class SalesComponent {
             }, 0);
           }
           this.navigateRoute.navigate(['orders']);
+          this.isLoading = false;
         },
         (error) => {
+          this.isLoading = false;
           alert(`${error.error.message}`);
           console.error('Error updating invoice:', error);
         }
@@ -723,8 +737,10 @@ export class SalesComponent {
             // this.printReview();
           }
           // this.startIndex = this.p > 1 ? (this.p - 1) * 8 + 1 : 1;
+          this.isLoading = false;
         },
         (error) => {
+          this.isLoading = false;
           alert(`${error.error.message}`);
           console.error('Error creating invoice:', error);
         }
