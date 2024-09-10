@@ -127,7 +127,7 @@ export class OrdersComponent {
           }, 0);
         } else {
           this.toastr.error(
-            'An error occurred while fetching invoice items. Please try again later.'
+            'An error occurred while fetching orders. Please try again later.'
           );
         }
       }
