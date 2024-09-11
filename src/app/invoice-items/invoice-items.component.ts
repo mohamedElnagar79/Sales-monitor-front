@@ -12,10 +12,11 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import { InvoiceItemsService } from './invoice-items.service';
 import { ToastrService } from '../shared/toastr.service';
+import { LoaderComponent } from '../loader/loader.component';
 @Component({
   selector: 'app-invoice-items',
   standalone: true,
-  imports: [CommonModule, FormsModule, FontAwesomeModule],
+  imports: [CommonModule, FormsModule, FontAwesomeModule, LoaderComponent],
   templateUrl: './invoice-items.component.html',
   styleUrl: './invoice-items.component.scss',
 })
@@ -27,6 +28,7 @@ export class InvoiceItemsComponent {
   faPlus = faPlus;
   faChevronLeft = faChevronLeft;
   activeId: number = 0;
+  isLoading: boolean = true;
 
   constructor(
     private InvoiceItemsService: InvoiceItemsService,
@@ -37,7 +39,6 @@ export class InvoiceItemsComponent {
 
   ngOnInit(): void {
     const id: any = this.route.snapshot.paramMap.get('id');
-    console.log(id);
     this.getInvoiceItems(id);
   }
   getInvoiceItems(id: number): void {
@@ -45,9 +46,39 @@ export class InvoiceItemsComponent {
       (data: any) => {
         this.invoiceItems = data.data;
         console.log('data  ', data);
+        this.isLoading = false;
       },
       (error) => {
-        console.error('Error fetching invoices:', error);
+        this.isLoading = false;
+        if (error.status === 0) {
+          this.router.navigate(['error']);
+        } else if (error.status === 401) {
+          setTimeout(() => {
+            this.toastr.error(`Unauthorized access. Please log in again.`),
+              '',
+              {
+                timeOut: 10000,
+                positionClass: 'toast-top-center',
+              };
+          }, 0);
+          this.router.navigate(['login']);
+          localStorage.clear();
+        } else if (error.status === 500) {
+          setTimeout(() => {
+            this.toastr.error(
+              `Internal server error. Please contact the administrator.`
+            ),
+              '',
+              {
+                timeOut: 10000,
+                positionClass: 'toast-top-center',
+              };
+          }, 0);
+        } else {
+          this.toastr.error(
+            'An error occurred while fetching invoice items. Please try again later.'
+          );
+        }
       }
     );
   }
@@ -56,16 +87,14 @@ export class InvoiceItemsComponent {
     this.router.navigate([path]);
   }
   navigateTo(id: any): void {
-    console.log('hhhhhh=====');
     const path: any = `sales/${id}`;
     this.router.navigate([path]);
   }
   ActivateInvoiceItemToDelete(id: number): void {
     this.activeId = id;
-    console.log('active ===> ', this.activeId);
   }
   deleteInvoiceItem(): void {
-    console.log('this.activeId ', this.activeId);
+    this.isLoading = true;
     this.InvoiceItemsService.deleteOneInvoiceItem(this.activeId).subscribe(
       (data: any) => {
         setTimeout(() => {
@@ -76,11 +105,41 @@ export class InvoiceItemsComponent {
               positionClass: 'toast-top-center',
             };
         }, 0);
+        this.isLoading = false;
         this.deleteModalRef.nativeElement.click();
         this.router.navigate(['orders']);
       },
       (error) => {
-        alert(error.error.message);
+        this.isLoading = false;
+        if (error.status === 0) {
+          this.router.navigate(['error']);
+        } else if (error.status === 401) {
+          setTimeout(() => {
+            this.toastr.error(`Unauthorized access. Please log in again.`),
+              '',
+              {
+                timeOut: 10000,
+                positionClass: 'toast-top-center',
+              };
+          }, 0);
+          this.router.navigate(['login']);
+          localStorage.clear();
+        } else if (error.status === 500) {
+          setTimeout(() => {
+            this.toastr.error(
+              `Internal server error. Please contact the administrator.`
+            ),
+              '',
+              {
+                timeOut: 10000,
+                positionClass: 'toast-top-center',
+              };
+          }, 0);
+        } else {
+          this.toastr.error(
+            'An error occurred while delete invoice item. Please try again later.'
+          );
+        }
       }
     );
   }

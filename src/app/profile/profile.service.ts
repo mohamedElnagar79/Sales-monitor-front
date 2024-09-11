@@ -46,6 +46,7 @@ export class ProfileService {
       const headers = new HttpHeaders({
         Authorization: `Bearer ${token}`,
       });
+      console.log('user obj ===> ', user);
       return this.http.put<any>(this.apiUrl + `update-user-profile`, user, {
         headers,
       });
@@ -53,7 +54,19 @@ export class ProfileService {
       throw new Error('Authorization token not found');
     }
   }
-
+  getAllUsers(): Observable<any[]> {
+    const token = localStorage.getItem('token');
+    if (token) {
+      const headers = new HttpHeaders({
+        Authorization: `Bearer ${token}`,
+      });
+      return this.http.get<any>(this.apiUrl + `get-all-users`, {
+        headers,
+      });
+    } else {
+      throw new Error('Authorization token not found');
+    }
+  }
   // declare and initialize the quote property
   // which will be a BehaviorSubject
   user = new BehaviorSubject({

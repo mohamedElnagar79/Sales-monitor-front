@@ -1,5 +1,9 @@
 .nav,
 .tab-content {
+  h5 {
+    text-decoration: underline;
+    text-transform: capitalize;
+  }
   border: 1px solid #dee2e6;
   padding: 15px;
 
@@ -63,5 +67,22 @@
     button {
       width: 20%;
     }
+  }
+}
+.no-employee {
+  margin: 4rem auto;
+  text-align: center;
+}
+.update-employee-form {
+  padding: 20px;
+  width: 95%;
+  margin: 5px auto;
+  // margin-bottom: 20px;
+  border-radius: 5px;
+  input {
+    margin-bottom: 1rem;
+  }
+  label {
+    margin-bottom: 0.2rem;
   }
 }
