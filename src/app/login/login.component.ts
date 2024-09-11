@@ -23,6 +23,7 @@ export class LoginComponent {
     if (loginForm.valid) {
       this.LoginService.login(this.email, this.password).subscribe(
         (response: any) => {
+          console.log('successss');
           // Handle successful login response
           const token = response.data.token;
           const role = response.data.user.role;
@@ -46,6 +47,14 @@ export class LoginComponent {
       );
     } else {
       console.log('errrrrrrrrrrrrrrr');
+    }
+  }
+
+  ngOnInit(): void {
+    if (localStorage.getItem('role') == 'admin') {
+      this.router.navigate(['/products']);
+    } else if (localStorage.getItem('role') == 'user') {
+      this.router.navigate(['/sales']);
     }
   }
 }

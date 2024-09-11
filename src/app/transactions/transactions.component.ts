@@ -6,10 +6,19 @@ import { FormsModule } from '@angular/forms';
 import { DatePipe } from '@angular/common';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { faPhone } from '@fortawesome/free-solid-svg-icons';
+import { LoaderComponent } from '../loader/loader.component';
+import { ToastrService } from '../shared/toastr.service';
+import { Router } from '@angular/router';
 @Component({
   selector: 'app-transactions',
   standalone: true,
-  imports: [CommonModule, NgxPaginationModule, FormsModule, FontAwesomeModule],
+  imports: [
+    CommonModule,
+    NgxPaginationModule,
+    FormsModule,
+    FontAwesomeModule,
+    LoaderComponent,
+  ],
   templateUrl: './transactions.component.html',
   styleUrl: './transactions.component.scss',
 })
@@ -25,10 +34,13 @@ export class TransactionsComponent {
   totalDailyExpense: number = 0;
   totalExistMoney: number = 0;
   search: string = ' ';
+  isLoading: boolean = true;
 
   constructor(
     private transactionsService: TransactionsService,
-    private datePipe: DatePipe
+    private datePipe: DatePipe,
+    private toastr: ToastrService,
+    private router: Router
   ) {}
 
   ngOnInit(): void {
@@ -45,15 +57,43 @@ export class TransactionsComponent {
       (data: any) => {
         this.sales = data.data.invoices;
         this.dailyExpense = data.data.dailyExpense;
-        console.log('sales ', this.sales);
         this.totalAmountPaid = data.data.totalAmountPaid;
         this.totalDailyExpense = data.data.totalDailyExpense;
         this.totalExistMoney = data.data.totalExistMoney;
         this.invoicePayments = data.data.oldPayments;
-        console.log('done    done  done', data.data.oldPayments);
+        this.isLoading = false;
       },
       (error) => {
-        console.error('Error fetching daily sales total :', error);
+        this.isLoading = false;
+        if (error.status === 0) {
+          this.router.navigate(['error']);
+        } else if (error.status === 401) {
+          setTimeout(() => {
+            this.toastr.error(`Unauthorized access. Please log in again.`),
+              '',
+              {
+                timeOut: 10000,
+                positionClass: 'toast-top-center',
+              };
+          }, 0);
+          this.router.navigate(['login']);
+          localStorage.clear();
+        } else if (error.status === 500) {
+          setTimeout(() => {
+            this.toastr.error(
+              `Internal server error. Please contact the administrator.`
+            ),
+              '',
+              {
+                timeOut: 10000,
+                positionClass: 'toast-top-center',
+              };
+          }, 0);
+        } else {
+          this.toastr.error(
+            'An error occurred while fetching daily sales . Please try again later.'
+          );
+        }
       }
     );
   }

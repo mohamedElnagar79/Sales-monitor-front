@@ -14,6 +14,7 @@ import { TransactionsComponent } from './transactions/transactions.component';
 import { OutgoingComponent } from './outgoing/outgoing.component';
 import { InvoiceItemsComponent } from './invoice-items/invoice-items.component';
 import { ProfileComponent } from './profile/profile.component';
+import { ErrorComponent } from './error/error.component';
 
 export const routes: Routes = [
   {
@@ -35,6 +36,10 @@ export const routes: Routes = [
     path: 'profile',
     canActivate: [TokenGuard],
     component: ProfileComponent,
+  },
+  {
+    path: 'error',
+    component: ErrorComponent,
   },
   {
     path: 'sales',

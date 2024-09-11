@@ -1,9 +1,21 @@
 <div class="signup-container mt-5 px-5">
+  <app-loader *ngIf="isLoading"></app-loader>
   <div>
     <h3>Add New User</h3>
   </div>
   <div class="signup-box">
     <form #sellForm="ngForm" (ngSubmit)="onSubmit(sellForm)">
+      <div class="form-group">
+        <label for="employeeRole">Role</label>
+        <select
+          class="form-select mb-3"
+          aria-label="Default select example"
+          (change)="updateRole($event)"
+        >
+          <option value="admin" [selected]="role == 'admin'">admin</option>
+          <option value="user" [selected]="role == 'user'">user</option>
+        </select>
+      </div>
       <div class="form-group">
         <label for="name">Name</label>
         <input
@@ -49,6 +61,7 @@
           #passwordRef="ngModel"
         />
       </div>
+
       <button type="submit" class="btn btn-primary mt-4">Confirm</button>
       <div class="errorMessage" *ngIf="errorMessage">
         {{ errorMessage }}

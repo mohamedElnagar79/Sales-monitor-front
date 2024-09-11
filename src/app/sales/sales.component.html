@@ -1,4 +1,6 @@
 <div class="mt-5 px-5">
+  <app-loader *ngIf="isLoading"></app-loader>
+
   <h2 class="page-title">{{ titleMessage }}</h2>
   <!-- (ngSubmit)="onSubmit()" -->
   <form

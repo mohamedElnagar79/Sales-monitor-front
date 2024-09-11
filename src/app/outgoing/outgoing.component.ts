@@ -6,10 +6,19 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { FormsModule } from '@angular/forms';
 import { OutgoingService } from './outgoing.service';
 import { Outgoing } from '../models/outgoing';
+import { LoaderComponent } from '../loader/loader.component';
+import { ToastrService } from '../shared/toastr.service';
+import { Router } from '@angular/router';
 @Component({
   selector: 'app-outgoing',
   standalone: true,
-  imports: [CommonModule, NgxPaginationModule, FormsModule, FontAwesomeModule],
+  imports: [
+    CommonModule,
+    NgxPaginationModule,
+    FormsModule,
+    FontAwesomeModule,
+    LoaderComponent,
+  ],
   templateUrl: './outgoing.component.html',
   styleUrl: './outgoing.component.scss',
 })
@@ -24,6 +33,7 @@ export class OutgoingComponent {
     amount: 0,
     reasone: 'No reasone',
   };
+  isLoading: boolean = true;
   startIndex: number = 1;
   p: number = 1;
   count: number = 1;
@@ -38,7 +48,11 @@ export class OutgoingComponent {
     description: ' ',
     amount: 0,
   };
-  constructor(private outgoingService: OutgoingService) {}
+  constructor(
+    private outgoingService: OutgoingService,
+    private toastr: ToastrService,
+    private router: Router
+  ) {}
   ngOnInit(): void {
     this.getOutgoing(this.p);
   }
@@ -46,12 +60,42 @@ export class OutgoingComponent {
     this.outgoingService.getOutgoing(p, searchTerm).subscribe(
       (data: any) => {
         // console.log('data ===>', data.data.sales.rows);
+        this.isLoading = false;
         this.outgoing = data.data.rows;
         this.count = data.data.count;
         this.startIndex = this.p > 1 ? (this.p - 1) * 8 + 1 : 1;
       },
       (error) => {
-        console.error('Error fetching outgoing', error);
+        this.isLoading = false;
+        if (error.status === 0) {
+          this.router.navigate(['error']);
+        } else if (error.status === 401) {
+          setTimeout(() => {
+            this.toastr.error(`Unauthorized access. Please log in again.`),
+              '',
+              {
+                timeOut: 10000,
+                positionClass: 'toast-top-center',
+              };
+          }, 0);
+          this.router.navigate(['login']);
+          localStorage.clear();
+        } else if (error.status === 500) {
+          setTimeout(() => {
+            this.toastr.error(
+              `Internal server error. Please contact the administrator.`
+            ),
+              '',
+              {
+                timeOut: 10000,
+                positionClass: 'toast-top-center',
+              };
+          }, 0);
+        } else {
+          this.toastr.error(
+            'An error occurred while fetching outgoing items. Please try again later.'
+          );
+        }
       }
     );
   }
@@ -69,10 +113,36 @@ export class OutgoingComponent {
         this.closeModalRef.nativeElement.click();
       },
       (error) => {
-        console.error('Error adding product:', error.error.error.path);
-        // if (error.error.error.path == 'name') {
-        // }
-        alert(error.error.message);
+        this.isLoading = false;
+        if (error.status === 0) {
+          this.router.navigate(['error']);
+        } else if (error.status === 401) {
+          setTimeout(() => {
+            this.toastr.error(`Unauthorized access. Please log in again.`),
+              '',
+              {
+                timeOut: 10000,
+                positionClass: 'toast-top-center',
+              };
+          }, 0);
+          this.router.navigate(['login']);
+          localStorage.clear();
+        } else if (error.status === 500) {
+          setTimeout(() => {
+            this.toastr.error(
+              `Internal server error. Please contact the administrator.`
+            ),
+              '',
+              {
+                timeOut: 10000,
+                positionClass: 'toast-top-center',
+              };
+          }, 0);
+        } else {
+          this.toastr.error(
+            'An error occurred while updating outgoing item. Please try again later.'
+          );
+        }
       }
     );
   }
@@ -87,7 +157,36 @@ export class OutgoingComponent {
         this.closeAddModalRef.nativeElement.click();
       },
       (error) => {
-        console.error('Error while adding outgoing', error);
+        this.isLoading = false;
+        if (error.status === 0) {
+          this.router.navigate(['error']);
+        } else if (error.status === 401) {
+          setTimeout(() => {
+            this.toastr.error(`Unauthorized access. Please log in again.`),
+              '',
+              {
+                timeOut: 10000,
+                positionClass: 'toast-top-center',
+              };
+          }, 0);
+          this.router.navigate(['login']);
+          localStorage.clear();
+        } else if (error.status === 500) {
+          setTimeout(() => {
+            this.toastr.error(
+              `Internal server error. Please contact the administrator.`
+            ),
+              '',
+              {
+                timeOut: 10000,
+                positionClass: 'toast-top-center',
+              };
+          }, 0);
+        } else {
+          this.toastr.error(
+            'An error occurred while adding outgoing item. Please try again later.'
+          );
+        }
       }
     );
   }
@@ -98,7 +197,36 @@ export class OutgoingComponent {
         this.deleteModalRef.nativeElement.click();
       },
       (error) => {
-        alert(error.error.message);
+        this.isLoading = false;
+        if (error.status === 0) {
+          this.router.navigate(['error']);
+        } else if (error.status === 401) {
+          setTimeout(() => {
+            this.toastr.error(`Unauthorized access. Please log in again.`),
+              '',
+              {
+                timeOut: 10000,
+                positionClass: 'toast-top-center',
+              };
+          }, 0);
+          this.router.navigate(['login']);
+          localStorage.clear();
+        } else if (error.status === 500) {
+          setTimeout(() => {
+            this.toastr.error(
+              `Internal server error. Please contact the administrator.`
+            ),
+              '',
+              {
+                timeOut: 10000,
+                positionClass: 'toast-top-center',
+              };
+          }, 0);
+        } else {
+          this.toastr.error(
+            'An error occurred while delete  outgoing item. Please try again later.'
+          );
+        }
       }
     );
   }

@@ -1,0 +1,14 @@
+.error-message {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  margin: 0 auto;
+  height: 100vh; /* Adjust height as needed */
+  color: red;
+  width: 75%;
+  font-weight: bolder;
+  h2 {
+    line-height: 3rem;
+  }
+}
