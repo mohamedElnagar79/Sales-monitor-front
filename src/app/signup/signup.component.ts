@@ -6,6 +6,7 @@ import { CommonModule } from '@angular/common'; // Import CommonModule
 import { ToastrService } from '../shared/toastr.service';
 import { Router } from '@angular/router';
 import { LoaderComponent } from '../loader/loader.component';
+import { CookieService } from 'ngx-cookie-service';
 
 @Component({
   selector: 'app-signup',
@@ -24,7 +25,8 @@ export class SignupComponent {
   constructor(
     private SignupService: SignupService,
     private toastr: ToastrService,
-    private router: Router
+    private router: Router,
+    private cookieService: CookieService
   ) {}
   updateRole(event: any) {
     this.role = event.target?.value;
@@ -68,7 +70,7 @@ export class SignupComponent {
                 };
             }, 0);
             this.router.navigate(['login']);
-            localStorage.clear();
+            this.cookieService.deleteAll();
           } else if (error.status === 500) {
             setTimeout(() => {
               this.toastr.error(

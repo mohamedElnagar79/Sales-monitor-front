@@ -13,6 +13,7 @@ import {
 import { InvoiceItemsService } from './invoice-items.service';
 import { ToastrService } from '../shared/toastr.service';
 import { LoaderComponent } from '../loader/loader.component';
+import { CookieService } from 'ngx-cookie-service';
 @Component({
   selector: 'app-invoice-items',
   standalone: true,
@@ -34,7 +35,8 @@ export class InvoiceItemsComponent {
     private InvoiceItemsService: InvoiceItemsService,
     private route: ActivatedRoute,
     private router: Router,
-    private toastr: ToastrService
+    private toastr: ToastrService,
+    private cookieService: CookieService
   ) {}
 
   ngOnInit(): void {
@@ -62,7 +64,7 @@ export class InvoiceItemsComponent {
               };
           }, 0);
           this.router.navigate(['login']);
-          localStorage.clear();
+          this.cookieService.deleteAll();
         } else if (error.status === 500) {
           setTimeout(() => {
             this.toastr.error(
@@ -123,7 +125,7 @@ export class InvoiceItemsComponent {
               };
           }, 0);
           this.router.navigate(['login']);
-          localStorage.clear();
+          this.cookieService.deleteAll();
         } else if (error.status === 500) {
           setTimeout(() => {
             this.toastr.error(

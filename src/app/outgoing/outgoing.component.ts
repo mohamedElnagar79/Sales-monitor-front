@@ -9,6 +9,7 @@ import { Outgoing } from '../models/outgoing';
 import { LoaderComponent } from '../loader/loader.component';
 import { ToastrService } from '../shared/toastr.service';
 import { Router } from '@angular/router';
+import { CookieService } from 'ngx-cookie-service';
 @Component({
   selector: 'app-outgoing',
   standalone: true,
@@ -51,7 +52,8 @@ export class OutgoingComponent {
   constructor(
     private outgoingService: OutgoingService,
     private toastr: ToastrService,
-    private router: Router
+    private router: Router,
+    private cookieService: CookieService
   ) {}
   ngOnInit(): void {
     this.getOutgoing(this.p);
@@ -79,7 +81,7 @@ export class OutgoingComponent {
               };
           }, 0);
           this.router.navigate(['login']);
-          localStorage.clear();
+          this.cookieService.deleteAll();
         } else if (error.status === 500) {
           setTimeout(() => {
             this.toastr.error(
@@ -126,7 +128,7 @@ export class OutgoingComponent {
               };
           }, 0);
           this.router.navigate(['login']);
-          localStorage.clear();
+          this.cookieService.deleteAll();
         } else if (error.status === 500) {
           setTimeout(() => {
             this.toastr.error(
@@ -170,7 +172,7 @@ export class OutgoingComponent {
               };
           }, 0);
           this.router.navigate(['login']);
-          localStorage.clear();
+          this.cookieService.deleteAll();
         } else if (error.status === 500) {
           setTimeout(() => {
             this.toastr.error(
@@ -210,7 +212,7 @@ export class OutgoingComponent {
               };
           }, 0);
           this.router.navigate(['login']);
-          localStorage.clear();
+          this.cookieService.deleteAll();
         } else if (error.status === 500) {
           setTimeout(() => {
             this.toastr.error(

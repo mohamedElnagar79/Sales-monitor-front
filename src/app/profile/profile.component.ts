@@ -13,6 +13,7 @@ import { FormsModule } from '@angular/forms';
 import { ToastrService } from '../shared/toastr.service';
 import { LoaderComponent } from '../loader/loader.component';
 import { Router } from '@angular/router';
+import { CookieService } from 'ngx-cookie-service';
 @Component({
   selector: 'app-profile',
   standalone: true,
@@ -66,7 +67,8 @@ export class ProfileComponent {
   constructor(
     private profileService: ProfileService,
     private toastr: ToastrService,
-    private router: Router
+    private router: Router,
+    private cookieService: CookieService
   ) {}
 
   ngOnInit(): void {
@@ -140,7 +142,7 @@ export class ProfileComponent {
               };
           }, 0);
           this.router.navigate(['login']);
-          localStorage.clear();
+          this.cookieService.deleteAll();
         } else if (error.status === 500) {
           setTimeout(() => {
             this.toastr.error(
@@ -242,7 +244,7 @@ export class ProfileComponent {
                 };
             }, 0);
             this.router.navigate(['login']);
-            localStorage.clear();
+            this.cookieService.deleteAll();
           } else if (error.status === 500) {
             setTimeout(() => {
               this.toastr.error(
@@ -276,6 +278,7 @@ export class ProfileComponent {
   // function to update the quote in the service
 
   getUserInfo(): void {
+    this.isLoading = true;
     this.profileService.getUserInfo().subscribe(
       (data: any) => {
         this.user = { ...data.data };
@@ -283,7 +286,36 @@ export class ProfileComponent {
         this.isAdmin = data.data.role === 'admin' ? true : false;
       },
       (error) => {
-        console.log('error   > > ', error.status);
+        this.isLoading = false;
+        if (error.status === 0) {
+          this.router.navigate(['error']);
+        } else if (error.status === 401) {
+          setTimeout(() => {
+            this.toastr.error(`Unauthorized access. Please log in again.`),
+              '',
+              {
+                timeOut: 10000,
+                positionClass: 'toast-top-center',
+              };
+          }, 0);
+          this.router.navigate(['login']);
+          this.cookieService.deleteAll();
+        } else if (error.status === 500) {
+          setTimeout(() => {
+            this.toastr.error(
+              `Internal server error. Please contact the administrator.`
+            ),
+              '',
+              {
+                timeOut: 10000,
+                positionClass: 'toast-top-center',
+              };
+          }, 0);
+        } else {
+          this.toastr.error(
+            'An error occurred while fetching user data. Please try again later.'
+          );
+        }
       }
     );
   }
@@ -309,7 +341,7 @@ export class ProfileComponent {
               };
           }, 0);
           this.router.navigate(['login']);
-          localStorage.clear();
+          this.cookieService.deleteAll();
         } else if (error.status === 500) {
           setTimeout(() => {
             this.toastr.error(
@@ -359,7 +391,7 @@ export class ProfileComponent {
                 };
             }, 0);
             this.router.navigate(['login']);
-            localStorage.clear();
+            this.cookieService.deleteAll();
           } else if (error.status === 500) {
             setTimeout(() => {
               this.toastr.error(

@@ -3,16 +3,17 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from '../../environments/environment';
+import { CookieService } from 'ngx-cookie-service';
 @Injectable({
   providedIn: 'root',
 })
 export class TransactionsService {
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private cookieService: CookieService) {}
 
   private apiUrl = environment.apiUrl;
 
   calcDailySales(date: string, searchTerm?: string): Observable<any[]> {
-    const token = localStorage.getItem('token');
+    const token = this.cookieService.get('token');
     let params = new HttpParams().set('date', date);
     if (searchTerm) {
       params = params.set('search', searchTerm);
