@@ -5,6 +5,7 @@ import { NavbarComponent } from './shared/navbar/navbar.component';
 import { SidebarComponent } from './shared/sidebar/sidebar.component';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
+import { CookieService } from 'ngx-cookie-service';
 
 @Component({
   selector: 'app-root',
@@ -20,7 +21,7 @@ import { Router } from '@angular/router';
   ],
 })
 export class AppComponent {
-  constructor(private _router: Router) {}
+  constructor(private _router: Router, private cookieService: CookieService) {}
   title = 'sales-monitor-front';
   isLoggedInValue: boolean = false; // Initial value assuming user is not logged in
 
@@ -29,7 +30,7 @@ export class AppComponent {
   }
 
   isLoggedIn(): boolean {
-    const token = localStorage.getItem('token');
+    const token = this.cookieService.get('token');
     return (
       !!token &&
       !this._router.url.includes('/login') &&

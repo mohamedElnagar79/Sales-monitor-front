@@ -2,16 +2,17 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from '../../environments/environment';
+import { CookieService } from 'ngx-cookie-service';
 @Injectable({
   providedIn: 'root',
 })
 export class SalesService {
   private apiUrl = environment.apiUrl;
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private cookieService: CookieService) {}
 
   sellProduct(invoice: {}): Observable<any> {
-    const token = localStorage.getItem('token');
+    const token = this.cookieService.get('token');
     if (token) {
       const headers = new HttpHeaders({
         Authorization: `Bearer ${token}`,
@@ -24,7 +25,7 @@ export class SalesService {
     }
   }
   getLastSales(p: number): Observable<any[]> {
-    const token = localStorage.getItem('token');
+    const token = this.cookieService.get('token');
     let params = new HttpParams().set('page', p);
     if (token) {
       const headers = new HttpHeaders({
@@ -40,7 +41,7 @@ export class SalesService {
   }
 
   getproductsList(searchTerm?: string): Observable<any[]> {
-    const token = localStorage.getItem('token');
+    const token = this.cookieService.get('token');
     let params;
     if (searchTerm) {
       params = new HttpParams().set('search', searchTerm);
@@ -59,7 +60,7 @@ export class SalesService {
   }
 
   getClientsList(phone?: string, name?: string): Observable<any[]> {
-    const token = localStorage.getItem('token');
+    const token = this.cookieService.get('token');
     let params;
     if (phone) {
       params = new HttpParams().set('phone', phone);
@@ -81,7 +82,7 @@ export class SalesService {
   }
 
   getOneInvoiceById(invoiceId: number): Observable<any[]> {
-    const token = localStorage.getItem('token');
+    const token = this.cookieService.get('token');
     if (token) {
       const headers = new HttpHeaders({
         Authorization: `Bearer ${token}`,
@@ -94,7 +95,7 @@ export class SalesService {
     }
   }
   getInvoicePayments(invoiceId: number): Observable<any[]> {
-    const token = localStorage.getItem('token');
+    const token = this.cookieService.get('token');
     if (token) {
       const headers = new HttpHeaders({
         Authorization: `Bearer ${token}`,
@@ -107,7 +108,7 @@ export class SalesService {
     }
   }
   updateInvoice(invoice: any): Observable<any> {
-    const token = localStorage.getItem('token');
+    const token = this.cookieService.get('token');
     if (token) {
       const headers = new HttpHeaders({
         Authorization: `Bearer ${token}`,

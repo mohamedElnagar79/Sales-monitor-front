@@ -39,6 +39,7 @@ export class LoginComponent {
           this.cookieService.set('token', token);
           this.cookieService.set('role', role);
           this.cookieService.set('avatar', avatar);
+          this.isLoading = false;
           if (role == 'admin') {
             this.router.navigate(['/products']);
           } else {

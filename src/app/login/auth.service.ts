@@ -1,12 +1,13 @@
 import { Injectable } from '@angular/core';
+import { CookieService } from 'ngx-cookie-service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
-  constructor() {}
+  constructor(private cookieService: CookieService) {}
 
   isLoggedIn(): boolean {
-    return !!localStorage.getItem('token'); // Check for token existence
+    return !!this.cookieService.get('token'); // Check for token existence
   }
 }

@@ -15,6 +15,7 @@ import { Router } from '@angular/router';
 import { DatePipe } from '@angular/common';
 import { ToastrService } from '../shared/toastr.service';
 import { LoaderComponent } from '../loader/loader.component';
+import { CookieService } from 'ngx-cookie-service';
 
 @Component({
   selector: 'app-orders',
@@ -45,7 +46,8 @@ export class OrdersComponent {
     private ordersService: OrdersService,
     private router: Router,
     private datePipe: DatePipe,
-    private toastr: ToastrService
+    private toastr: ToastrService,
+    private cookieService: CookieService
   ) {}
 
   ngOnInit(): void {
@@ -113,7 +115,7 @@ export class OrdersComponent {
               };
           }, 0);
           this.router.navigate(['login']);
-          localStorage.clear();
+          this.cookieService.deleteAll();
         } else if (error.status === 500) {
           setTimeout(() => {
             this.toastr.error(

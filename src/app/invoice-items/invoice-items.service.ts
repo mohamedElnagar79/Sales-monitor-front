@@ -3,17 +3,18 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from '../../environments/environment';
+import { CookieService } from 'ngx-cookie-service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class InvoiceItemsService {
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private cookieService: CookieService) {}
 
   private apiUrl = environment.apiUrl;
 
   getInvoiceItems(id: number): Observable<any[]> {
-    const token = localStorage.getItem('token');
+    const token = this.cookieService.get('token');
     if (token) {
       const headers = new HttpHeaders({
         Authorization: `Bearer ${token}`,
@@ -26,7 +27,7 @@ export class InvoiceItemsService {
     }
   }
   deleteOneInvoiceItem(id: number): Observable<any> {
-    const token = localStorage.getItem('token');
+    const token = this.cookieService.get('token');
     if (token) {
       const headers = new HttpHeaders({
         Authorization: `Bearer ${token}`,

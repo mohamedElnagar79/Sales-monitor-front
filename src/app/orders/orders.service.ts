@@ -3,18 +3,19 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from '../../environments/environment';
+import { CookieService } from 'ngx-cookie-service';
 @Injectable({
   providedIn: 'root',
 })
 export class OrdersService {
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private cookieService: CookieService) {}
 
   private apiUrl = environment.apiUrl;
   // private apiUrl = 'http://localhost:10000/';
 
   getInvoices(date?: string, phone?: any): Observable<any[]> {
     console.log('date from service', date);
-    const token = localStorage.getItem('token');
+    const token = this.cookieService.get('token');
     let params;
     if (date) {
       params = new HttpParams().set('date', date);
@@ -36,7 +37,7 @@ export class OrdersService {
   }
 
   returnASale(updatedObj: any): Observable<any[]> {
-    const token = localStorage.getItem('token');
+    const token = this.cookieService.get('token');
 
     if (token) {
       const headers = new HttpHeaders({

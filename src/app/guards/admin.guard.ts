@@ -7,12 +7,14 @@ import {
   UrlSegment,
   UrlTree,
 } from '@angular/router';
+import { CookieService } from 'ngx-cookie-service';
 import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AdminGuard implements CanActivate {
+  constructor(private cookieService: CookieService) {}
   canActivate(
     route: ActivatedRouteSnapshot, // Use ActivatedRouteSnapshot
     state: RouterStateSnapshot // Add state parameter
@@ -21,7 +23,7 @@ export class AdminGuard implements CanActivate {
     | Promise<boolean | UrlTree>
     | boolean
     | UrlTree {
-    const role = localStorage.getItem('role');
+    const role = this.cookieService.get('role');
     return role === 'admin'; // Return true if token exists, false otherwise
   }
 }
