@@ -9,6 +9,7 @@ import { faPhone } from '@fortawesome/free-solid-svg-icons';
 import { LoaderComponent } from '../loader/loader.component';
 import { ToastrService } from '../shared/toastr.service';
 import { Router } from '@angular/router';
+import { CookieService } from 'ngx-cookie-service';
 @Component({
   selector: 'app-transactions',
   standalone: true,
@@ -40,7 +41,8 @@ export class TransactionsComponent {
     private transactionsService: TransactionsService,
     private datePipe: DatePipe,
     private toastr: ToastrService,
-    private router: Router
+    private router: Router,
+    private cookieService: CookieService
   ) {}
 
   ngOnInit(): void {
@@ -77,7 +79,7 @@ export class TransactionsComponent {
               };
           }, 0);
           this.router.navigate(['login']);
-          localStorage.clear();
+          this.cookieService.deleteAll();
         } else if (error.status === 500) {
           setTimeout(() => {
             this.toastr.error(

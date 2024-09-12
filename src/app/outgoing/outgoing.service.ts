@@ -4,17 +4,18 @@ import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Outgoing } from '../models/outgoing';
 import { environment } from '../../environments/environment';
+import { CookieService } from 'ngx-cookie-service';
 @Injectable({
   providedIn: 'root',
 })
 export class OutgoingService {
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private cookieService: CookieService) {}
 
   private apiUrl = environment.apiUrl;
   // private apiUrl = 'http://localhost:10000/';
 
   getOutgoing(p: number, searchTerm?: string): Observable<any[]> {
-    const token = localStorage.getItem('token');
+    const token = this.cookieService.get('token');
     let params = new HttpParams().set('page', p);
     if (searchTerm) {
       params = params.set('search', searchTerm);
@@ -33,7 +34,7 @@ export class OutgoingService {
   }
 
   addOutgoing(outgoing: Outgoing) {
-    const token = localStorage.getItem('token');
+    const token = this.cookieService.get('token');
     if (token) {
       const headers = new HttpHeaders({
         Authorization: `Bearer ${token}`,
@@ -47,7 +48,7 @@ export class OutgoingService {
   }
 
   updateOutgoing(outgoing: Outgoing): Observable<any> {
-    const token = localStorage.getItem('token');
+    const token = this.cookieService.get('token');
     if (token) {
       const headers = new HttpHeaders({
         Authorization: `Bearer ${token}`,
@@ -65,7 +66,7 @@ export class OutgoingService {
   }
 
   deleteOneOutgoing(id: number): Observable<any> {
-    const token = localStorage.getItem('token');
+    const token = this.cookieService.get('token');
     if (token) {
       const headers = new HttpHeaders({
         Authorization: `Bearer ${token}`,

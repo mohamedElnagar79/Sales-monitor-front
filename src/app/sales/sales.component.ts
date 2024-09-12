@@ -16,6 +16,7 @@ import { ToastrService } from '../shared/toastr.service';
 import { ActivatedRoute } from '@angular/router';
 import { LoaderComponent } from '../loader/loader.component';
 import { error } from 'console';
+import { CookieService } from 'ngx-cookie-service';
 interface Product {
   id: number;
   name: string;
@@ -66,8 +67,8 @@ export class SalesComponent {
   clientPhoneSelection!: ElementRef;
   @ViewChild('closeModal') closeModalRef!: ElementRef;
   @ViewChild('reviewSection') reviewSection!: ElementRef;
-  sellerName: any = localStorage.getItem('name')
-    ? localStorage.getItem('name')
+  sellerName: any = this.cookieService.get('name')
+    ? this.cookieService.get('name')
     : 'computer World';
   isLoading: boolean = true;
   clientName: string = 'client';
@@ -164,7 +165,8 @@ export class SalesComponent {
     private toastr: ToastrService,
     private route: ActivatedRoute,
     private navigateRoute: Router,
-    private router: Router
+    private router: Router,
+    private cookieService: CookieService
   ) {}
   ngOnInit(): void {
     const id: any = this.route.snapshot.paramMap.get('id');
@@ -227,7 +229,7 @@ export class SalesComponent {
               };
           }, 0);
           this.router.navigate(['login']);
-          localStorage.clear();
+          this.cookieService.deleteAll();
         } else if (error.status === 500) {
           setTimeout(() => {
             this.toastr.error(
@@ -269,7 +271,7 @@ export class SalesComponent {
               };
           }, 0);
           this.router.navigate(['login']);
-          localStorage.clear();
+          this.cookieService.deleteAll();
         } else if (error.status === 500) {
           setTimeout(() => {
             this.toastr.error(
@@ -362,7 +364,7 @@ export class SalesComponent {
               };
           }, 0);
           this.router.navigate(['login']);
-          localStorage.clear();
+          this.cookieService.deleteAll();
         } else if (error.status === 500) {
           setTimeout(() => {
             this.toastr.error(
@@ -406,7 +408,7 @@ export class SalesComponent {
               };
           }, 0);
           this.router.navigate(['login']);
-          localStorage.clear();
+          this.cookieService.deleteAll();
         } else if (error.status === 500) {
           setTimeout(() => {
             this.toastr.error(
@@ -864,7 +866,7 @@ export class SalesComponent {
                 };
             }, 0);
             this.router.navigate(['login']);
-            localStorage.clear();
+            this.cookieService.deleteAll();
           } else if (error.status === 500) {
             setTimeout(() => {
               this.toastr.error(
@@ -918,7 +920,7 @@ export class SalesComponent {
                 };
             }, 0);
             this.router.navigate(['login']);
-            localStorage.clear();
+            this.cookieService.deleteAll();
           } else if (error.status === 500) {
             setTimeout(() => {
               this.toastr.error(
@@ -940,7 +942,7 @@ export class SalesComponent {
     }
   }
   isAdmin(): boolean {
-    const role: any = localStorage.getItem('role');
+    const role: any = this.cookieService.get('role');
 
     return role == 'admin' ? true : false; // Replace 'userRole' with your user role variable
   }

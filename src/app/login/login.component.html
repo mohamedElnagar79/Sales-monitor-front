@@ -1,4 +1,5 @@
 <div class="login-container">
+  <app-loader *ngIf="isLoading"></app-loader>
   <div class="login-box">
     <h2>Login</h2>
     <form #loginForm="ngForm" (ngSubmit)="onSubmit(loginForm)">

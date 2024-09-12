@@ -21,6 +21,7 @@ import {
 import { Router, NavigationEnd } from '@angular/router';
 import { LoaderComponent } from '../../loader/loader.component';
 import { ToastrService } from '../toastr.service';
+import { CookieService } from 'ngx-cookie-service';
 
 @Component({
   selector: 'app-sidebar',
@@ -56,7 +57,8 @@ export class SidebarComponent {
   constructor(
     private router: Router,
     private profileService: ProfileService,
-    private toastr: ToastrService
+    private toastr: ToastrService,
+    private cookieService: CookieService
   ) {}
   currentRoute: string = '/products';
   toggleSidebar() {
@@ -70,7 +72,7 @@ export class SidebarComponent {
     this.router.navigate([path]);
   }
   signout(): void {
-    localStorage.clear();
+    this.cookieService.deleteAll();
     this.router.navigate(['/login']);
   }
   getUserInfo(): void {
@@ -94,7 +96,7 @@ export class SidebarComponent {
             console.log('errrorororo');
           }, 0);
           this.router.navigate(['login']);
-          localStorage.clear();
+          this.cookieService.deleteAll();
         } else if (error.status === 500) {
           setTimeout(() => {
             this.toastr.error(

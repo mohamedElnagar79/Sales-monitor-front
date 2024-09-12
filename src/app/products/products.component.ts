@@ -10,6 +10,7 @@ import { faPen, faTrash, faPlus } from '@fortawesome/free-solid-svg-icons';
 import { Router } from '@angular/router';
 import { ToastrService } from '../shared/toastr.service';
 import { LoaderComponent } from '../loader/loader.component';
+import { CookieService } from 'ngx-cookie-service';
 
 @Component({
   selector: 'app-products',
@@ -66,7 +67,8 @@ export class ProductsComponent {
   constructor(
     private ProductsService: ProductsService,
     private router: Router,
-    private toastr: ToastrService
+    private toastr: ToastrService,
+    private cookieService: CookieService
   ) {}
 
   ngOnInit(): void {
@@ -131,7 +133,7 @@ export class ProductsComponent {
               };
           }, 0);
           this.router.navigate(['login']);
-          localStorage.clear();
+          this.cookieService.deleteAll();
         } else if (error.status === 500) {
           setTimeout(() => {
             this.toastr.error(
@@ -198,8 +200,38 @@ export class ProductsComponent {
       (error) => {
         console.error('Error adding product:', error.error.error.path);
         if (error.error.error.path == 'name') {
+          alert(error.error.message);
         }
-        alert(error.error.message);
+        this.isLoading = false;
+        if (error.status === 0) {
+          this.router.navigate(['error']);
+        } else if (error.status === 401) {
+          setTimeout(() => {
+            this.toastr.error(`Unauthorized access. Please log in again.`),
+              '',
+              {
+                timeOut: 10000,
+                positionClass: 'toast-top-center',
+              };
+          }, 0);
+          this.router.navigate(['login']);
+          this.cookieService.deleteAll();
+        } else if (error.status === 500) {
+          setTimeout(() => {
+            this.toastr.error(
+              `Internal server error. Please contact the administrator.`
+            ),
+              '',
+              {
+                timeOut: 10000,
+                positionClass: 'toast-top-center',
+              };
+          }, 0);
+        } else {
+          this.toastr.error(
+            'An error occurred while create new product users. Please try again later.'
+          );
+        }
       }
     );
   }
@@ -215,9 +247,39 @@ export class ProductsComponent {
       (error) => {
         this.isLoading = false;
         console.error('Error adding product:', error.error.error.path);
-        // if (error.error.error.path == 'name') {
-        // }
-        alert(error.error.message);
+        if (error.error.error.path == 'name') {
+          alert(error.error.message);
+        }
+        this.isLoading = false;
+        if (error.status === 0) {
+          this.router.navigate(['error']);
+        } else if (error.status === 401) {
+          setTimeout(() => {
+            this.toastr.error(`Unauthorized access. Please log in again.`),
+              '',
+              {
+                timeOut: 10000,
+                positionClass: 'toast-top-center',
+              };
+          }, 0);
+          this.router.navigate(['login']);
+          this.cookieService.deleteAll();
+        } else if (error.status === 500) {
+          setTimeout(() => {
+            this.toastr.error(
+              `Internal server error. Please contact the administrator.`
+            ),
+              '',
+              {
+                timeOut: 10000,
+                positionClass: 'toast-top-center',
+              };
+          }, 0);
+        } else {
+          this.toastr.error(
+            'An error occurred while update this product users. Please try again later.'
+          );
+        }
       }
     );
   }
@@ -235,10 +297,36 @@ export class ProductsComponent {
       },
       (error) => {
         this.isLoading = false;
-        // console.error('Error deleting product:', error.error.error.path);
-        // if (error.error.error.path == 'name') {
-        // }
-        alert(error.error.message);
+        this.isLoading = false;
+        if (error.status === 0) {
+          this.router.navigate(['error']);
+        } else if (error.status === 401) {
+          setTimeout(() => {
+            this.toastr.error(`Unauthorized access. Please log in again.`),
+              '',
+              {
+                timeOut: 10000,
+                positionClass: 'toast-top-center',
+              };
+          }, 0);
+          this.router.navigate(['login']);
+          this.cookieService.deleteAll();
+        } else if (error.status === 500) {
+          setTimeout(() => {
+            this.toastr.error(
+              `Internal server error. Please contact the administrator.`
+            ),
+              '',
+              {
+                timeOut: 10000,
+                positionClass: 'toast-top-center',
+              };
+          }, 0);
+        } else {
+          this.toastr.error(
+            'An error occurred while delete product. Please try again later.'
+          );
+        }
       }
     );
   }

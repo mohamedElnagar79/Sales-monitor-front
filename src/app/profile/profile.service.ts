@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { environment } from '../../environments/environment';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Observable, BehaviorSubject } from 'rxjs';
+import { CookieService } from 'ngx-cookie-service';
 
 @Injectable({
   providedIn: 'root',
@@ -9,9 +10,9 @@ import { Observable, BehaviorSubject } from 'rxjs';
 export class ProfileService {
   private apiUrl = environment.apiUrl;
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private cookieService: CookieService) {}
   getUserInfo(): Observable<any[]> {
-    const token = localStorage.getItem('token');
+    const token = this.cookieService.get('token');
     if (token) {
       const headers = new HttpHeaders({
         Authorization: `Bearer ${token}`,
@@ -24,7 +25,7 @@ export class ProfileService {
     }
   }
   UpdatePassword(Password: any): Observable<any> {
-    const token = localStorage.getItem('token');
+    const token = this.cookieService.get('token');
     if (token) {
       const headers = new HttpHeaders({
         Authorization: `Bearer ${token}`,
@@ -41,7 +42,7 @@ export class ProfileService {
     }
   }
   UpdateUserProfile(user: any): Observable<any> {
-    const token = localStorage.getItem('token');
+    const token = this.cookieService.get('token');
     if (token) {
       const headers = new HttpHeaders({
         Authorization: `Bearer ${token}`,
@@ -55,7 +56,7 @@ export class ProfileService {
     }
   }
   getAllUsers(): Observable<any[]> {
-    const token = localStorage.getItem('token');
+    const token = this.cookieService.get('token');
     if (token) {
       const headers = new HttpHeaders({
         Authorization: `Bearer ${token}`,

@@ -3,6 +3,7 @@ import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Product } from '../models/product.model';
 import { environment } from '../../environments/environment';
+import { CookieService } from 'ngx-cookie-service';
 
 @Injectable({
   providedIn: 'root',
@@ -10,7 +11,7 @@ import { environment } from '../../environments/environment';
 export class ProductsService {
   private apiUrl = environment.apiUrl;
   // private apiUrl = 'http://localhost:10000/';
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private cookieService: CookieService) {}
   getAllProducts(
     p: number,
     searchTerm?: string,
@@ -18,7 +19,7 @@ export class ProductsService {
     max_stock?: boolean,
     out_of_stock?: boolean
   ): Observable<any[]> {
-    const token = localStorage.getItem('token');
+    const token = this.cookieService.get('token');
     let params = new HttpParams().set('page', p);
     if (searchTerm) {
       params = params.set('search', searchTerm);
@@ -45,7 +46,7 @@ export class ProductsService {
     }
   }
   addProduct(product: {}): Observable<any> {
-    const token = localStorage.getItem('token');
+    const token = this.cookieService.get('token');
     if (token) {
       const headers = new HttpHeaders({
         Authorization: `Bearer ${token}`,
@@ -58,7 +59,7 @@ export class ProductsService {
     }
   }
   updateproduct(product: Product): Observable<any> {
-    const token = localStorage.getItem('token');
+    const token = this.cookieService.get('token');
     if (token) {
       const headers = new HttpHeaders({
         Authorization: `Bearer ${token}`,
@@ -75,7 +76,7 @@ export class ProductsService {
     }
   }
   deleteOneProduct(id: number): Observable<any> {
-    const token = localStorage.getItem('token');
+    const token = this.cookieService.get('token');
     if (token) {
       const headers = new HttpHeaders({
         Authorization: `Bearer ${token}`,
