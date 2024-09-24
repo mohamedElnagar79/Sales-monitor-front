@@ -11,6 +11,7 @@
         (keyup)="getproducts(1, search)"
         [(ngModel)]="search"
         name="search"
+        autocomplete="off"
       />
       <select
         class="form-select mb-3 stock-select"
@@ -134,6 +135,7 @@
                 id="name"
                 [(ngModel)]="updatedProduct.name"
                 name="name"
+                autocomplete="off"
                 required
               />
             </div>
@@ -196,7 +198,7 @@
                 [(ngModel)]="updatedProduct.description"
                 name="description"
                 required
-                rows="3"
+                rows="2"
                 cols="50"
               >
               </textarea>
@@ -244,6 +246,7 @@
                 id="name"
                 [(ngModel)]="newProduct.name"
                 name="name"
+                autocomplete="off"
                 required
               />
             </div>
@@ -304,18 +307,19 @@
                 [(ngModel)]="newProduct.description"
                 name="description"
                 required
-                rows="3"
+                rows="2"
                 cols="50"
               ></textarea>
             </div>
             <div class="form-group">
-              <button type="submit" class="btn btn-primary my-2 form-control">
+              <button type="submit" class="btn btn-primary my-1 form-control">
                 Add Product
               </button>
               <button
                 type="button"
                 class="btn btn-outline-secondary form-control"
                 data-bs-dismiss="modal"
+                #closeAddModal
               >
                 Close
               </button>
