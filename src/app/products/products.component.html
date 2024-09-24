@@ -198,7 +198,7 @@
                 [(ngModel)]="updatedProduct.description"
                 name="description"
                 required
-                rows="3"
+                rows="2"
                 cols="50"
               >
               </textarea>
@@ -307,18 +307,19 @@
                 [(ngModel)]="newProduct.description"
                 name="description"
                 required
-                rows="3"
+                rows="2"
                 cols="50"
               ></textarea>
             </div>
             <div class="form-group">
-              <button type="submit" class="btn btn-primary my-2 form-control">
+              <button type="submit" class="btn btn-primary my-1 form-control">
                 Add Product
               </button>
               <button
                 type="button"
                 class="btn btn-outline-secondary form-control"
                 data-bs-dismiss="modal"
+                #closeAddModal
               >
                 Close
               </button>

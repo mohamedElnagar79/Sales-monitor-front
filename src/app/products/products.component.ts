@@ -28,6 +28,7 @@ import { CookieService } from 'ngx-cookie-service';
 export class ProductsComponent {
   @ViewChild('closeModal') closeModalRef!: ElementRef;
   @ViewChild('deleteModal') deleteModalRef!: ElementRef;
+  @ViewChild('closeAddModal') addModalRef!: ElementRef;
   isLoading: boolean = true;
   search: any = '';
   activeId: number = 0;
@@ -196,6 +197,7 @@ export class ProductsComponent {
         };
         this.showForm = false;
         this.isLoading = false;
+        this.addModalRef.nativeElement.click();
       },
       (error) => {
         console.error('Error adding product:', error.error.error.path);
