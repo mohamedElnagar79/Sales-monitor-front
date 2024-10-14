@@ -891,6 +891,8 @@ export class SalesComponent {
           // this.count = data.data.count;
           this.resetForm();
           this.showReview = false;
+          console.log('data   ', data.data);
+          window.open(data.data, '_blank');
           setTimeout(() => {
             this.toastr.success('Invoice created successfully!'),
               '',
@@ -922,6 +924,7 @@ export class SalesComponent {
             this.router.navigate(['login']);
             this.cookieService.deleteAll();
           } else if (error.status === 500) {
+            console.log('errror now ', error);
             setTimeout(() => {
               this.toastr.error(
                 `Internal server error. Please contact the administrator.`
