@@ -43,6 +43,7 @@ interface Invoice {
   comments?: string;
   total: number;
   remainder: number;
+  print?: boolean;
 }
 interface Client {
   name: '';
@@ -119,6 +120,7 @@ export class SalesComponent {
         quantity: 0,
       },
     ],
+    print: false,
   };
   filteredProducts: Product[] = [];
   filteredClients: Client[] = [];
@@ -823,6 +825,9 @@ export class SalesComponent {
     };
   }
   SaveInvoice(print?: boolean): void {
+    if (print) {
+      this.invoice.print = true;
+    }
     if (this.isUpdate) {
       this.isLoading = true;
       this.salesService.updateInvoice(this.updatedInvoice).subscribe(
@@ -891,8 +896,9 @@ export class SalesComponent {
           // this.count = data.data.count;
           this.resetForm();
           this.showReview = false;
-          console.log('data   ', data.data);
-          window.open(data.data, '_blank');
+          if (print) {
+            window.open(data.data, '_blank');
+          }
           setTimeout(() => {
             this.toastr.success('Invoice created successfully!'),
               '',
@@ -901,11 +907,7 @@ export class SalesComponent {
                 positionClass: 'toast-top-center',
               };
           }, 0); // Display message after 2 seconds
-          if (print) {
-            console.log('print func work =========');
-            // this.printReview();
-          }
-          // this.startIndex = this.p > 1 ? (this.p - 1) * 8 + 1 : 1;
+
           this.isLoading = false;
         },
         (error) => {
